@@ -7,7 +7,9 @@
 //
 
 #import "AppDelegate.h"
-
+#import "DinnerUtility.h"
+#import "JTCalendar.h"
+#import "DataBaseManager.h"
 @interface AppDelegate ()
 
 @end
@@ -17,6 +19,19 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //   [application setStatusBarHidden:YES];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [DataBaseManager getDefaultDataBaseManager];
+        JTCalendar* c =[JTCalendar getDefaultJTCalendar];
+        [c.dataCache reloadData];
+        
+    });
+
+    [application setStatusBarStyle:UIStatusBarStyleLightContent];
+    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+    [[UINavigationBar appearance] setBarTintColor:[DinnerUtility DinnerNaviBarColor]];
+
     return YES;
 }
 

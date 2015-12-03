@@ -7,9 +7,19 @@
 //
 
 #import "DayBDayViewController.h"
+#import "JTCalendarMonthWeekDaysView.h"
 #import "MBProgressHUD.h"
 #import "BottomContainerView.h"
+#import "DinnerUtility.h"
 
+//will remove after DAO test
+#import "DinnerDao.h"
+#import "CheckBoxsDao.h"
+#import "ImagesDao.h"
+#import "DinnerObjDao.h"
+#import "CheckBox.h"
+
+#import "DataBaseManager.h"
 @interface DayBDayViewController () < UIScrollViewDelegate,  UITextViewDelegate>
 
 @property (strong, nonatomic, readwrite) NSLayoutConstraint *calendarContentViewHeightConstraint;
@@ -28,9 +38,17 @@
 @end
 
 @implementation DayBDayViewController{
-    UITextView * innerTextView;
+    HPTextViewTapGestureRecognizer *textViewTapGestureRecognizer;
     NSDate * today;
     BottomContainerView * bottomBar;
+    JTCalendarMonthWeekDaysView * weekdaysView;
+    UIView * keyBoardController;
+    NSLayoutConstraint *keyboardContraint;
+    CGRect originTextViewFrame;
+    NSMutableDictionary * checkBoxs , *images;
+    NSArray * checkBoxImages;
+    
+    DataBaseManager * dbManager;
 }
 
 #pragma mark -
@@ -48,14 +66,13 @@
     self.calendar.calendarAppearance.isWeekMode = !self.calendar.calendarAppearance.isWeekMode;
     [self transitionCalendarMode];
 
-    
 }
 
 - (void)transitionCalendarMode {
-    CGFloat newHeight = 300.0f;
+    CGFloat newHeight = 240.f;
     NSLog(@"transitionCalendarMode");
     if(self.calendar.calendarAppearance.isWeekMode){
-        newHeight = 75.0f;
+        newHeight = 40.0f;
     }
     
     [UIView animateWithDuration:.5
@@ -77,52 +94,77 @@
                                           }];
                      }];
     
+    
+    
+}
+
+-(void)gestureRecognizerNotthing{
+    NSLog(@"gestureRecognizerNotthing");
+    [self showInputViewController:nil];
+}
+
+-(void)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer handleTapOnAttributeString:(NSAttributedString *)attrString inRange:(NSRange)characterRange  {
+    NSLog(@"%@",attrString);
+}
+
+-(void)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer handleTapOnTextAttachment:(NSTextAttachment*)textAttachment inRange:(NSRange)characterRange
+{
+    NSString * oldKey = [NSString stringWithFormat:@"%ld",characterRange.location];
+
+    CheckBox * tempCheckBox = checkBoxs[oldKey];
+    
+    NSLog(@"oldKey = %@ %ld ",oldKey ,tempCheckBox.location );
+    if(tempCheckBox){
+        if(tempCheckBox){
+            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc]initWithAttributedString:self.currentDayScollView.attributedText];
+            NSTextAttachment * newAttrText;
+            {
+                newAttrText = [NSTextAttachment new];
+                newAttrText.image = checkBoxImages[tempCheckBox.status];
+                newAttrText.image = [UIImage imageWithCGImage:newAttrText.image.CGImage scale:2.f orientation:UIImageOrientationUp];
+                [attributedText replaceCharactersInRange:characterRange withAttributedString:[NSAttributedString attributedStringWithAttachment:newAttrText]];
+            }
+            
+            if(tempCheckBox){
+                NSString * newKey = [NSString stringWithFormat:@"%ld",characterRange.location];
+                [checkBoxs removeObjectForKey:oldKey];
+                tempCheckBox.status = (tempCheckBox.status == 0 ? 1 : 0);
+                tempCheckBox.date = today;
+                [checkBoxs setObject:tempCheckBox forKey:newKey];
+                NSLog(@"%@,  %d",tempCheckBox.date , tempCheckBox.status);
+                
+                [[CheckBoxsDao getDefaultCheckBoxsDao]deleteRowWithCB:tempCheckBox];
+                [[CheckBoxsDao getDefaultCheckBoxsDao]insertDataWithCB:tempCheckBox];
+            }
+            
+            self.currentDayScollView.attributedText = attributedText;
+            
+        }else{
+            [images setObject:textAttachment forKey:oldKey];
+        }
+
+    }else{
+        NSLog(@"gestureRecognizer : %@" , tempCheckBox);
+    }
 }
 
 
 #pragma mark -
 #pragma mark UITableViewDataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
-}
-
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    if(innerTextView == nil){
-        innerTextView = [[UITextView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.currentDayScollView.frame.size.height)];
-        innerTextView.delegate = self;
-        innerTextView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        innerTextView.backgroundColor = [UIColor whiteColor];
-        [cell addSubview:innerTextView];
-   
-    }
-    return cell;
-}
 #pragma mark -
 #pragma UITextViewDelegate
 
+-(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
+    NSLog(@"textViewShouldBeginEditing");
+    return YES;
+}
 -(void)textViewDidChange:(UITextView *)textView{
     
 }
 -(void)textViewDidBeginEditing:(UITextView *)textView{
     
 }
-
-
-#pragma mark - 
-#pragma UITableViewDelegate
 
 
 #pragma mark -
@@ -147,16 +189,15 @@
         while(currentMonthIndex <= 0){
             currentMonthIndex += 12;
         }
-        
         NSString *monthText = [[dateFormatter standaloneMonthSymbols][currentMonthIndex - 1] capitalizedString];
         
         return [NSString stringWithFormat:@"%ld %@", comps.year, monthText];
     };
     
     [self setUpMenuView];
+    [self setUpweekdaysView];
     [self setUpContentView];
-    [self setUpTableView];
-    
+
     [self.calendar setMenuMonthsView:self.calendarMenuView];
     [self.calendar setContentView:self.calendarContentView];
     [self.calendar setDataSource:self];
@@ -168,59 +209,71 @@
 }
 
 - (void)setUpMenuView {
-    self.calendarMenuView = [[JTCalendarMenuView alloc] initWithFrame:CGRectZero];
-    self.calendarMenuView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.calendarMenuView.backgroundColor = [UIColor whiteColor];
-    
-    [self.view addSubview:self.calendarMenuView];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.calendarMenuView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.calendarMenuView
-                                                          attribute:NSLayoutAttributeLeft
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeLeft
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.calendarMenuView
-                                                          attribute:NSLayoutAttributeWidth
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeWidth
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.calendarMenuView
-                                                          attribute:NSLayoutAttributeHeight
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeHeight
-                                                         multiplier:0.0f
-                                                           constant:25.0f]];
-}
+    self.calendarMenuView = [[JTCalendarMenuView alloc]initWithFrame:CGRectMake(0, 0, 200, 40)];
+    self.calendarMenuView.backgroundColor  = [UIColor clearColor];
+    self.calendarMenuView.scrollEnabled = NO;
 
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(pushTodayButton:)];
+    [self.calendarMenuView addGestureRecognizer:tap];
+    UIBarButtonItem * barbuttonItem = [[UIBarButtonItem alloc]initWithCustomView:self.calendarMenuView];
+
+    [self.navigationItem setLeftBarButtonItem:barbuttonItem];
+    
+}
+-(void)setUpweekdaysView{
+    
+    weekdaysView = [JTCalendarMonthWeekDaysView new];
+   [weekdaysView setCalendarManager:self.calendar];
+    [self.view addSubview:weekdaysView];
+    weekdaysView.backgroundColor = [UIColor redColor];
+    weekdaysView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:weekdaysView
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:weekdaysView
+                                                          attribute:NSLayoutAttributeLeft
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeLeft
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:weekdaysView
+                                                          attribute:NSLayoutAttributeWidth
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeWidth
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:weekdaysView
+                                                        attribute:NSLayoutAttributeHeight
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:self.calendarContentView
+                                                        attribute:NSLayoutAttributeHeight
+                                                       multiplier:0.0f
+                                                         constant:20.f]];
+    [JTCalendarMonthWeekDaysView beforeReloadAppearance];
+    [weekdaysView reloadAppearance];
+
+}
 - (void)setUpContentView {
     self.calendarContentView = [[JTCalendarContentView alloc] initWithFrame:CGRectZero];
     self.calendarContentView.translatesAutoresizingMaskIntoConstraints = NO;
     self.calendarContentView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.calendarContentView];
-    
+
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.calendarContentView
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.calendarMenuView
+                                                             toItem:weekdaysView
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0f
                                                            constant:0.0f]];
-    
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.calendarContentView
                                                           attribute:NSLayoutAttributeLeft
                                                           relatedBy:NSLayoutRelationEqual
@@ -243,19 +296,24 @@
                                                                                toItem:self.view
                                                                             attribute:NSLayoutAttributeHeight
                                                                            multiplier:0.0f
-                                                                             constant:300.0f];
+                                                                             constant:240.0f];
     [self.view addConstraint:self.calendarContentViewHeightConstraint];
 }
 
-- (void)setUpTableView {
-    self.currentDayScollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
+-(void)setupContainerScollView{
+    
+}
+
+- (void)setupTextView:(UITextView *)textview {
+    self.currentDayScollView = textview;
     self.currentDayScollView.translatesAutoresizingMaskIntoConstraints = NO;
     self.currentDayScollView.scrollEnabled = YES;
     self.currentDayScollView.pagingEnabled = NO;
     self.currentDayScollView.showsHorizontalScrollIndicator = YES;
     self.currentDayScollView.delegate = self;
-    self.currentDayScollView.backgroundColor = [UIColor redColor];
-    self.currentDayScollView.contentInset = UIEdgeInsetsMake(-30, 0, 0, 0);
+    self.currentDayScollView.backgroundColor = [UIColor whiteColor];
+    self.currentDayScollView.font = [UIFont systemFontOfSize:15];
+    self.currentDayScollView.editable = NO;
     [self.view addSubview:self.currentDayScollView];
     
     
@@ -265,7 +323,7 @@
                                                              toItem:self.calendarContentView
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0f
-                                                           constant:5.0f]];
+                                                           constant:0.0f]];
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentDayScollView
                                                           attribute:NSLayoutAttributeLeft
@@ -291,25 +349,102 @@
                                                          multiplier:1.0f
                                                            constant:0.0f]];
 
-    CGFloat contentHeight = 0.f;
-    UIView * headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 30)];
-    headerView.backgroundColor = [UIColor lightGrayColor];
-    contentHeight += headerView.frame.size.height;
-    [self.currentDayScollView addSubview:headerView];
+
     
-    innerTextView = [[UITextView alloc]initWithFrame:CGRectZero];
-    innerTextView.backgroundColor = [UIColor yellowColor];
-    [self.currentDayScollView addSubview:innerTextView];
-   
+    [self setUptextViewTapGestureRecognizer];
+    
+    
+}
+
+
+#pragma mark - mainbottomBar Action
+-(void)showInputViewController:(id)sender{
+    
+    UIStoryboard * storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    InputViewViewController * modalViewController = [storyBoard instantiateViewControllerWithIdentifier:@"InputViewViewController"];
+    modalViewController.delegate = self;
+    self.currentDayScollView.editable = YES;
+    [self presentViewController:modalViewController animated:YES completion:^{
+        textViewTapGestureRecognizer.delegate =  nil;
+
+    }];
+    
+}
+
+-(void)removeThisEvent:(id)sender{
+    [dbManager removeThisDayEvent:today];
+    [self reloadAllofData];
+    self.currentDayScollView.text = @"";
+}
+
+
+#pragma mark 
+#pragma InputTextDelegate
+-(UITextView *)textViewBinding{
+    return self.currentDayScollView;
+}
+-(CGFloat)controlBarheight{
+    return bottomBar.frame.size.height;
+}
+-(void)resultTextView:(UITextView *)textView{
+    if(CGRectEqualToRect(originTextViewFrame, CGRectZero)){
+        originTextViewFrame = self.currentDayScollView.frame;
+    }
+    [self setupTextView:textView];
+    [dbManager insertTextViewDataWith:textView cachedCheckBox:checkBoxs data:today];
+    [self reloadAllofData];
+}
+
+-(void)reloadAllofData{
+    [self.calendar.dataCache reloadData];
+    [self.calendarContentView reloadData];
+    [self.calendarContentView reloadAppearance];
 
 }
+
+
+-(void)removeCheckBox:(NSString *)cb{
+    
+}
+-(void)insertCheckBtn:(NSTextAttachment *)textAtmt{
+    
+    NSAttributedString *myAttrString = self.currentDayScollView.attributedText;
+
+    if(myAttrString){
+        [myAttrString enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, myAttrString.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+            NSTextAttachment *  textAttachment = value;
+            if(textAttachment){
+                int loc = (int)range.location;
+                NSString * key = [NSString stringWithFormat:@"%d",loc];
+                if(!checkBoxs[key]){
+                    CheckBox * newCheckBox = [[CheckBox alloc]initWithLoc:loc andStatus:0];
+                    newCheckBox.date = today;
+                    [checkBoxs setObject:newCheckBox forKey:key];
+                }
+            }
+        }];
+    }
+}
+
+#pragma mark
 
 - (void)setUpBarButtonItems {
-    UIBarButtonItem *todayButton = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain target:self action:@selector(pushTodayButton:)];
-    UIBarButtonItem *changeModeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(pushChangeModeButton:)];
+    UIButton * searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [searchBtn setImage:[UIImage imageNamed:@"search_btn"] forState:UIControlStateNormal];
+    searchBtn.frame = CGRectMake(0, 0, 30, 30);
+    [searchBtn addTarget:self action:@selector(pushChangeModeButton:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem * searchButton = [[UIBarButtonItem alloc]initWithCustomView:searchBtn];
+
+    UIButton * settingButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [settingButton setImage:[UIImage imageNamed:@"setting_btn"] forState:UIControlStateNormal];
+    settingButton.frame = CGRectMake(0, 0, 30, 30);
+    [settingButton addTarget:self action:@selector(pushChangeModeButton:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem * settingBarBtn = [[UIBarButtonItem alloc]initWithCustomView:settingButton];
     
-    [self.navigationItem setRightBarButtonItems:@[todayButton, changeModeButton]];
+    [self.navigationItem setRightBarButtonItems:@[settingBarBtn, searchButton]];
 }
+
 
 
 -(void)setUpBottomBarContainer{
@@ -318,13 +453,37 @@
     CGFloat stateHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
     bottomBar = [[BottomContainerView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height - barHeight - (barHeight + stateHeight),
                                                                                       self.view.frame.size.width,
-                                                                                      barHeight)];
+                                                                                      45.f)];
 
-    bottomBar.backgroundColor = [UIColor brownColor];
+    bottomBar.backgroundColor = [UIColor colorWithRed:242/255.f green:242/255.f blue:242/255.f alpha:1.f];
     [self.view addSubview:bottomBar];
+    
+    CGFloat buttonSize = bottomBar.frame.size.height - 10;
+
+    UIButton * addTask_btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [addTask_btn setImage:[UIImage imageNamed:@"addTask_btn"] forState:UIControlStateNormal];
+    addTask_btn.frame = CGRectMake(bottomBar.frame.size.width/2 - (buttonSize/2), bottomBar.frame.size.height/2 - buttonSize/2, buttonSize , buttonSize);
+    [addTask_btn addTarget:self action:@selector(showInputViewController:) forControlEvents:UIControlEventTouchUpInside];
+    [bottomBar addSubview:addTask_btn];
+    
+    UIButton * removeTask_Btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [removeTask_Btn setImage:[UIImage imageNamed:@"removeTask_Btn"] forState:UIControlStateNormal];
+    removeTask_Btn.frame = CGRectMake(addTask_btn.frame.origin.x-80, bottomBar.frame.size.height/2 - buttonSize/2, buttonSize , buttonSize);
+    [removeTask_Btn addTarget:self action:@selector(removeThisEvent:) forControlEvents:UIControlEventTouchUpInside];
+    [bottomBar addSubview:removeTask_Btn];
+
+    UIButton * everNote_btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [everNote_btn setImage:[UIImage imageNamed:@"everNote_btn"] forState:UIControlStateNormal];
+    everNote_btn.frame = CGRectMake(addTask_btn.frame.origin.x+80, bottomBar.frame.size.height/2 - buttonSize/2, buttonSize , buttonSize);
+    [everNote_btn addTarget:self action:@selector(showInputViewController:) forControlEvents:UIControlEventTouchUpInside];
+    [bottomBar addSubview:everNote_btn];
 
 }
 
+
+-(void)setUptextViewTapGestureRecognizer{
+    [self.currentDayScollView addGestureRecognizer:textViewTapGestureRecognizer];
+}
 
 -(void)addUpDownGesture{
     UISwipeGestureRecognizer * updownGesture = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(pushChangeModeButton:)];
@@ -334,86 +493,106 @@
     }
 }
 
+
+-(void)setupAndInit{
+    dbManager = [[DataBaseManager alloc]init];
+    self.navigationController.navigationBar.translucent = NO;
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:38/255.f green:38/255.f blue:38/255.f alpha:1.f];
+    originTextViewFrame = CGRectZero;
+    self.currentDayScollView = [[UITextView alloc] initWithFrame:CGRectZero];
+    textViewTapGestureRecognizer = [[HPTextViewTapGestureRecognizer alloc]init];
+    checkBoxs = [NSMutableDictionary new];
+    images = [NSMutableDictionary new];
+    checkBoxImages =@[[UIImage imageNamed:@"af"] , [UIImage imageNamed:@"be"]];
+
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationController.navigationBar.translucent = NO;
-//    self.navigationController.navigationBarHidden = YES
-    self.view.backgroundColor = [UIColor whiteColor];
+    
+    [self setupAndInit];
     [self setUpBottomBarContainer];
     [self setUpCalendar];
+    [self setupTextView:self.currentDayScollView];
     [self setUpBarButtonItems];
     [self addUpDownGesture];
-    
     [self.view bringSubviewToFront:bottomBar];
-    [self registerForKeyboardNotifications];
+    
     //savedDates = [@{} mutableCopy];
     
-    
+    [[DinnerObjDao getDefaultDinnerObjDao]createDataBase];
+    [[CheckBoxsDao getDefaultCheckBoxsDao]createDataBase];
 }
 
 - (void)viewDidLayoutSubviews {
     [self.calendar repositionViews];
-
-    innerTextView.frame =CGRectMake(0, 30 , self.view.frame.size.width, self.view.frame.size.height - self.calendarContentView.frame.size.height);
-    CGFloat headerInsetHeight = 20.f;
-    self.currentDayScollView.contentSize =CGSizeMake(self.view.frame.size.width,
-                                                     innerTextView.frame.size.height  + innerTextView.frame.origin.y - bottomBar.frame.size.height - headerInsetHeight);
+    NSLog(@"viewDidLayoutSubviews");
 }
 
-
-- (BOOL)calendarHaveEvent:(JTCalendar *)calendar date:(NSDate *)date
-{
-
-
-    NSDateComponents *currentDateComponents = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:date];
-    
-    for (NSNumber *number in [[savedDates objectForKey:[NSNumber numberWithInteger:currentDateComponents.year]]
-                              objectForKey:[NSNumber numberWithInteger:currentDateComponents.month]]) {
-        if ([number integerValue] == currentDateComponents.day) {
-            return YES;
-        }
+-(void)viewDidAppear:(BOOL)animated{
+    if(textViewTapGestureRecognizer){
+        textViewTapGestureRecognizer.delegate = self;
+        self.currentDayScollView.editable = NO;
     }
+}
 
-    return NO;
-    
+- (id)calendarHaveEvent:(JTCalendar *)calendar date:(NSDate *)date{
+
+
+    return  nil;
 }
 
 - (void)calendarDidDateSelected:(JTCalendar *)calendar date:(NSDate *)date {
     today = date;
+    
+    NSAttributedString *myAttrString= [dbManager searchDataWithData:today];
+    if(myAttrString.length > 0){
+        self.currentDayScollView.attributedText = [self attributeTextResizeStable:myAttrString];
+    }else{
+        self.currentDayScollView.text = @"";
+    }
+    
+    
+    [checkBoxs removeAllObjects];
+    [dbManager getImageInTheAttributeString:myAttrString cacheArr:checkBoxs Day:date];
+    
+    //TextView reLoad
  }
+
+-(NSMutableAttributedString *)attributeTextResizeStable:(NSAttributedString *)attributedText{
+    NSMutableAttributedString * newattributedText = [[NSMutableAttributedString alloc]initWithAttributedString:attributedText];
+    [newattributedText enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, newattributedText.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+        NSTextAttachment *  textAttachment = value;
+        UIImage * image = nil;
+        if(textAttachment){
+            if ([textAttachment image]){
+                image = [textAttachment image];
+            }else{
+                image = [textAttachment imageForBounds:[textAttachment bounds]
+                                         textContainer:nil
+                                        characterIndex:range.location];
+            }
+            
+            if(image.size.width > 50){
+                NSTextAttachment *newAttrText = [NSTextAttachment new];
+                CGFloat oldWidth = image.size.width;
+                NSLog(@"oldWidth %lf", oldWidth);
+                CGFloat  scaleFactor = oldWidth / (self.currentDayScollView.frame.size.width - 10);
+                newAttrText.image = [DinnerUtility imageWithImage:image scaledToSize:CGSizeMake(self.view.frame.size.width, self.view.frame.size.width)];
+
+                [newattributedText replaceCharactersInRange:range withAttributedString:[NSAttributedString attributedStringWithAttachment:newAttrText]];
+            }
+        }
+    
+    }];
+
+    return  newattributedText;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-- (void)registerForKeyboardNotifications
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWasShown:)
-                                                 name:UIKeyboardDidShowNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillBeHidden:)
-                                                 name:UIKeyboardWillHideNotification object:nil];
-    
-}
 
-// Called when the UIKeyboardDidShowNotification is sent.
-- (void)keyboardWasShown:(NSNotification*)aNotification
-{
-
-    NSDictionary* info = [aNotification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
-
-        NSLog(@"keyboardWillBeHidden");
-}
-
-// Called when the UIKeyboardWillHideNotification is sent
-- (void)keyboardWillBeHidden:(NSNotification*)aNotification
-{
-    NSLog(@"keyboardWillBeHidden");
-}
 @end

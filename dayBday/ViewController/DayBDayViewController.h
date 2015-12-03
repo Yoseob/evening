@@ -9,21 +9,20 @@
 #import <UIKit/UIKit.h>
 
 #import "JTCalendar.h"
-//#import "MXLCalendar.h"
+#import "InputViewViewController.h"
+#import "HPTextViewTapGestureRecognizer.h"
 
-@interface DayBDayViewController : UIViewController <JTCalendarDataSource> {
+@interface DayBDayViewController : UIViewController <JTCalendarDataSource , InputViewDelegate,HPTextViewTapGestureRecognizerDelegate , UIScrollViewDelegate > {
 //    MXLCalendar *currentCalendar;
     
     NSDate *selectedDate;
     NSMutableDictionary *savedDates;
-    
     NSMutableArray *currentEvents;
 }
 @property (strong, nonatomic) JTCalendarMenuView *calendarMenuView;
 @property (strong, nonatomic) JTCalendarContentView *calendarContentView;
-
 @property (strong, nonatomic) JTCalendar *calendar;
 
-@property (strong, nonatomic, readwrite) UIScrollView *currentDayScollView;
+@property (strong, nonatomic, readwrite) UITextView *currentDayScollView;
 
 @end

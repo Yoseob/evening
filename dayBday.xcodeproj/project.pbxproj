@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		232D5E231BEB34060026C62E /* InputViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 232D5E221BEB34060026C62E /* InputViewViewController.m */; };
+		232D5ECD1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 232D5ECC1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.m */; };
+		235BB65D1C0B302A00398B81 /* DataBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 235BB65C1C0B302A00398B81 /* DataBaseManager.m */; };
+		2394121A1C0F4930001B9B07 /* DinnerDay.m in Sources */ = {isa = PBXBuildFile; fileRef = 239412191C0F4930001B9B07 /* DinnerDay.m */; };
+		2394121E1C0F4A83001B9B07 /* ThumbnailDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 2394121D1C0F4A83001B9B07 /* ThumbnailDao.m */; };
+		239412221C0F52EF001B9B07 /* Thumbnail.m in Sources */ = {isa = PBXBuildFile; fileRef = 239412211C0F52EF001B9B07 /* Thumbnail.m */; };
 		23AE9E021BE74B5A00E7E4CB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AE9E011BE74B5A00E7E4CB /* main.m */; };
 		23AE9E051BE74B5A00E7E4CB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AE9E041BE74B5A00E7E4CB /* AppDelegate.m */; };
 		23AE9E0B1BE74B5A00E7E4CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23AE9E091BE74B5A00E7E4CB /* Main.storyboard */; };
@@ -32,6 +38,16 @@
 		23AE9E631BE74C5200E7E4CB /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AE9E541BE74C5200E7E4CB /* MBProgressHUD.m */; };
 		23AE9E661BE74C6700E7E4CB /* DayBDayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AE9E651BE74C6700E7E4CB /* DayBDayViewController.m */; };
 		23AE9E6A1BE87A5000E7E4CB /* BottomContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AE9E691BE87A5000E7E4CB /* BottomContainerView.m */; };
+		23C01E611C0201E30002ACCA /* DinnerDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C01E5F1C0201E30002ACCA /* DinnerDao.m */; };
+		23C01E641C02020E0002ACCA /* DataBaseAccessObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C01E631C02020E0002ACCA /* DataBaseAccessObject.m */; };
+		23C01E671C0202990002ACCA /* CheckBoxsDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C01E661C0202990002ACCA /* CheckBoxsDao.m */; };
+		23C01E6A1C0203B40002ACCA /* ImagesDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C01E691C0203B40002ACCA /* ImagesDao.m */; };
+		23F1F9C01BFF779A00479DC5 /* SqlConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F1F9BF1BFF779A00479DC5 /* SqlConnection.m */; };
+		23F1F9C21BFF7BA300479DC5 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F1F9C11BFF7BA300479DC5 /* libsqlite3.0.tbd */; };
+		23F1F9CA1C00A98800479DC5 /* DinnerUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F1F9C91C00A98800479DC5 /* DinnerUtility.m */; };
+		23F711C71C0571B300B202B1 /* DinnerObjDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F711C61C0571B300B202B1 /* DinnerObjDao.m */; };
+		23F711D71C05FAEB00B202B1 /* CheckBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F711D51C05FAEB00B202B1 /* CheckBox.m */; };
+		23F711DA1C05FB0300B202B1 /* TransferAble.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F711D91C05FB0300B202B1 /* TransferAble.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +68,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		232D5E211BEB34060026C62E /* InputViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputViewViewController.h; sourceTree = "<group>"; };
+		232D5E221BEB34060026C62E /* InputViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputViewViewController.m; sourceTree = "<group>"; };
+		232D5ECB1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewTapGestureRecognizer.h; sourceTree = "<group>"; };
+		232D5ECC1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPTextViewTapGestureRecognizer.m; sourceTree = "<group>"; };
+		235BB65B1C0B302A00398B81 /* DataBaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBaseManager.h; sourceTree = "<group>"; };
+		235BB65C1C0B302A00398B81 /* DataBaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataBaseManager.m; sourceTree = "<group>"; };
+		239412181C0F4930001B9B07 /* DinnerDay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DinnerDay.h; sourceTree = "<group>"; };
+		239412191C0F4930001B9B07 /* DinnerDay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DinnerDay.m; sourceTree = "<group>"; };
+		2394121C1C0F4A83001B9B07 /* ThumbnailDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailDao.h; sourceTree = "<group>"; };
+		2394121D1C0F4A83001B9B07 /* ThumbnailDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailDao.m; sourceTree = "<group>"; };
+		239412201C0F52EF001B9B07 /* Thumbnail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Thumbnail.h; sourceTree = "<group>"; };
+		239412211C0F52EF001B9B07 /* Thumbnail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Thumbnail.m; sourceTree = "<group>"; };
 		23AE9DFD1BE74B5A00E7E4CB /* dayBday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dayBday.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23AE9E011BE74B5A00E7E4CB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		23AE9E031BE74B5A00E7E4CB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -99,6 +127,25 @@
 		23AE9E651BE74C6700E7E4CB /* DayBDayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DayBDayViewController.m; sourceTree = "<group>"; };
 		23AE9E681BE87A5000E7E4CB /* BottomContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BottomContainerView.h; sourceTree = "<group>"; };
 		23AE9E691BE87A5000E7E4CB /* BottomContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BottomContainerView.m; sourceTree = "<group>"; };
+		23C01E5E1C0201E30002ACCA /* DinnerDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DinnerDao.h; sourceTree = "<group>"; };
+		23C01E5F1C0201E30002ACCA /* DinnerDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DinnerDao.m; sourceTree = "<group>"; };
+		23C01E621C02020E0002ACCA /* DataBaseAccessObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBaseAccessObject.h; sourceTree = "<group>"; };
+		23C01E631C02020E0002ACCA /* DataBaseAccessObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataBaseAccessObject.m; sourceTree = "<group>"; };
+		23C01E651C0202990002ACCA /* CheckBoxsDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckBoxsDao.h; sourceTree = "<group>"; };
+		23C01E661C0202990002ACCA /* CheckBoxsDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckBoxsDao.m; sourceTree = "<group>"; };
+		23C01E681C0203B40002ACCA /* ImagesDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagesDao.h; sourceTree = "<group>"; };
+		23C01E691C0203B40002ACCA /* ImagesDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagesDao.m; sourceTree = "<group>"; };
+		23F1F9BE1BFF779A00479DC5 /* SqlConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqlConnection.h; sourceTree = "<group>"; };
+		23F1F9BF1BFF779A00479DC5 /* SqlConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SqlConnection.m; sourceTree = "<group>"; };
+		23F1F9C11BFF7BA300479DC5 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		23F1F9C81C00A98800479DC5 /* DinnerUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DinnerUtility.h; sourceTree = "<group>"; };
+		23F1F9C91C00A98800479DC5 /* DinnerUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DinnerUtility.m; sourceTree = "<group>"; };
+		23F711C51C0571B300B202B1 /* DinnerObjDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DinnerObjDao.h; sourceTree = "<group>"; };
+		23F711C61C0571B300B202B1 /* DinnerObjDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DinnerObjDao.m; sourceTree = "<group>"; };
+		23F711D41C05FAEB00B202B1 /* CheckBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckBox.h; sourceTree = "<group>"; };
+		23F711D51C05FAEB00B202B1 /* CheckBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckBox.m; sourceTree = "<group>"; };
+		23F711D81C05FB0300B202B1 /* TransferAble.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferAble.h; sourceTree = "<group>"; };
+		23F711D91C05FB0300B202B1 /* TransferAble.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferAble.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +153,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23F1F9C21BFF7BA300479DC5 /* libsqlite3.0.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,6 +174,73 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		232D5E201BEB33FB0026C62E /* InputViewController */ = {
+			isa = PBXGroup;
+			children = (
+				232D5E211BEB34060026C62E /* InputViewViewController.h */,
+				232D5E221BEB34060026C62E /* InputViewViewController.m */,
+			);
+			path = InputViewController;
+			sourceTree = "<group>";
+		};
+		232D5E9E1BF74F3F0026C62E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				235BB65A1C0B301E00398B81 /* DataBaseManager */,
+				23F711CF1C05FA9200B202B1 /* DTO */,
+				23F1F9C71C00A97400479DC5 /* Utility */,
+				23F1F9C31C0045CF00479DC5 /* DAO */,
+				23F1F9BD1BFF73F100479DC5 /* SqlConnection */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		232D5ECA1BF8D1560026C62E /* HPTextViewTapGestureRecognizer */ = {
+			isa = PBXGroup;
+			children = (
+				232D5ECB1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.h */,
+				232D5ECC1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.m */,
+			);
+			path = HPTextViewTapGestureRecognizer;
+			sourceTree = "<group>";
+		};
+		235BB65A1C0B301E00398B81 /* DataBaseManager */ = {
+			isa = PBXGroup;
+			children = (
+				235BB65B1C0B302A00398B81 /* DataBaseManager.h */,
+				235BB65C1C0B302A00398B81 /* DataBaseManager.m */,
+			);
+			path = DataBaseManager;
+			sourceTree = "<group>";
+		};
+		239412171C0F4917001B9B07 /* DinnerDay */ = {
+			isa = PBXGroup;
+			children = (
+				239412181C0F4930001B9B07 /* DinnerDay.h */,
+				239412191C0F4930001B9B07 /* DinnerDay.m */,
+			);
+			name = DinnerDay;
+			path = Dinner;
+			sourceTree = "<group>";
+		};
+		2394121B1C0F4A70001B9B07 /* Thumbnail */ = {
+			isa = PBXGroup;
+			children = (
+				2394121C1C0F4A83001B9B07 /* ThumbnailDao.h */,
+				2394121D1C0F4A83001B9B07 /* ThumbnailDao.m */,
+			);
+			path = Thumbnail;
+			sourceTree = "<group>";
+		};
+		2394121F1C0F52D7001B9B07 /* Thumbnail */ = {
+			isa = PBXGroup;
+			children = (
+				239412201C0F52EF001B9B07 /* Thumbnail.h */,
+				239412211C0F52EF001B9B07 /* Thumbnail.m */,
+			);
+			path = Thumbnail;
+			sourceTree = "<group>";
+		};
 		23AE9DF41BE74B5A00E7E4CB = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +248,7 @@
 				23AE9E1C1BE74B5A00E7E4CB /* dayBdayTests */,
 				23AE9E271BE74B5B00E7E4CB /* dayBdayUITests */,
 				23AE9DFE1BE74B5A00E7E4CB /* Products */,
+				23F1F9C11BFF7BA300479DC5 /* libsqlite3.0.tbd */,
 			);
 			sourceTree = "<group>";
 		};
@@ -149,6 +265,7 @@
 		23AE9DFF1BE74B5A00E7E4CB /* dayBday */ = {
 			isa = PBXGroup;
 			children = (
+				232D5E9E1BF74F3F0026C62E /* Model */,
 				23AE9E671BE87A3A00E7E4CB /* Resource */,
 				23AE9E371BE74C5200E7E4CB /* Library */,
 				23AE9E361BE74C4D00E7E4CB /* ViewController */,
@@ -193,6 +310,7 @@
 		23AE9E361BE74C4D00E7E4CB /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				232D5E201BEB33FB0026C62E /* InputViewController */,
 				23AE9E641BE74C6700E7E4CB /* DayBDayViewController.h */,
 				23AE9E651BE74C6700E7E4CB /* DayBDayViewController.m */,
 			);
@@ -245,10 +363,116 @@
 		23AE9E671BE87A3A00E7E4CB /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				232D5ECA1BF8D1560026C62E /* HPTextViewTapGestureRecognizer */,
 				23AE9E681BE87A5000E7E4CB /* BottomContainerView.h */,
 				23AE9E691BE87A5000E7E4CB /* BottomContainerView.m */,
 			);
 			path = Resource;
+			sourceTree = "<group>";
+		};
+		23C01E5B1C0201E30002ACCA /* CheckBoxsDao */ = {
+			isa = PBXGroup;
+			children = (
+				23C01E651C0202990002ACCA /* CheckBoxsDao.h */,
+				23C01E661C0202990002ACCA /* CheckBoxsDao.m */,
+			);
+			path = CheckBoxsDao;
+			sourceTree = "<group>";
+		};
+		23C01E5C1C0201E30002ACCA /* DataBaseAccessObject */ = {
+			isa = PBXGroup;
+			children = (
+				23C01E621C02020E0002ACCA /* DataBaseAccessObject.h */,
+				23C01E631C02020E0002ACCA /* DataBaseAccessObject.m */,
+			);
+			path = DataBaseAccessObject;
+			sourceTree = "<group>";
+		};
+		23C01E5D1C0201E30002ACCA /* DinnerDao */ = {
+			isa = PBXGroup;
+			children = (
+				23C01E5E1C0201E30002ACCA /* DinnerDao.h */,
+				23C01E5F1C0201E30002ACCA /* DinnerDao.m */,
+			);
+			path = DinnerDao;
+			sourceTree = "<group>";
+		};
+		23C01E601C0201E30002ACCA /* ImagesDao */ = {
+			isa = PBXGroup;
+			children = (
+				23C01E681C0203B40002ACCA /* ImagesDao.h */,
+				23C01E691C0203B40002ACCA /* ImagesDao.m */,
+			);
+			path = ImagesDao;
+			sourceTree = "<group>";
+		};
+		23F1F9BD1BFF73F100479DC5 /* SqlConnection */ = {
+			isa = PBXGroup;
+			children = (
+				23F1F9BE1BFF779A00479DC5 /* SqlConnection.h */,
+				23F1F9BF1BFF779A00479DC5 /* SqlConnection.m */,
+			);
+			path = SqlConnection;
+			sourceTree = "<group>";
+		};
+		23F1F9C31C0045CF00479DC5 /* DAO */ = {
+			isa = PBXGroup;
+			children = (
+				2394121B1C0F4A70001B9B07 /* Thumbnail */,
+				23F711C41C0571B300B202B1 /* DinnerObjDao */,
+				23C01E5C1C0201E30002ACCA /* DataBaseAccessObject */,
+				23C01E5B1C0201E30002ACCA /* CheckBoxsDao */,
+				23C01E5D1C0201E30002ACCA /* DinnerDao */,
+				23C01E601C0201E30002ACCA /* ImagesDao */,
+			);
+			path = DAO;
+			sourceTree = "<group>";
+		};
+		23F1F9C71C00A97400479DC5 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				23F1F9C81C00A98800479DC5 /* DinnerUtility.h */,
+				23F1F9C91C00A98800479DC5 /* DinnerUtility.m */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		23F711C41C0571B300B202B1 /* DinnerObjDao */ = {
+			isa = PBXGroup;
+			children = (
+				23F711C51C0571B300B202B1 /* DinnerObjDao.h */,
+				23F711C61C0571B300B202B1 /* DinnerObjDao.m */,
+			);
+			path = DinnerObjDao;
+			sourceTree = "<group>";
+		};
+		23F711CF1C05FA9200B202B1 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				2394121F1C0F52D7001B9B07 /* Thumbnail */,
+				239412171C0F4917001B9B07 /* DinnerDay */,
+				23F711D31C05FAEB00B202B1 /* CheckBox */,
+				23F711D61C05FAEB00B202B1 /* TransferAble */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		23F711D31C05FAEB00B202B1 /* CheckBox */ = {
+			isa = PBXGroup;
+			children = (
+				23F711D41C05FAEB00B202B1 /* CheckBox.h */,
+				23F711D51C05FAEB00B202B1 /* CheckBox.m */,
+			);
+			path = CheckBox;
+			sourceTree = "<group>";
+		};
+		23F711D61C05FAEB00B202B1 /* TransferAble */ = {
+			isa = PBXGroup;
+			children = (
+				23F711D81C05FB0300B202B1 /* TransferAble.h */,
+				23F711D91C05FB0300B202B1 /* TransferAble.m */,
+			);
+			path = TransferAble;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -386,21 +610,36 @@
 			files = (
 				23AE9E6A1BE87A5000E7E4CB /* BottomContainerView.m in Sources */,
 				23AE9E5A1BE74C5200E7E4CB /* JTCalendarContentView.m in Sources */,
+				23F1F9C01BFF779A00479DC5 /* SqlConnection.m in Sources */,
 				23AE9E5F1BE74C5200E7E4CB /* JTCalendarMonthView.m in Sources */,
+				2394121E1C0F4A83001B9B07 /* ThumbnailDao.m in Sources */,
+				2394121A1C0F4930001B9B07 /* DinnerDay.m in Sources */,
+				23C01E641C02020E0002ACCA /* DataBaseAccessObject.m in Sources */,
+				232D5ECD1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.m in Sources */,
 				23AE9E5B1BE74C5200E7E4CB /* JTCalendarDataCache.m in Sources */,
 				23AE9E611BE74C5200E7E4CB /* JTCalendarWeekView.m in Sources */,
+				239412221C0F52EF001B9B07 /* Thumbnail.m in Sources */,
 				23AE9E051BE74B5A00E7E4CB /* AppDelegate.m in Sources */,
+				23F711D71C05FAEB00B202B1 /* CheckBox.m in Sources */,
 				23AE9E5D1BE74C5200E7E4CB /* JTCalendarMenuMonthView.m in Sources */,
 				23AE9E0E1BE74B5A00E7E4CB /* dayBday.xcdatamodeld in Sources */,
 				23AE9E631BE74C5200E7E4CB /* MBProgressHUD.m in Sources */,
 				23AE9E601BE74C5200E7E4CB /* JTCalendarMonthWeekDaysView.m in Sources */,
+				23F711DA1C05FB0300B202B1 /* TransferAble.m in Sources */,
 				23AE9E5E1BE74C5200E7E4CB /* JTCalendarMenuView.m in Sources */,
+				23C01E6A1C0203B40002ACCA /* ImagesDao.m in Sources */,
 				23AE9E591BE74C5200E7E4CB /* JTCalendarAppearance.m in Sources */,
+				23C01E611C0201E30002ACCA /* DinnerDao.m in Sources */,
+				232D5E231BEB34060026C62E /* InputViewViewController.m in Sources */,
 				23AE9E021BE74B5A00E7E4CB /* main.m in Sources */,
 				23AE9E581BE74C5200E7E4CB /* JTCalendar.m in Sources */,
 				23AE9E621BE74C5200E7E4CB /* JTCircleView.m in Sources */,
 				23AE9E5C1BE74C5200E7E4CB /* JTCalendarDayView.m in Sources */,
+				23F711C71C0571B300B202B1 /* DinnerObjDao.m in Sources */,
+				23F1F9CA1C00A98800479DC5 /* DinnerUtility.m in Sources */,
+				235BB65D1C0B302A00398B81 /* DataBaseManager.m in Sources */,
 				23AE9E661BE74C6700E7E4CB /* DayBDayViewController.m in Sources */,
+				23C01E671C0202990002ACCA /* CheckBoxsDao.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -626,6 +865,7 @@
 				23AE9E2F1BE74B5B00E7E4CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		23AE9E301BE74B5B00E7E4CB /* Build configuration list for PBXNativeTarget "dayBdayTests" */ = {
 			isa = XCConfigurationList;
@@ -634,6 +874,7 @@
 				23AE9E321BE74B5B00E7E4CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		23AE9E331BE74B5B00E7E4CB /* Build configuration list for PBXNativeTarget "dayBdayUITests" */ = {
 			isa = XCConfigurationList;
@@ -642,6 +883,7 @@
 				23AE9E351BE74B5B00E7E4CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
