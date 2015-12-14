@@ -13,6 +13,8 @@
 		2394121A1C0F4930001B9B07 /* DinnerDay.m in Sources */ = {isa = PBXBuildFile; fileRef = 239412191C0F4930001B9B07 /* DinnerDay.m */; };
 		2394121E1C0F4A83001B9B07 /* ThumbnailDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 2394121D1C0F4A83001B9B07 /* ThumbnailDao.m */; };
 		239412221C0F52EF001B9B07 /* Thumbnail.m in Sources */ = {isa = PBXBuildFile; fileRef = 239412211C0F52EF001B9B07 /* Thumbnail.m */; };
+		239412261C10B26D001B9B07 /* ContainerScollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 239412251C10B26D001B9B07 /* ContainerScollView.m */; };
+		239412291C10B408001B9B07 /* ScrollViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 239412281C10B408001B9B07 /* ScrollViewManager.m */; };
 		23AE9E021BE74B5A00E7E4CB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AE9E011BE74B5A00E7E4CB /* main.m */; };
 		23AE9E051BE74B5A00E7E4CB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AE9E041BE74B5A00E7E4CB /* AppDelegate.m */; };
 		23AE9E0B1BE74B5A00E7E4CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23AE9E091BE74B5A00E7E4CB /* Main.storyboard */; };
@@ -80,6 +82,10 @@
 		2394121D1C0F4A83001B9B07 /* ThumbnailDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailDao.m; sourceTree = "<group>"; };
 		239412201C0F52EF001B9B07 /* Thumbnail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Thumbnail.h; sourceTree = "<group>"; };
 		239412211C0F52EF001B9B07 /* Thumbnail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Thumbnail.m; sourceTree = "<group>"; };
+		239412241C10B26D001B9B07 /* ContainerScollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContainerScollView.h; sourceTree = "<group>"; };
+		239412251C10B26D001B9B07 /* ContainerScollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContainerScollView.m; sourceTree = "<group>"; };
+		239412271C10B408001B9B07 /* ScrollViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewManager.h; sourceTree = "<group>"; };
+		239412281C10B408001B9B07 /* ScrollViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewManager.m; sourceTree = "<group>"; };
 		23AE9DFD1BE74B5A00E7E4CB /* dayBday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dayBday.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23AE9E011BE74B5A00E7E4CB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		23AE9E031BE74B5A00E7E4CB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -241,6 +247,15 @@
 			path = Thumbnail;
 			sourceTree = "<group>";
 		};
+		239412231C10B256001B9B07 /* ContainerScollView */ = {
+			isa = PBXGroup;
+			children = (
+				239412241C10B26D001B9B07 /* ContainerScollView.h */,
+				239412251C10B26D001B9B07 /* ContainerScollView.m */,
+			);
+			path = ContainerScollView;
+			sourceTree = "<group>";
+		};
 		23AE9DF41BE74B5A00E7E4CB = {
 			isa = PBXGroup;
 			children = (
@@ -363,9 +378,12 @@
 		23AE9E671BE87A3A00E7E4CB /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				239412231C10B256001B9B07 /* ContainerScollView */,
 				232D5ECA1BF8D1560026C62E /* HPTextViewTapGestureRecognizer */,
 				23AE9E681BE87A5000E7E4CB /* BottomContainerView.h */,
 				23AE9E691BE87A5000E7E4CB /* BottomContainerView.m */,
+				239412271C10B408001B9B07 /* ScrollViewManager.h */,
+				239412281C10B408001B9B07 /* ScrollViewManager.m */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -542,6 +560,7 @@
 				TargetAttributes = {
 					23AE9DFC1BE74B5A00E7E4CB = {
 						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = 725A3BQPW9;
 					};
 					23AE9E181BE74B5A00E7E4CB = {
 						CreatedOnToolsVersion = 7.1;
@@ -609,6 +628,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				23AE9E6A1BE87A5000E7E4CB /* BottomContainerView.m in Sources */,
+				239412261C10B26D001B9B07 /* ContainerScollView.m in Sources */,
 				23AE9E5A1BE74C5200E7E4CB /* JTCalendarContentView.m in Sources */,
 				23F1F9C01BFF779A00479DC5 /* SqlConnection.m in Sources */,
 				23AE9E5F1BE74C5200E7E4CB /* JTCalendarMonthView.m in Sources */,
@@ -618,6 +638,7 @@
 				232D5ECD1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.m in Sources */,
 				23AE9E5B1BE74C5200E7E4CB /* JTCalendarDataCache.m in Sources */,
 				23AE9E611BE74C5200E7E4CB /* JTCalendarWeekView.m in Sources */,
+				239412291C10B408001B9B07 /* ScrollViewManager.m in Sources */,
 				239412221C0F52EF001B9B07 /* Thumbnail.m in Sources */,
 				23AE9E051BE74B5A00E7E4CB /* AppDelegate.m in Sources */,
 				23F711D71C05FAEB00B202B1 /* CheckBox.m in Sources */,
@@ -778,11 +799,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = dayBday/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yoseob.dayBday;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -790,11 +814,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = dayBday/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yoseob.dayBday;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

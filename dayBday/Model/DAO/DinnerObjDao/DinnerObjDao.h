@@ -7,9 +7,11 @@
 //
 
 #import "DataBaseAccessObject.h"
-
+#import "DinnerDay.h"
 @interface DinnerObjDao : DataBaseAccessObject
 +(id)getDefaultDinnerObjDao;
 -(NSArray *)selectDayTextDataWith:(NSDate *)target;
+-(NSArray *)selectAllDataWith:(NSDate *)target;
 -(BOOL)insertDataWithString:(NSString *)text attribute :(NSData*)textData targetDate:(NSDate *)target;
+
 @end

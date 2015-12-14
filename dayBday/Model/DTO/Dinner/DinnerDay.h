@@ -10,4 +10,12 @@
 
 @interface DinnerDay : NSObject
 
+@property(assign,nonatomic)NSInteger index;
+@property(copy,nonatomic)NSString * dayStr;
+@property(copy,nonatomic)NSString * orignText;
+@property(strong,nonatomic)NSData * attrData;
+@property(strong,nonatomic)NSAttributedString * attrText;
+
+
+
 @end

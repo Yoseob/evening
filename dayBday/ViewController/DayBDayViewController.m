@@ -13,13 +13,12 @@
 #import "DinnerUtility.h"
 
 //will remove after DAO test
-#import "DinnerDao.h"
+
 #import "CheckBoxsDao.h"
-#import "ImagesDao.h"
-#import "DinnerObjDao.h"
 #import "CheckBox.h"
 
 #import "DataBaseManager.h"
+#import "ContainerScollView.h"
 @interface DayBDayViewController () < UIScrollViewDelegate,  UITextViewDelegate>
 
 @property (strong, nonatomic, readwrite) NSLayoutConstraint *calendarContentViewHeightConstraint;
@@ -39,16 +38,19 @@
 
 @implementation DayBDayViewController{
     HPTextViewTapGestureRecognizer *textViewTapGestureRecognizer;
-    NSDate * today;
     BottomContainerView * bottomBar;
     JTCalendarMonthWeekDaysView * weekdaysView;
-    UIView * keyBoardController;
+    DataBaseManager * dbManager;
+    
+    NSDate * today;
     NSLayoutConstraint *keyboardContraint;
     CGRect originTextViewFrame;
     NSMutableDictionary * checkBoxs , *images;
     NSArray * checkBoxImages;
     
-    DataBaseManager * dbManager;
+    UIView * keyBoardController;
+    ContainerScollView * containerScollView;
+
 }
 
 #pragma mark -
@@ -499,8 +501,9 @@
     self.navigationController.navigationBar.translucent = NO;
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:38/255.f green:38/255.f blue:38/255.f alpha:1.f];
-    originTextViewFrame = CGRectZero;
     self.currentDayScollView = [[UITextView alloc] initWithFrame:CGRectZero];
+    originTextViewFrame = CGRectZero;
+    containerScollView = [[ContainerScollView alloc]initWithCurrentScrollView:self.currentDayScollView];
     textViewTapGestureRecognizer = [[HPTextViewTapGestureRecognizer alloc]init];
     checkBoxs = [NSMutableDictionary new];
     images = [NSMutableDictionary new];
@@ -509,8 +512,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    
+
     [self setupAndInit];
     [self setUpBottomBarContainer];
     [self setUpCalendar];
@@ -518,11 +520,9 @@
     [self setUpBarButtonItems];
     [self addUpDownGesture];
     [self.view bringSubviewToFront:bottomBar];
-    
-    //savedDates = [@{} mutableCopy];
-    
-    [[DinnerObjDao getDefaultDinnerObjDao]createDataBase];
-    [[CheckBoxsDao getDefaultCheckBoxsDao]createDataBase];
+    NSLog(@"printDinnerData");
+    [dbManager prepareAllOfDinnerData];
+    [dbManager printDinnerData];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -538,8 +538,6 @@
 }
 
 - (id)calendarHaveEvent:(JTCalendar *)calendar date:(NSDate *)date{
-
-
     return  nil;
 }
 
@@ -579,8 +577,9 @@
                 CGFloat oldWidth = image.size.width;
                 NSLog(@"oldWidth %lf", oldWidth);
                 CGFloat  scaleFactor = oldWidth / (self.currentDayScollView.frame.size.width - 10);
-                newAttrText.image = [DinnerUtility imageWithImage:image scaledToSize:CGSizeMake(self.view.frame.size.width, self.view.frame.size.width)];
+                newAttrText.image = [UIImage imageWithData:UIImagePNGRepresentation(image) scale:scaleFactor];
 
+                
                 [newattributedText replaceCharactersInRange:range withAttributedString:[NSAttributedString attributedStringWithAttachment:newAttrText]];
             }
         }

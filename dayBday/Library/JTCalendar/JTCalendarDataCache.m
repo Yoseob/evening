@@ -37,6 +37,7 @@
 
     DataBaseManager * manager = [DataBaseManager getDefaultDataBaseManager];
     [manager reloadCachedData];
+    [manager prepareAllOfDinnerData];
 
 }
 

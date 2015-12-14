@@ -14,7 +14,8 @@
     DinnerObjDao * dao;
     ThumbnailDao * tDao;
     CheckBoxsDao * cDao;
-    NSMutableDictionary * dataArchive;
+    NSMutableDictionary * thumbNailDataArchive ;
+    NSMutableArray *dinnerDataArchive;
 
 }
 
@@ -34,6 +35,8 @@
         tDao =[ThumbnailDao getDefaultThumbnailDao];
         cDao = [CheckBoxsDao getDefaultCheckBoxsDao];
         [tDao createDataBase];
+        [dao createDataBase];
+        [cDao createDataBase];
         
     }
     return  self;
@@ -114,7 +117,6 @@
             [tDao removeThumbnailWith:date];
         }
     }
-
 }
 
 -(void)removeThisDayEvent:(NSDate *)day{
@@ -124,20 +126,31 @@
     
 }
 
+-(void)prepareAllOfDinnerData{
+    dinnerDataArchive = [[NSMutableArray alloc]initWithArray:[dao selectAllDataWith:nil]];
+}
+
+-(void)printDinnerData{
+    for(DinnerDay *dinner in dinnerDataArchive){
+        NSLog(@"%@", dinner);
+    }
+}
+
+
+
 
 #pragma makr - Thumbnail
 -(Thumbnail *)thumbNailWith:(NSDate *)day{
     NSString * key = [DinnerUtility DateToString:day];
-    return [dataArchive objectForKey:key];
-//    return [tDao selectThumbnailWithDate:day];
+    return [thumbNailDataArchive objectForKey:key];
 }
 
 
 
 -(NSMutableDictionary *)reloadCachedData{
-    [dataArchive removeAllObjects];
-    dataArchive = [tDao selectThumbnails];
-    return dataArchive;
+    [thumbNailDataArchive removeAllObjects];
+    thumbNailDataArchive = [tDao selectThumbnails];
+    return thumbNailDataArchive;
     
 }
 

@@ -99,18 +99,26 @@
     return result;
 }
 -(NSArray *)selectAllDataWith:(NSDate *)target{
-    
-    NSString  * query =[NSString stringWithFormat: @"SELECT dayTextData from dinnerobj WHERE dayStr = \"%@\"" , [DinnerUtility DateToString:target]];
+    NSString * query = nil;
+    if(target){
+        query =[NSString stringWithFormat: @"SELECT * from dinnerobj WHERE dayStr = \"%@\"" , [DinnerUtility DateToString:target]];
+    }else{
+        query =[NSString stringWithFormat: @"SELECT * from dinnerobj"];
+    }
     NSMutableArray * result = [NSMutableArray new];
     [self selectQueryImpliment:query withCompliteCallback:^(sqlite3_stmt *stmt) {
+        NSInteger index = sqlite3_column_int(stmt, 0);
         NSString * dayStr =[NSString stringWithUTF8String:(const char *)sqlite3_column_text(stmt, 1)];
         NSString * dayText =[NSString stringWithUTF8String:(const char *)sqlite3_column_text(stmt, 2)];
         int length = sqlite3_column_bytes(stmt, 3);
         NSData * data = [NSData dataWithBytes:sqlite3_column_blob(stmt, 3) length:length];
         
-        NSDictionary *dinner =[NSDictionary dictionaryWithObjectsAndKeys:dayStr,@"dayStr",
-                               dayText,@"dayText",data,@"attrData", nil];
-        
+
+        DinnerDay * dinner = [[DinnerDay alloc]init];
+        dinner.index = index;
+        dinner.orignText = dayText;
+        dinner.dayStr = dayStr;
+        [dinner setAttrData:data];
         [result addObject:dinner];
         
     }];
