@@ -22,7 +22,7 @@
 @property (strong, nonatomic) JTCalendarMenuView *calendarMenuView;
 @property (strong, nonatomic) JTCalendarContentView *calendarContentView;
 @property (strong, nonatomic) JTCalendar *calendar;
-
 @property (strong, nonatomic, readwrite) UITextView *currentDayScollView;
 
+-(void)changetScollerSelectedDay:(NSDate *)day;
 @end

@@ -101,9 +101,9 @@
 -(NSArray *)selectAllDataWith:(NSDate *)target{
     NSString * query = nil;
     if(target){
-        query =[NSString stringWithFormat: @"SELECT * from dinnerobj WHERE dayStr = \"%@\"" , [DinnerUtility DateToString:target]];
+        query =[NSString stringWithFormat: @"SELECT * from dinnerobj WHERE dayStr = \"%@\" ORDER BY dayStr ASC" , [DinnerUtility DateToString:target]];
     }else{
-        query =[NSString stringWithFormat: @"SELECT * from dinnerobj"];
+        query =[NSString stringWithFormat: @"SELECT * from dinnerobj ORDER BY dayStr ASC"];
     }
     NSMutableArray * result = [NSMutableArray new];
     [self selectQueryImpliment:query withCompliteCallback:^(sqlite3_stmt *stmt) {

@@ -13,12 +13,13 @@
 #import "DinnerUtility.h"
 
 //will remove after DAO test
-
+#import "DinnerUtility.h"
 #import "CheckBoxsDao.h"
 #import "CheckBox.h"
 
 #import "DataBaseManager.h"
 #import "ContainerScollView.h"
+#import "ScrollViewManager.h"
 @interface DayBDayViewController () < UIScrollViewDelegate,  UITextViewDelegate>
 
 @property (strong, nonatomic, readwrite) NSLayoutConstraint *calendarContentViewHeightConstraint;
@@ -50,11 +51,13 @@
     
     UIView * keyBoardController;
     ContainerScollView * containerScollView;
+    ScrollViewManager * sManager;
 
 }
 
 #pragma mark -
 #pragma mark IBActions
+
 
 - (void)pushTodayButton:(id)sender {
     NSDate *currentDate = [NSDate date];
@@ -65,6 +68,7 @@
 }
 
 - (void)pushChangeModeButton:(id)sender {
+
     self.calendar.calendarAppearance.isWeekMode = !self.calendar.calendarAppearance.isWeekMode;
     [self transitionCalendarMode];
 
@@ -72,11 +76,12 @@
 
 - (void)transitionCalendarMode {
     CGFloat newHeight = 240.f;
+    CGFloat textViewHeight =containerScollView.frame.size.height;
     NSLog(@"transitionCalendarMode");
     if(self.calendar.calendarAppearance.isWeekMode){
         newHeight = 40.0f;
     }
-    
+    [sManager changeContainerViewSize:textViewHeight];
     [UIView animateWithDuration:.5
                      animations:^{
                          self.calendarContentViewHeightConstraint.constant = newHeight;
@@ -303,7 +308,51 @@
 }
 
 -(void)setupContainerScollView{
+
+    containerScollView.translatesAutoresizingMaskIntoConstraints = NO;
+    containerScollView.scrollEnabled = YES;
+    containerScollView.pagingEnabled = NO;
+    containerScollView.showsHorizontalScrollIndicator = YES;
+    containerScollView.backgroundColor = [UIColor brownColor];
+    [self.view addSubview:containerScollView];
     
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:containerScollView
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.calendarContentView
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:containerScollView
+                                                          attribute:NSLayoutAttributeLeft
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeLeft
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:containerScollView
+                                                          attribute:NSLayoutAttributeWidth
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeWidth
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:containerScollView
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:bottomBar
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    
+    
+    
+    [self setUptextViewTapGestureRecognizer];
+    [sManager DinnerDataBind:[dbManager getDinnerData]];
 }
 
 - (void)setupTextView:(UITextView *)textview {
@@ -316,9 +365,8 @@
     self.currentDayScollView.backgroundColor = [UIColor whiteColor];
     self.currentDayScollView.font = [UIFont systemFontOfSize:15];
     self.currentDayScollView.editable = NO;
+    
     [self.view addSubview:self.currentDayScollView];
-    
-    
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentDayScollView
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
@@ -354,6 +402,7 @@
 
     
     [self setUptextViewTapGestureRecognizer];
+//    [sManager DinnerDataBind:[dbManager getDinnerData]];
     
     
 }
@@ -363,7 +412,6 @@
 -(void)showInputViewController:(id)sender{
     
     UIStoryboard * storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    
     InputViewViewController * modalViewController = [storyBoard instantiateViewControllerWithIdentifier:@"InputViewViewController"];
     modalViewController.delegate = self;
     self.currentDayScollView.editable = YES;
@@ -429,6 +477,15 @@
     }
 }
 
+
+#pragma mark -scrollview Delegate 
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    NSLog(@"%f",scrollView.contentOffset.y);
+
+}
+
+
 #pragma mark
 
 - (void)setUpBarButtonItems {
@@ -446,8 +503,6 @@
     
     [self.navigationItem setRightBarButtonItems:@[settingBarBtn, searchButton]];
 }
-
-
 
 -(void)setUpBottomBarContainer{
     
@@ -497,18 +552,28 @@
 
 
 -(void)setupAndInit{
+    
     dbManager = [[DataBaseManager alloc]init];
+    [dbManager prepareAllOfDinnerData];
+
     self.navigationController.navigationBar.translucent = NO;
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:38/255.f green:38/255.f blue:38/255.f alpha:1.f];
+    
     self.currentDayScollView = [[UITextView alloc] initWithFrame:CGRectZero];
-    originTextViewFrame = CGRectZero;
     containerScollView = [[ContainerScollView alloc]initWithCurrentScrollView:self.currentDayScollView];
+    containerScollView.frame = CGRectZero;
     textViewTapGestureRecognizer = [[HPTextViewTapGestureRecognizer alloc]init];
+    
+    sManager = [[ScrollViewManager alloc]initWithViewController:self];
+    sManager.container = containerScollView;
+    
     checkBoxs = [NSMutableDictionary new];
     images = [NSMutableDictionary new];
     checkBoxImages =@[[UIImage imageNamed:@"af"] , [UIImage imageNamed:@"be"]];
-
+    originTextViewFrame = CGRectZero;
+    
+    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -520,14 +585,14 @@
     [self setUpBarButtonItems];
     [self addUpDownGesture];
     [self.view bringSubviewToFront:bottomBar];
-    NSLog(@"printDinnerData");
-    [dbManager prepareAllOfDinnerData];
-    [dbManager printDinnerData];
+
+
+    
 }
 
 - (void)viewDidLayoutSubviews {
     [self.calendar repositionViews];
-    NSLog(@"viewDidLayoutSubviews");
+    [sManager changeContainerViewSize:containerScollView.frame.size.height];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -546,52 +611,27 @@
     
     NSAttributedString *myAttrString= [dbManager searchDataWithData:today];
     if(myAttrString.length > 0){
-        self.currentDayScollView.attributedText = [self attributeTextResizeStable:myAttrString];
+        self.currentDayScollView.attributedText = [DinnerUtility attributeTextResizeStable:myAttrString withContainer:self.currentDayScollView];
     }else{
         self.currentDayScollView.text = @"";
     }
     
-    
     [checkBoxs removeAllObjects];
     [dbManager getImageInTheAttributeString:myAttrString cacheArr:checkBoxs Day:date];
-    
-    //TextView reLoad
- }
-
--(NSMutableAttributedString *)attributeTextResizeStable:(NSAttributedString *)attributedText{
-    NSMutableAttributedString * newattributedText = [[NSMutableAttributedString alloc]initWithAttributedString:attributedText];
-    [newattributedText enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, newattributedText.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
-        NSTextAttachment *  textAttachment = value;
-        UIImage * image = nil;
-        if(textAttachment){
-            if ([textAttachment image]){
-                image = [textAttachment image];
-            }else{
-                image = [textAttachment imageForBounds:[textAttachment bounds]
-                                         textContainer:nil
-                                        characterIndex:range.location];
-            }
-            
-            if(image.size.width > 50){
-                NSTextAttachment *newAttrText = [NSTextAttachment new];
-                CGFloat oldWidth = image.size.width;
-                NSLog(@"oldWidth %lf", oldWidth);
-                CGFloat  scaleFactor = oldWidth / (self.currentDayScollView.frame.size.width - 10);
-                newAttrText.image = [UIImage imageWithData:UIImagePNGRepresentation(image) scale:scaleFactor];
-
-                
-                [newattributedText replaceCharactersInRange:range withAttributedString:[NSAttributedString attributedStringWithAttachment:newAttrText]];
-            }
-        }
-    
-    }];
-
-    return  newattributedText;
 }
+
+-(void)changetScollerSelectedDay:(NSDate *)day{
+    [self.calendar setCurrentDateSelected:day];
+    [self.calendar setCurrentDate:day];
+//    [self calendarDidDateSelected:self.calendar date:day];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
 
 @end

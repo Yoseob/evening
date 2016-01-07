@@ -12,4 +12,5 @@
 @property (nonatomic ,strong) UIScrollView * currentScollView;
 
 -(id)initWithCurrentScrollView:(UIScrollView *)sc;
+
 @end

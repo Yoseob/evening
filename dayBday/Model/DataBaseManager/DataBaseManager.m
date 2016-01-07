@@ -129,11 +129,8 @@
 -(void)prepareAllOfDinnerData{
     dinnerDataArchive = [[NSMutableArray alloc]initWithArray:[dao selectAllDataWith:nil]];
 }
-
--(void)printDinnerData{
-    for(DinnerDay *dinner in dinnerDataArchive){
-        NSLog(@"%@", dinner);
-    }
+-(NSArray *)getDinnerData{
+    return dinnerDataArchive;
 }
 
 

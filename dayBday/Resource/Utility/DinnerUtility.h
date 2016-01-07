@@ -21,4 +21,8 @@
 +(UIColor *)CalendarBackgroundColor;
 
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)size;
+
++(NSDate*)StringToDate:(NSString*)day;
+
++(NSMutableAttributedString *)attributeTextResizeStable:(NSAttributedString *)attributedText withContainer:(UIScrollView *)scview;
 @end
