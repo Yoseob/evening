@@ -70,18 +70,18 @@
 }
 -(void)buildMainContainerTextView:(UITextView *)textview{
     
-    target.currentDayScollView = textview;
-    target.currentDayScollView.translatesAutoresizingMaskIntoConstraints = NO;
-    target.currentDayScollView.scrollEnabled = YES;
-    target.currentDayScollView.pagingEnabled = NO;
-    target.currentDayScollView.showsHorizontalScrollIndicator = YES;
-    target.currentDayScollView.delegate = target;
-    target.currentDayScollView.backgroundColor = [UIColor whiteColor];
-    target.currentDayScollView.font = [UIFont systemFontOfSize:15];
-    target.currentDayScollView.editable = NO;
+    target.currentDayTextView = textview;
+    target.currentDayTextView.translatesAutoresizingMaskIntoConstraints = NO;
+    target.currentDayTextView.scrollEnabled = YES;
+    target.currentDayTextView.pagingEnabled = NO;
+    target.currentDayTextView.showsHorizontalScrollIndicator = YES;
+    target.currentDayTextView.delegate = target;
+    target.currentDayTextView.backgroundColor = [UIColor whiteColor];
+    target.currentDayTextView.font = [UIFont systemFontOfSize:15];
+    target.currentDayTextView.editable = NO;
     
-    [target.view addSubview:target.currentDayScollView];
-    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:target.currentDayScollView
+    [target.view addSubview:target.currentDayTextView];
+    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:target.currentDayTextView
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:target.calendarContentView
@@ -89,7 +89,7 @@
                                                          multiplier:1.0f
                                                            constant:0.0f]];
     
-    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:target.currentDayScollView
+    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:target.currentDayTextView
                                                           attribute:NSLayoutAttributeLeft
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:target.view
@@ -97,7 +97,7 @@
                                                          multiplier:1.0f
                                                            constant:0.0f]];
     
-    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:target.currentDayScollView
+    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:target.currentDayTextView
                                                           attribute:NSLayoutAttributeWidth
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:target.view
@@ -105,7 +105,7 @@
                                                          multiplier:1.0f
                                                            constant:0.0f]];
     
-    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:target.currentDayScollView
+    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:target.currentDayTextView
                                                           attribute:NSLayoutAttributeBottom
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:bottomBar

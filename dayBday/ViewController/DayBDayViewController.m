@@ -126,7 +126,7 @@
     NSLog(@"oldKey = %@ %ld ",oldKey ,tempCheckBox.location );
     if(tempCheckBox){
         if(tempCheckBox){
-            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc]initWithAttributedString:self.currentDayScollView.attributedText];
+            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc]initWithAttributedString:self.currentDayTextView.attributedText];
             NSTextAttachment * newAttrText;
             {
                 newAttrText = [NSTextAttachment new];
@@ -147,7 +147,7 @@
                 [[CheckBoxsDao getDefaultCheckBoxsDao]insertDataWithCB:tempCheckBox];
             }
             
-            self.currentDayScollView.attributedText = attributedText;
+            self.currentDayTextView.attributedText = attributedText;
             
         }else{
             [images setObject:textAttachment forKey:oldKey];
@@ -295,7 +295,7 @@
 
 
 - (void)setupTextView:(UITextView *)textview {
-//    [viewBuilder buildMainContainerTextView:textview];
+    [viewBuilder buildMainContainerTextView:textview];
     [self setUptextViewTapGestureRecognizer];
 }
 
@@ -305,7 +305,7 @@
     UIStoryboard * storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     InputViewViewController * modalViewController = [storyBoard instantiateViewControllerWithIdentifier:@"InputViewViewController"];
     modalViewController.delegate = self;
-    self.currentDayScollView.editable = YES;
+    self.currentDayTextView.editable = YES;
     [self presentViewController:modalViewController animated:YES completion:^{
         textViewTapGestureRecognizer.delegate =  nil;
 
@@ -316,13 +316,13 @@
 -(void)removeThisEvent:(id)sender{
     [dbManager removeThisDayEvent:today];
     [self reloadAllofData];
-    self.currentDayScollView.text = @"";
+    self.currentDayTextView.text = @"";
 }
 
 #pragma mark 
 #pragma InputTextDelegate
 -(UITextView *)textViewBinding{
-    return self.currentDayScollView;
+    return self.currentDayTextView;
 }
 
 -(CGFloat)controlBarheight{
@@ -331,7 +331,7 @@
 
 -(void)resultTextView:(UITextView *)textView{
     if(CGRectEqualToRect(originTextViewFrame, CGRectZero)){
-        originTextViewFrame = self.currentDayScollView.frame;
+        originTextViewFrame = self.currentDayTextView.frame;
     }
     [self setupTextView:textView];
     [dbManager insertTextViewDataWith:textView cachedCheckBox:checkBoxs data:today];
@@ -348,7 +348,7 @@
 }
 
 -(void)insertCheckBtn:(NSTextAttachment *)textAtmt{
-    NSAttributedString *myAttrString = self.currentDayScollView.attributedText;
+    NSAttributedString *myAttrString = self.currentDayTextView.attributedText;
     if(myAttrString){
         [myAttrString enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, myAttrString.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
             NSTextAttachment *  textAttachment = value;
@@ -388,7 +388,7 @@
 
 
 -(void)setUptextViewTapGestureRecognizer{
-    [self.currentDayScollView addGestureRecognizer:textViewTapGestureRecognizer];
+    [self.currentDayTextView addGestureRecognizer:textViewTapGestureRecognizer];
 }
 
 -(void)addUpDownGesture{
@@ -412,15 +412,15 @@
         self.view.backgroundColor = [UIColor whiteColor];
         self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:38/255.f green:38/255.f blue:38/255.f alpha:1.f];
         {
-            self.currentDayScollView = [[UITextView alloc] initWithFrame:CGRectZero];
-            containerScollView = [[ContainerScollView alloc]initWithCurrentScrollView:self.currentDayScollView];
+            self.currentDayTextView = [[UITextView alloc] initWithFrame:CGRectZero];
+            containerScollView = [[ContainerScollView alloc]initWithCurrentScrollView:self.currentDayTextView];
             containerScollView.frame = CGRectZero;
             textViewTapGestureRecognizer = [[HPTextViewTapGestureRecognizer alloc]init];
         }
         
         {
             sManager = [[ScrollViewManager alloc]initWithViewController:self];
-            sManager.container = containerScollView;
+            [sManager setContainer:containerScollView];
         }
     }
     
@@ -439,7 +439,7 @@
     [self setupAndInit];
     [self setUpBottomBarContainer];
     [self setUpCalendar];
-    [self setupTextView:self.currentDayScollView];
+//    [self setupTextView:self.currentDayTextView];
     [self setupContainerScollView];
     [self setUpBarButtonItems];
     [self addUpDownGesture];
@@ -456,7 +456,7 @@
     [sManager visibleToday];
     if(textViewTapGestureRecognizer){
         textViewTapGestureRecognizer.delegate = self;
-        self.currentDayScollView.editable = NO;
+        self.currentDayTextView.editable = NO;
     }
 }
 
@@ -466,23 +466,41 @@
 
 - (void)calendarDidDateSelected:(JTCalendar *)calendar date:(NSDate *)date {
 
+    [self changeCurruntScrollView:date];
+    
+    if([dbManager searchDataWithData:today]){
+        [sManager visibleCurrentTextView:date];
+    }else {
+        [sManager insertNewTextView:date];
+        [sManager visibleCurrentTextView:date];
+    }
+    ///smanager에 선택한 날자에 이미지를 추가할수 있도록 해야한다.!!!! 한마디로 스크롤뷰 리load 근데 이미지로딩 방식이 존나 크다...그래서 잘해야함..ㅋㅋ씨발
+}
+
+-(void)changeScollerSelectedDay:(NSDate *)day withSelectTextView:(UITextView *)textView{
+    
+    [self.calendar setCurrentDateSelected:day];
+    [self.calendar setCurrentDate:day];
+    [self changeCurruntScrollView:day];
+
+}
+
+-(void)changeCurruntScrollView:(NSDate *)date{
+    
     today = date;
-    NSLog(@"%@",date);
-    NSAttributedString *myAttrString= [dbManager searchDataWithData:today];
+    textViewTapGestureRecognizer.delegate = self;
+    [self.currentDayTextView addGestureRecognizer:textViewTapGestureRecognizer];
+    NSAttributedString *myAttrString= self.currentDayTextView.attributedText;
+    
     if(myAttrString.length > 0){
-        self.currentDayScollView.attributedText = [DinnerUtility attributeTextResizeStable:myAttrString withContainer:self.currentDayScollView];
+        self.currentDayTextView.attributedText = myAttrString;
     }else{
-        self.currentDayScollView.text = @"";
+        self.currentDayTextView.text = @"";
     }
     [checkBoxs removeAllObjects];
     [dbManager getImageInTheAttributeString:myAttrString cacheArr:checkBoxs Day:date];
 }
 
--(void)changetScollerSelectedDay:(NSDate *)day{
-    [self.calendar setCurrentDateSelected:day];
-    [self.calendar setCurrentDate:day];
-//    [self calendarDidDateSelected:self.calendar date:day];
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

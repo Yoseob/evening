@@ -10,7 +10,7 @@
 #import "DayBDayViewController.h"
 #import "ContainerScollView.h"
 #import "DinnerDay.h"
-@interface ScrollViewManager : NSObject <UIScrollViewDelegate>
+@interface ScrollViewManager : NSObject <UIScrollViewDelegate ,HPTextViewTapGestureRecognizerDelegate>
 @property (strong ,nonatomic)DayBDayViewController * viewController;
 @property (strong,nonatomic)ContainerScollView * container;
 
@@ -34,5 +34,6 @@
 
 -(void)visibleCurrentTextView:(NSDate*) selectedDay;
 -(void)visibleToday;
+-(void)insertNewTextView:(NSDate *)date;
 
 @end
