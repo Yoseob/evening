@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2305F9D91C3EBB38009FF083 /* MainViewBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 2305F9D81C3EBB38009FF083 /* MainViewBuilder.m */; };
 		232D5E231BEB34060026C62E /* InputViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 232D5E221BEB34060026C62E /* InputViewViewController.m */; };
 		232D5ECD1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 232D5ECC1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.m */; };
 		23351E0A1C1FA3EA00BB54FB /* DinnerUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 23351E091C1FA3EA00BB54FB /* DinnerUtility.m */; };
@@ -70,6 +71,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2305F9D71C3EBB38009FF083 /* MainViewBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewBuilder.h; sourceTree = "<group>"; };
+		2305F9D81C3EBB38009FF083 /* MainViewBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewBuilder.m; sourceTree = "<group>"; };
 		232D5E211BEB34060026C62E /* InputViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputViewViewController.h; sourceTree = "<group>"; };
 		232D5E221BEB34060026C62E /* InputViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputViewViewController.m; sourceTree = "<group>"; };
 		232D5ECB1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewTapGestureRecognizer.h; sourceTree = "<group>"; };
@@ -393,6 +396,8 @@
 				23AE9E691BE87A5000E7E4CB /* BottomContainerView.m */,
 				239412271C10B408001B9B07 /* ScrollViewManager.h */,
 				239412281C10B408001B9B07 /* ScrollViewManager.m */,
+				2305F9D71C3EBB38009FF083 /* MainViewBuilder.h */,
+				2305F9D81C3EBB38009FF083 /* MainViewBuilder.m */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -634,6 +639,7 @@
 				23AE9E5F1BE74C5200E7E4CB /* JTCalendarMonthView.m in Sources */,
 				2394121E1C0F4A83001B9B07 /* ThumbnailDao.m in Sources */,
 				2394121A1C0F4930001B9B07 /* DinnerDay.m in Sources */,
+				2305F9D91C3EBB38009FF083 /* MainViewBuilder.m in Sources */,
 				23C01E641C02020E0002ACCA /* DataBaseAccessObject.m in Sources */,
 				232D5ECD1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.m in Sources */,
 				23AE9E5B1BE74C5200E7E4CB /* JTCalendarDataCache.m in Sources */,

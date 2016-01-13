@@ -29,16 +29,18 @@
 }
 
 -(void)createDataBase{
-    
     [connection createTable:[connection getdbPath] andCreateQuery:@"CREATE TABLE IF NOT EXISTS dinnerobj ( id INTEGER PRIMARY KEY AUTOINCREMENT, dayStr TEXT, dayText TEXT, dayTextData BLOB )"];
-    
 }
 
 -(BOOL)insertDataWithString:(NSString *)text attribute:(NSData*)textData targetDate:(NSDate *)target{
     NSUInteger having = [[self selectTargetDataWith:target]count];
+    NSLog(@"insert state");
     if(having){
+        NSLog(@"having state");
         [self updateRowWithDate:target andUpdateDate:text attrData:textData];
     }else{
+        NSLog(@"new state");
+        [self deleteRowWithData:target];
         NSString * insertQuery = [self prepareInsertDinnerTableQueryWithText:text attributeData:textData withDate:target];
         [connection insert:[connection getdbPath]andWithInsert:^int(sqlite3 *sqlDb, char *err ,sqlite3_stmt* stmt) {
             NSString * dateStr =[DinnerUtility DateToString:target];
@@ -47,13 +49,12 @@
             if( sqlite3_prepare_v2(sqlDb, [insertQuery UTF8String], -1, &stmt, NULL)==SQLITE_OK){
                 sqlite3_bind_text(stmt, 1, [dateStr UTF8String], -1, SQLITE_TRANSIENT);
                 sqlite3_bind_text(stmt, 2, [text UTF8String], -1, SQLITE_TRANSIENT);
-                sqlite3_bind_blob(stmt, 3, [textData bytes], [textData length], SQLITE_TRANSIENT);
+                sqlite3_bind_blob(stmt, 3, [textData bytes], (int)[textData length], SQLITE_TRANSIENT);
                 
                 if (sqlite3_step(stmt) == SQLITE_DONE) {}
                 ret =  sqlite3_finalize(stmt);
             }else{
             }
-            
             return  ret;
         }];
         
@@ -67,18 +68,16 @@
     NSString * updateQuery = [NSString stringWithFormat:@"UPDATE dinnerobj SET dayText = ? , dayTextData = ? WHERE dayStr = \"%@\"",[DinnerUtility DateToString:targetDate]];
 
     [connection update:[connection getdbPath] updateStmt:^int(sqlite3 *sqlDb, char *err, sqlite3_stmt *stmt) {
-        
         int ret = 0;
     
         if( sqlite3_prepare_v2(sqlDb, [updateQuery UTF8String], -1, &stmt, NULL)==SQLITE_OK){
             sqlite3_bind_text(stmt, 1, [text UTF8String], -1, SQLITE_TRANSIENT);
-            sqlite3_bind_blob(stmt, 2, [data bytes], [data length], SQLITE_TRANSIENT);
+            sqlite3_bind_blob(stmt, 2, [data bytes], (int)[data length], SQLITE_TRANSIENT);
             if (sqlite3_step(stmt) == SQLITE_DONE) {}
             ret =  sqlite3_finalize(stmt);
         }else{
 
         }
-        
         return  ret;
     }];
 }
@@ -86,7 +85,6 @@
 
 #pragma mark - select
 -(NSArray *)selectDayTextDataWith:(NSDate *)target{
-
     NSString  * query =[NSString stringWithFormat: @"SELECT dayTextData from dinnerobj WHERE dayStr = \"%@\"" , [DinnerUtility DateToString:target]];
     NSMutableArray * result = [NSMutableArray new];
     [self selectQueryImpliment:query withCompliteCallback:^(sqlite3_stmt *stmt) {
@@ -98,6 +96,7 @@
 
     return result;
 }
+
 -(NSArray *)selectAllDataWith:(NSDate *)target{
     NSString * query = nil;
     if(target){
@@ -105,6 +104,7 @@
     }else{
         query =[NSString stringWithFormat: @"SELECT * from dinnerobj ORDER BY dayStr ASC"];
     }
+    
     NSMutableArray * result = [NSMutableArray new];
     [self selectQueryImpliment:query withCompliteCallback:^(sqlite3_stmt *stmt) {
         NSInteger index = sqlite3_column_int(stmt, 0);
@@ -112,12 +112,11 @@
         NSString * dayText =[NSString stringWithUTF8String:(const char *)sqlite3_column_text(stmt, 2)];
         int length = sqlite3_column_bytes(stmt, 3);
         NSData * data = [NSData dataWithBytes:sqlite3_column_blob(stmt, 3) length:length];
-        
-
         DinnerDay * dinner = [[DinnerDay alloc]init];
         dinner.index = index;
         dinner.orignText = dayText;
         dinner.dayStr = dayStr;
+        
         [dinner setAttrData:data];
         [result addObject:dinner];
         
@@ -136,7 +135,6 @@
     NSLog(@"return STring : %@" , returnString);
     
     return returnString;
-    
 }
 
 -(void)deleteRowWithData:(NSDate *)targetDate{
@@ -150,11 +148,8 @@
         }else{
             
         }
-        
         return  ret;
-        
     }];
-
 }
 
 

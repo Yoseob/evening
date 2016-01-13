@@ -10,9 +10,10 @@
 #import "DinnerUtility.h"
 
 @implementation ScrollViewManager{
-    NSArray * dinners;
+    NSMutableArray * dinners;
     NSMutableArray * textViews;
     NSMutableDictionary * dataTable;
+    CGPoint todayPos;
 }
 @synthesize viewController;
 @synthesize container;
@@ -50,12 +51,8 @@
 }
 
 -(void)DinnerDataBind:(NSArray * )dinnerDatas{
-    dinners = dinnerDatas;
-    if(dinners.count > 0){
-
-        [self containerViewEstimateScrollView];
-    }
-
+    dinners = [[NSMutableArray alloc]initWithArray:dinnerDatas];
+    [self containerViewEstimateScrollView];
 }
 
 -(void)containerViewEstimateScrollView{
@@ -70,26 +67,76 @@
     container.pagingEnabled = YES;
     
     
-    for(DinnerDay * dinner in dinners){
+    NSDateFormatter * formatter = [[NSDateFormatter alloc]init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    NSString * todayString = [formatter stringFromDate:[NSDate new]];
+    NSDate * today = [formatter dateFromString:todayString];
 
-        UITextView * textView = [[UITextView alloc]initWithFrame:container.frame];
-        textView.translatesAutoresizingMaskIntoConstraints = NO;
-        textView.scrollEnabled = YES;
-        textView.pagingEnabled = NO;
-        textView.showsHorizontalScrollIndicator = YES;
-        textView.editable = NO;
-        textView.frame = CGRectMake(x, 0, width, height);
-        textView.backgroundColor = [UIColor whiteColor];
-        textView.attributedText = [DinnerUtility attributeTextResizeStable:dinner.attrText withContainer:textView];
-        [container addSubview:textView];
-        [dataTable setObject:textView forKey:dinner.dayStr];
+    todayPos = CGPointZero;
+    
+    //create before today
+    DinnerDay * dinner;
+    int index = 0;
+    int haveToday = false;
+    while ((dinner = dinners[index++])) {
+        NSDate * date = [formatter dateFromString:dinner.dayStr];
+        float timeCondition = [date timeIntervalSinceDate:today];
+        if (timeCondition == 0) {
+            haveToday = true;
+            todayPos = CGPointMake(x, 0);
+        }else if(timeCondition > 0 ){
+            index--;
+            break;
+        }
+        x = [self makeContextWithDinnerData:dinner textViewFrame:CGRectMake(x, 0, width, height)];
         
-        x = CGRectGetMaxX(textView.frame);
-        [textViews addObject:textView];
+        if( index == dinners.count){
+            break;
+        }
     }
     
+    if(!haveToday){
+        DinnerDay * todayDinner = [[DinnerDay alloc]init];
+        todayDinner.dayStr= todayString;
+        todayDinner.orignText = @"";
+        todayPos = CGPointMake(x, 0);
+        if(index == dinners.count){
+            [dinners addObject:todayDinner];
+        }else{
+             [dinners insertObject:todayDinner atIndex:index];
+        }
+
+        x = [self makeContextWithDinnerData:todayDinner textViewFrame:CGRectMake(x, 0, width, height)];
+        container.contentSize = CGSizeMake((dinners.count) * viewController.view.frame.size.width,
+                                           container.contentSize.height);
+        
+        index++;
+    }
+    
+    while (index < dinners.count && (dinner = dinners[index++])){
+        x = [self makeContextWithDinnerData:dinner textViewFrame:CGRectMake(x, 0, width, height)];
+    }
     
 }
+
+
+-(CGFloat)makeContextWithDinnerData:(DinnerDay *)dinner textViewFrame:(CGRect)frame{
+    HPTextViewTapGestureRecognizer *textViewTapGestureRecognizer;
+    UITextView * textView = [[UITextView alloc]initWithFrame:container.frame];
+    textView.translatesAutoresizingMaskIntoConstraints = NO;
+    textView.scrollEnabled = YES;
+    textView.pagingEnabled = NO;
+    textView.showsHorizontalScrollIndicator = YES;
+    textView.editable = NO;
+    textView.frame = frame;
+    textView.backgroundColor = [UIColor whiteColor];
+    textView.attributedText = [DinnerUtility attributeTextResizeStable:dinner.attrText withContainer:textView];
+    [container addSubview:textView];
+    [dataTable setObject:textView forKey:dinner.dayStr];
+    [textViews addObject:textView];
+    return CGRectGetMaxX(textView.frame);
+}
+
 -(void)changeContainerViewSize:(CGFloat)height{
     for(UIView * view in textViews){
         view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, height);
@@ -105,10 +152,18 @@
     [container setContentOffset:selectedView.frame.origin animated:YES];
 }
 
+-(void)visibleToday{
+    [container setContentOffset:todayPos];
+}
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
-    int index =scrollView.contentOffset.x/scrollView.frame.size.width;
+    
+}
+-(void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset{
+    int index =targetContentOffset->x/scrollView.frame.size.width;
+    NSLog(@"%f %f",targetContentOffset->x , targetContentOffset->y);
+
     DinnerDay * d = dinners[index];
     [viewController changetScollerSelectedDay:[DinnerUtility StringToDate:d.dayStr]];
-    NSLog(@"%d , %@",index,[DinnerUtility StringToDate:d.dayStr]);
 }
+
 @end

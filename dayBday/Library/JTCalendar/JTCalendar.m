@@ -193,7 +193,6 @@
     }
         
     NSDate *currentDate = [calendar dateByAddingComponents:dayComponent toDate:self.currentDate options:0];
-    
     [self setCurrentDate:currentDate];
     
     if(!self.calendarAppearance.isWeekMode){

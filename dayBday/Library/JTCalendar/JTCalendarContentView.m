@@ -83,6 +83,7 @@
             
             x = CGRectGetMaxX(view.frame);
         }
+        
     }
     else{
         for(UIView *view in monthsViews){
@@ -97,8 +98,6 @@
 - (void)setCurrentDate:(NSDate *)currentDate
 {
     self->_currentDate = currentDate;
-    NSLog(@"content : %@",currentDate);
-    
     
     //이기서 첫달만 로딩하고 , 컴플리션 끝나면, 실행, 그리고 다시 setBeginningOfMonth 으로 비동기 실행
     //비 동기 실행하다가 ... 음... 걸릴꺼 같은데..흠. 메인쓰레드 사용.

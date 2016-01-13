@@ -42,14 +42,13 @@
     return  self;
 }
 -(NSAttributedString *) searchDataWithData:(NSDate *)day{
-        NSArray * result = [dao selectDayTextDataWith:day];
+    NSArray * result = [dao selectDayTextDataWith:day];
     NSAttributedString *myAttrString= nil;
     if(result.count > 0){
         for(NSData *data in result){
             myAttrString = [NSKeyedUnarchiver unarchiveObjectWithData: data];
         }
     }
-    
     return myAttrString;
 }
 
@@ -90,6 +89,8 @@
             }
         }
     }];
+    
+    
     NSMutableArray * imageArr = [NSMutableArray new];
     if(attrString.length > 0){
         [attrString enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, attrString.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {

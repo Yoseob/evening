@@ -31,5 +31,8 @@
 
 
 -(void)changeContainerViewSize:(CGFloat)height;
+
 -(void)visibleCurrentTextView:(NSDate*) selectedDay;
+-(void)visibleToday;
+
 @end

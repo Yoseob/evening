@@ -11,6 +11,8 @@
 #import "MBProgressHUD.h"
 #import "BottomContainerView.h"
 #import "DinnerUtility.h"
+#import "MainViewBuilder.h"
+
 
 //will remove after DAO test
 #import "DinnerUtility.h"
@@ -38,6 +40,9 @@
 @end
 
 @implementation DayBDayViewController{
+    
+    MainViewBuilder * viewBuilder;
+    
     HPTextViewTapGestureRecognizer *textViewTapGestureRecognizer;
     BottomContainerView * bottomBar;
     JTCalendarMonthWeekDaysView * weekdaysView;
@@ -100,8 +105,6 @@
                                               self.calendarContentView.layer.opacity = 1;
                                           }];
                      }];
-    
-    
     
 }
 
@@ -209,7 +212,6 @@
     [self.calendar setContentView:self.calendarContentView];
     [self.calendar setDataSource:self];
 
-    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self pushTodayButton:nil];
     });
@@ -219,51 +221,19 @@
     self.calendarMenuView = [[JTCalendarMenuView alloc]initWithFrame:CGRectMake(0, 0, 200, 40)];
     self.calendarMenuView.backgroundColor  = [UIColor clearColor];
     self.calendarMenuView.scrollEnabled = NO;
-
+    
     UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(pushTodayButton:)];
     [self.calendarMenuView addGestureRecognizer:tap];
     UIBarButtonItem * barbuttonItem = [[UIBarButtonItem alloc]initWithCustomView:self.calendarMenuView];
-
-    [self.navigationItem setLeftBarButtonItem:barbuttonItem];
     
+    [self.navigationItem setLeftBarButtonItem:barbuttonItem];
+
 }
 -(void)setUpweekdaysView{
     
     weekdaysView = [JTCalendarMonthWeekDaysView new];
-   [weekdaysView setCalendarManager:self.calendar];
-    [self.view addSubview:weekdaysView];
-    weekdaysView.backgroundColor = [UIColor redColor];
-    weekdaysView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:weekdaysView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:weekdaysView
-                                                          attribute:NSLayoutAttributeLeft
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeLeft
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:weekdaysView
-                                                          attribute:NSLayoutAttributeWidth
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeWidth
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:weekdaysView
-                                                        attribute:NSLayoutAttributeHeight
-                                                        relatedBy:NSLayoutRelationEqual
-                                                           toItem:self.calendarContentView
-                                                        attribute:NSLayoutAttributeHeight
-                                                       multiplier:0.0f
-                                                         constant:20.f]];
+    [weekdaysView setCalendarManager:self.calendar];
+    [viewBuilder buildWeekDaysView:weekdaysView];
     [JTCalendarMonthWeekDaysView beforeReloadAppearance];
     [weekdaysView reloadAppearance];
 
@@ -308,109 +278,30 @@
 }
 
 -(void)setupContainerScollView{
-
+    
+    NSLog(@"today : %@",[dbManager searchDataWithData:today]);
+    
     containerScollView.translatesAutoresizingMaskIntoConstraints = NO;
     containerScollView.scrollEnabled = YES;
     containerScollView.pagingEnabled = NO;
     containerScollView.showsHorizontalScrollIndicator = YES;
     containerScollView.backgroundColor = [UIColor brownColor];
-    [self.view addSubview:containerScollView];
     
     
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:containerScollView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.calendarContentView
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:containerScollView
-                                                          attribute:NSLayoutAttributeLeft
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeLeft
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:containerScollView
-                                                          attribute:NSLayoutAttributeWidth
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeWidth
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:containerScollView
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:bottomBar
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    
-    
-    
+    [viewBuilder buildContainerScrollerView:containerScollView];
     [self setUptextViewTapGestureRecognizer];
     [sManager DinnerDataBind:[dbManager getDinnerData]];
 }
 
+
 - (void)setupTextView:(UITextView *)textview {
-    self.currentDayScollView = textview;
-    self.currentDayScollView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.currentDayScollView.scrollEnabled = YES;
-    self.currentDayScollView.pagingEnabled = NO;
-    self.currentDayScollView.showsHorizontalScrollIndicator = YES;
-    self.currentDayScollView.delegate = self;
-    self.currentDayScollView.backgroundColor = [UIColor whiteColor];
-    self.currentDayScollView.font = [UIFont systemFontOfSize:15];
-    self.currentDayScollView.editable = NO;
-    
-    [self.view addSubview:self.currentDayScollView];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentDayScollView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.calendarContentView
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentDayScollView
-                                                          attribute:NSLayoutAttributeLeft
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeLeft
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentDayScollView
-                                                          attribute:NSLayoutAttributeWidth
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeWidth
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentDayScollView
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:bottomBar
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-
-
-    
+//    [viewBuilder buildMainContainerTextView:textview];
     [self setUptextViewTapGestureRecognizer];
-//    [sManager DinnerDataBind:[dbManager getDinnerData]];
-    
-    
 }
 
 
 #pragma mark - mainbottomBar Action
 -(void)showInputViewController:(id)sender{
-    
     UIStoryboard * storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     InputViewViewController * modalViewController = [storyBoard instantiateViewControllerWithIdentifier:@"InputViewViewController"];
     modalViewController.delegate = self;
@@ -428,15 +319,16 @@
     self.currentDayScollView.text = @"";
 }
 
-
 #pragma mark 
 #pragma InputTextDelegate
 -(UITextView *)textViewBinding{
     return self.currentDayScollView;
 }
+
 -(CGFloat)controlBarheight{
     return bottomBar.frame.size.height;
 }
+
 -(void)resultTextView:(UITextView *)textView{
     if(CGRectEqualToRect(originTextViewFrame, CGRectZero)){
         originTextViewFrame = self.currentDayScollView.frame;
@@ -450,17 +342,13 @@
     [self.calendar.dataCache reloadData];
     [self.calendarContentView reloadData];
     [self.calendarContentView reloadAppearance];
-
 }
-
 
 -(void)removeCheckBox:(NSString *)cb{
-    
 }
--(void)insertCheckBtn:(NSTextAttachment *)textAtmt{
-    
-    NSAttributedString *myAttrString = self.currentDayScollView.attributedText;
 
+-(void)insertCheckBtn:(NSTextAttachment *)textAtmt{
+    NSAttributedString *myAttrString = self.currentDayScollView.attributedText;
     if(myAttrString){
         [myAttrString enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, myAttrString.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
             NSTextAttachment *  textAttachment = value;
@@ -477,64 +365,25 @@
     }
 }
 
-
-#pragma mark -scrollview Delegate 
-
+#pragma mark -scrollview Delegate
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    NSLog(@"%f",scrollView.contentOffset.y);
 
 }
 
-
 #pragma mark
-
 - (void)setUpBarButtonItems {
-    UIButton * searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [searchBtn setImage:[UIImage imageNamed:@"search_btn"] forState:UIControlStateNormal];
-    searchBtn.frame = CGRectMake(0, 0, 30, 30);
-    [searchBtn addTarget:self action:@selector(pushChangeModeButton:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem * searchButton = [[UIBarButtonItem alloc]initWithCustomView:searchBtn];
-
-    UIButton * settingButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [settingButton setImage:[UIImage imageNamed:@"setting_btn"] forState:UIControlStateNormal];
-    settingButton.frame = CGRectMake(0, 0, 30, 30);
-    [settingButton addTarget:self action:@selector(pushChangeModeButton:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem * settingBarBtn = [[UIBarButtonItem alloc]initWithCustomView:settingButton];
-    
-    [self.navigationItem setRightBarButtonItems:@[settingBarBtn, searchButton]];
+    SEL naviSelecters[] = { @selector(pushChangeModeButton:),@selector(pushChangeModeButton:)};
+    [viewBuilder createNaviBarWithSelecters:naviSelecters];
 }
 
 -(void)setUpBottomBarContainer{
-    
     CGFloat barHeight =self.navigationController.navigationBar.frame.size.height;
     CGFloat stateHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
-    bottomBar = [[BottomContainerView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height - barHeight - (barHeight + stateHeight),
-                                                                                      self.view.frame.size.width,
-                                                                                      45.f)];
-
-    bottomBar.backgroundColor = [UIColor colorWithRed:242/255.f green:242/255.f blue:242/255.f alpha:1.f];
-    [self.view addSubview:bottomBar];
+    CGFloat bottomBarY = self.view.frame.size.height - barHeight - (barHeight + stateHeight);
+    bottomBar = [[BottomContainerView alloc]initWithFrame:CGRectMake(0,bottomBarY,self.view.frame.size.width,45.f)];
     
-    CGFloat buttonSize = bottomBar.frame.size.height - 10;
-
-    UIButton * addTask_btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [addTask_btn setImage:[UIImage imageNamed:@"addTask_btn"] forState:UIControlStateNormal];
-    addTask_btn.frame = CGRectMake(bottomBar.frame.size.width/2 - (buttonSize/2), bottomBar.frame.size.height/2 - buttonSize/2, buttonSize , buttonSize);
-    [addTask_btn addTarget:self action:@selector(showInputViewController:) forControlEvents:UIControlEventTouchUpInside];
-    [bottomBar addSubview:addTask_btn];
-    
-    UIButton * removeTask_Btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [removeTask_Btn setImage:[UIImage imageNamed:@"removeTask_Btn"] forState:UIControlStateNormal];
-    removeTask_Btn.frame = CGRectMake(addTask_btn.frame.origin.x-80, bottomBar.frame.size.height/2 - buttonSize/2, buttonSize , buttonSize);
-    [removeTask_Btn addTarget:self action:@selector(removeThisEvent:) forControlEvents:UIControlEventTouchUpInside];
-    [bottomBar addSubview:removeTask_Btn];
-
-    UIButton * everNote_btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [everNote_btn setImage:[UIImage imageNamed:@"everNote_btn"] forState:UIControlStateNormal];
-    everNote_btn.frame = CGRectMake(addTask_btn.frame.origin.x+80, bottomBar.frame.size.height/2 - buttonSize/2, buttonSize , buttonSize);
-    [everNote_btn addTarget:self action:@selector(showInputViewController:) forControlEvents:UIControlEventTouchUpInside];
-    [bottomBar addSubview:everNote_btn];
-
+    SEL bottomSelecters[] = { @selector(showInputViewController:),@selector(removeThisEvent:),@selector(showInputViewController:)};
+    [viewBuilder createButtomBar:bottomBar withSelecters:bottomSelecters];
 }
 
 
@@ -552,42 +401,50 @@
 
 
 -(void)setupAndInit{
-    
     dbManager = [[DataBaseManager alloc]init];
-    [dbManager prepareAllOfDinnerData];
+    viewBuilder = [[MainViewBuilder alloc]initWithTarget:self];
+    {
+        [dbManager prepareAllOfDinnerData];
+    }
 
-    self.navigationController.navigationBar.translucent = NO;
-    self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:38/255.f green:38/255.f blue:38/255.f alpha:1.f];
+    {
+        self.navigationController.navigationBar.translucent = NO;
+        self.view.backgroundColor = [UIColor whiteColor];
+        self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:38/255.f green:38/255.f blue:38/255.f alpha:1.f];
+        {
+            self.currentDayScollView = [[UITextView alloc] initWithFrame:CGRectZero];
+            containerScollView = [[ContainerScollView alloc]initWithCurrentScrollView:self.currentDayScollView];
+            containerScollView.frame = CGRectZero;
+            textViewTapGestureRecognizer = [[HPTextViewTapGestureRecognizer alloc]init];
+        }
+        
+        {
+            sManager = [[ScrollViewManager alloc]initWithViewController:self];
+            sManager.container = containerScollView;
+        }
+    }
     
-    self.currentDayScollView = [[UITextView alloc] initWithFrame:CGRectZero];
-    containerScollView = [[ContainerScollView alloc]initWithCurrentScrollView:self.currentDayScollView];
-    containerScollView.frame = CGRectZero;
-    textViewTapGestureRecognizer = [[HPTextViewTapGestureRecognizer alloc]init];
-    
-    sManager = [[ScrollViewManager alloc]initWithViewController:self];
-    sManager.container = containerScollView;
-    
-    checkBoxs = [NSMutableDictionary new];
-    images = [NSMutableDictionary new];
-    checkBoxImages =@[[UIImage imageNamed:@"af"] , [UIImage imageNamed:@"be"]];
-    originTextViewFrame = CGRectZero;
-    
-    
+    {
+        checkBoxs = [NSMutableDictionary new];
+        images = [NSMutableDictionary new];
+        checkBoxImages =@[[UIImage imageNamed:@"af"] , [UIImage imageNamed:@"be"]];
+        originTextViewFrame = CGRectZero;
+        
+    }
 }
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-
     [self setupAndInit];
     [self setUpBottomBarContainer];
     [self setUpCalendar];
     [self setupTextView:self.currentDayScollView];
+    [self setupContainerScollView];
     [self setUpBarButtonItems];
     [self addUpDownGesture];
     [self.view bringSubviewToFront:bottomBar];
 
-
-    
 }
 
 - (void)viewDidLayoutSubviews {
@@ -596,6 +453,7 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated{
+    [sManager visibleToday];
     if(textViewTapGestureRecognizer){
         textViewTapGestureRecognizer.delegate = self;
         self.currentDayScollView.editable = NO;
@@ -607,15 +465,15 @@
 }
 
 - (void)calendarDidDateSelected:(JTCalendar *)calendar date:(NSDate *)date {
+
     today = date;
-    
+    NSLog(@"%@",date);
     NSAttributedString *myAttrString= [dbManager searchDataWithData:today];
     if(myAttrString.length > 0){
         self.currentDayScollView.attributedText = [DinnerUtility attributeTextResizeStable:myAttrString withContainer:self.currentDayScollView];
     }else{
         self.currentDayScollView.text = @"";
     }
-    
     [checkBoxs removeAllObjects];
     [dbManager getImageInTheAttributeString:myAttrString cacheArr:checkBoxs Day:date];
 }
@@ -626,12 +484,8 @@
 //    [self calendarDidDateSelected:self.calendar date:day];
 }
 
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
-
 @end
