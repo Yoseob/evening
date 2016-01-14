@@ -78,7 +78,7 @@
     DinnerDay * dinner;
     int index = 0;
     int haveToday = false;
-    while ((dinner = dinners[index++])) {
+    while (dinners.count > 0 && (dinner = dinners[index++]) ) {
         NSDate * date = [formatter dateFromString:dinner.dayStr];
         float timeCondition = [date timeIntervalSinceDate:today];
         if (timeCondition == 0) {
@@ -101,7 +101,7 @@
         if(index == dinners.count){
             [dinners addObject:todayDinner];
         }else{
-             [dinners insertObject:todayDinner atIndex:index];
+            [dinners insertObject:todayDinner atIndex:index];
         }
 
         x = [self makeContextWithDinnerData:todayDinner textViewFrame:CGRectMake(x, 0, width, height)];
@@ -143,15 +143,27 @@
     }
 }
 
--(void)visibleCurrentTextView:(NSDate*) selectedDay {
-    
+-(void)visibleCurrentTextView:(NSDate*) selectedDay withGesture:(HPTextViewTapGestureRecognizer *)ges{
     NSString * key = [DinnerUtility DateToString:selectedDay];
     UITextView * selectedView = dataTable[key];
-    [container setContentOffset:selectedView.frame.origin animated:YES];
+    [selectedView addGestureRecognizer:ges];
+    [self impliVisible:selectedView];
+}
+
+-(void)visibleCurrentTextView:(NSDate*) selectedDay {
+    NSString * key = [DinnerUtility DateToString:selectedDay];
+    UITextView * selectedView = dataTable[key];
+    [self impliVisible:selectedView];
 }
 
 -(void)visibleToday{
     [container setContentOffset:todayPos];
+}
+
+-(void)impliVisible:(UITextView *)selectedView{
+    [viewController setCurrentDayTextView:selectedView];
+    NSLog(@"viewCon : %@",viewController.currentDayTextView);
+    [container setContentOffset:selectedView.frame.origin animated:YES];
 }
 
 -(void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset{
@@ -188,24 +200,25 @@
     int tempIndex = index;
     UITextView * nextTextview = nil;
     while (index < dinners.count && (dinner = dinners[index++])){
-        NSLog(@"index : %d" , index);
-        //        x = [self makeContextWithDinnerData:dinner textViewFrame:CGRectMake(x, 0, width, height)];
         nextTextview = dataTable[dinner.dayStr];
         nextTextview.frame = CGRectMake(nextTextview.frame.origin.x+width, 0, width, height);
 
     }
     
     index = tempIndex;
+    
     if(!haveToday){
         DinnerDay * newDinner = [[DinnerDay alloc]init];
         newDinner.dayStr= dateString;
-        newDinner.attrText = [[NSAttributedString alloc]initWithString:@"Newday"];
+        newDinner.attrText = [[NSAttributedString alloc]initWithString:dateString];
 
         nextTextview = nil;
         {
-            dinner = dinners[index-1];
-            nextTextview = dataTable[dinner.dayStr];
-            x = nextTextview.frame.origin.x + width;
+            if(index != 0){
+                dinner = dinners[index-1];
+                nextTextview = dataTable[dinner.dayStr];
+                x = nextTextview.frame.origin.x + width;
+            }
         }
 
         if(index == dinners.count){
@@ -222,13 +235,26 @@
     
 
 }
-
+-(void)removeDinnerData:(NSString *)dayStr{
+    [dataTable removeObjectForKey:dayStr];
+    for(DinnerDay * dinner in dinners){
+        NSLog(@"%@ , %@", dayStr , dinner.dayStr);
+        if([dayStr isEqualToString:dinner.dayStr]){
+//            [dinners removeObject:dinner];
+        }
+    }
+}
 
 -(void)shiftTextViewRightWithId:(NSString *)textviewID{
     
 }
 -(void)reloadView{
-    
+//    [self containerViewEstimateScrollView];
 }
 
+-(void)reloadData{
+}
+-(BOOL)isDateDinner:(NSString *)dayStr{
+    return dataTable[dayStr] != nil;
+}
 @end

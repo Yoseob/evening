@@ -33,7 +33,11 @@
 -(void)changeContainerViewSize:(CGFloat)height;
 
 -(void)visibleCurrentTextView:(NSDate*) selectedDay;
+-(void)visibleCurrentTextView:(NSDate*) selectedDay withGesture:(HPTextViewTapGestureRecognizer *)ges;
 -(void)visibleToday;
--(void)insertNewTextView:(NSDate *)date;
+-(void)reloadView;
 
+-(void)insertNewTextView:(NSDate *)date;
+-(void)removeDinnerData:(NSString *)dayStr;
+-(BOOL)isDateDinner:(NSString*)dayStr;
 @end

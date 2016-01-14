@@ -59,8 +59,8 @@
             if(textAttachment){
                 int loc = (int)range.location;
                 NSString  * query =[NSString stringWithFormat: @"SELECT * from checkboxs WHERE ownerDay = \"%@\" AND location = %d" , [DinnerUtility DateToString:day],loc];
-                NSString * key = [NSString stringWithFormat:@"%d",loc];
                 CheckBox * temp = [[CheckBoxsDao getDefaultCheckBoxsDao]selectTargetDataWith:day withQeury:query].lastObject;
+                NSString * key = [NSString stringWithFormat:@"%ld",temp.location];
                 NSLog(@"%@",temp);
                 if(temp)[checkBoxs setObject:temp forKey:key];
             }
@@ -82,6 +82,7 @@
             NSString * oldKey = [NSString stringWithFormat:@"%ld",range.location];
             CheckBox * obj = checkBoxs[oldKey];
             if(obj){
+                NSLog(@"%ld, %@",obj.location , checkBoxs);
                 [[CheckBoxsDao getDefaultCheckBoxsDao]insertDataWithCB:obj];
             }
         }
@@ -136,8 +137,6 @@
     NSString * key = [DinnerUtility DateToString:day];
     return [thumbNailDataArchive objectForKey:key];
 }
-
-
 
 -(NSMutableDictionary *)reloadCachedData{
     [thumbNailDataArchive removeAllObjects];

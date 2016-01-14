@@ -91,7 +91,6 @@
     inputTextView.translatesAutoresizingMaskIntoConstraints = NO;
     inputTextView.backgroundColor = [UIColor whiteColor];
     inputTextView.attributedText = [self.delegate textViewBinding].attributedText;
-    originRect = inputTextView.frame;
     [self.view addSubview:inputTextView];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:inputTextView
                                                           attribute:NSLayoutAttributeTopMargin
@@ -149,7 +148,10 @@
             [self presentViewController:imagePickerViewController animated:YES completion:nil];
             break;
         case PHOTO+1:
-            break;
+            [self dismissViewControllerAnimated:YES completion:^{
+                //비동기 디비 insert
+            }];
+
         case PHOTO+2:
             break;
         case PHOTO+3:
@@ -162,7 +164,6 @@
             if([inputTextView isFirstResponder]){
                 [inputTextView resignFirstResponder];
             }
-            inputTextView.frame = originRect;
             [self.delegate resultTextView:inputTextView];
             [self dismissViewControllerAnimated:YES completion:^{
                 //비동기 디비 insert 
@@ -181,7 +182,8 @@
     UIImage *image = [UIImage imageNamed:@"be"];
     //    NSData *imageData = UIImageJPEGRepresentation(image, 0.1);
     NSTextAttachment * attach = [self addTextAttachmentWithImage:image textScale:2.f];
-    [self.delegate insertCheckBtn:attach];
+//    [self.delegate insertCheckBtn:attach];
+    [self.delegate insertCheckBtnWithString:inputTextView.attributedText];
 }
 
 -(NSTextAttachment *)addTextAttachmentWithImage:(UIImage *)image  textScale:(CGFloat)scaleFactor{
@@ -212,6 +214,9 @@
     CGFloat bar_Height = controllBar.frame.size.height;
     CGFloat leftMagin = 5.f;
     CGFloat tempX = 0.f;
+    
+    NSLog(@"%f" ,bar_Height);
+    
     for(int i = 0 ; i < 5; i ++){
         UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.userInteractionEnabled = YES;
@@ -235,6 +240,7 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated{
+    NSLog(@"%lf",controllBar.frame.size.height);
     if(subBtns.count == 0){
         [self customBottomBar:nil];
     }
@@ -273,8 +279,12 @@
 
 }
 
+
+
+
 // Called when the UIKeyboardDidShowNotification is sent.
-- (void)keyboardWasShown:(NSNotification*)aNotification{
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     bottomContaint.constant= -kbSize.height;
@@ -284,6 +294,8 @@
 
 // Called when the UIKeyboardWillHideNotification is sent
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification{
+
+    NSLog(@"keyboardWillBeHidden");
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     bottomContaint.constant= kbSize.height;

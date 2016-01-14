@@ -37,8 +37,6 @@
     [connection insert:[connection getdbPath]andWithInsert:^int(sqlite3 *sqlDb, char *err, sqlite3_stmt* stmt) {
         NSString * dateStr =[DinnerUtility DateToString:cb.date];
         int ret = 0;
-        
-        
         if( sqlite3_prepare_v2(sqlDb, [insertQuery UTF8String], -1, &stmt, NULL)==SQLITE_OK){
             
             sqlite3_bind_int(stmt, 1, (int)cb.location);
@@ -50,13 +48,9 @@
         }else{
             NSLog(@"fuck");
         }
-        
         return  ret;
     }];
-    
-    
     return nil;
-
 }
 
 
