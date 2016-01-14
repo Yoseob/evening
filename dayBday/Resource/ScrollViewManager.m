@@ -216,7 +216,6 @@
         container.contentSize = CGSizeMake((dinners.count) * viewController.view.frame.size.width,
                                            container.contentSize.height);
         
-
         x = [self makeContextWithDinnerData:newDinner textViewFrame:CGRectMake(x, 0, width, height)];
         index++;
     }

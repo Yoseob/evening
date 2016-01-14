@@ -57,18 +57,15 @@
         [attrStr enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, attrStr.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
             NSTextAttachment *  textAttachment = value;
             if(textAttachment){
-                
-                NSLog(@"%@",textAttachment.image);
                 int loc = (int)range.location;
                 NSString  * query =[NSString stringWithFormat: @"SELECT * from checkboxs WHERE ownerDay = \"%@\" AND location = %d" , [DinnerUtility DateToString:day],loc];
                 NSString * key = [NSString stringWithFormat:@"%d",loc];
                 CheckBox * temp = [[CheckBoxsDao getDefaultCheckBoxsDao]selectTargetDataWith:day withQeury:query].lastObject;
+                NSLog(@"%@",temp);
                 if(temp)[checkBoxs setObject:temp forKey:key];
             }
         }];
-        
     }
-    
 }
 
 
@@ -133,9 +130,6 @@
 -(NSArray *)getDinnerData{
     return dinnerDataArchive;
 }
-
-
-
 
 #pragma makr - Thumbnail
 -(Thumbnail *)thumbNailWith:(NSDate *)day{

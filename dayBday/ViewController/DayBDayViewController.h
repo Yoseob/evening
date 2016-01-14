@@ -12,9 +12,8 @@
 #import "InputViewViewController.h"
 #import "HPTextViewTapGestureRecognizer.h"
 
-@interface DayBDayViewController : UIViewController <JTCalendarDataSource , InputViewDelegate,HPTextViewTapGestureRecognizerDelegate , UIScrollViewDelegate > {
-//    MXLCalendar *currentCalendar;
-    
+@interface DayBDayViewController : UIViewController <JTCalendarDataSource , InputViewDelegate,HPTextViewTapGestureRecognizerDelegate >
+{
     NSDate *selectedDate;
     NSMutableDictionary *savedDates;
     NSMutableArray *currentEvents;

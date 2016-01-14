@@ -73,7 +73,6 @@
             if(image.size.width > 50){
                 NSTextAttachment *newAttrText = [NSTextAttachment new];
                 CGFloat oldWidth = image.size.width;
-                NSLog(@"oldWidth %lf", oldWidth);
                 CGFloat  scaleFactor = oldWidth / (scview.frame.size.width - 10);
                 newAttrText.image = [UIImage imageWithData:UIImagePNGRepresentation(image) scale:scaleFactor];
                 

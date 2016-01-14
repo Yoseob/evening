@@ -29,7 +29,6 @@
 - (void)pushTodayButton:(id)sender;
 - (void)pushChangeModeButton:(id)sender;
 - (void)transitionCalendarMode;
-
 - (void)setUpCalendar;
 - (void)setUpMenuView;
 - (void)setUpContentView;
@@ -62,18 +61,14 @@
 
 #pragma mark -
 #pragma mark IBActions
-
-
 - (void)pushTodayButton:(id)sender {
     NSDate *currentDate = [NSDate date];
-    
     [self.calendar setCurrentDateSelected:currentDate];
     [self.calendar setCurrentDate:currentDate];
     [self calendarDidDateSelected:self.calendar date:currentDate];;
 }
 
 - (void)pushChangeModeButton:(id)sender {
-
     self.calendar.calendarAppearance.isWeekMode = !self.calendar.calendarAppearance.isWeekMode;
     [self transitionCalendarMode];
 
@@ -109,7 +104,6 @@
 }
 
 -(void)gestureRecognizerNotthing{
-    NSLog(@"gestureRecognizerNotthing");
     [self showInputViewController:nil];
 }
 
@@ -119,11 +113,11 @@
 
 -(void)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer handleTapOnTextAttachment:(NSTextAttachment*)textAttachment inRange:(NSRange)characterRange
 {
-    NSString * oldKey = [NSString stringWithFormat:@"%ld",characterRange.location];
-
-    CheckBox * tempCheckBox = checkBoxs[oldKey];
     
-    NSLog(@"oldKey = %@ %ld ",oldKey ,tempCheckBox.location );
+    NSLog(@"%@",textAttachment);
+    NSString * oldKey = [NSString stringWithFormat:@"%ld",characterRange.location];
+    CheckBox * tempCheckBox = checkBoxs[oldKey];
+    NSLog(@"oldKey = %@ %ld, %@",oldKey ,tempCheckBox.location , tempCheckBox);
     if(tempCheckBox){
         if(tempCheckBox){
             NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc]initWithAttributedString:self.currentDayTextView.attributedText];
@@ -158,30 +152,9 @@
     }
 }
 
-
-#pragma mark -
-#pragma mark UITableViewDataSource
-
-#pragma mark -
-#pragma UITextViewDelegate
-
--(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
-    NSLog(@"textViewShouldBeginEditing");
-    return YES;
-}
--(void)textViewDidChange:(UITextView *)textView{
-    
-}
--(void)textViewDidBeginEditing:(UITextView *)textView{
-    
-}
-
-
-#pragma mark -
 #pragma mark Subview setup
 
 - (void)setUpCalendar {
-    
     self.calendar = [JTCalendar new];
     self.calendar.calendarAppearance.menuMonthTextFont = [UIFont systemFontOfSize:13.0f];
     self.calendar.calendarAppearance.menuMonthTextColor = [UIColor grayColor];
@@ -278,15 +251,11 @@
 }
 
 -(void)setupContainerScollView{
-    
-    NSLog(@"today : %@",[dbManager searchDataWithData:today]);
-    
     containerScollView.translatesAutoresizingMaskIntoConstraints = NO;
     containerScollView.scrollEnabled = YES;
     containerScollView.pagingEnabled = NO;
     containerScollView.showsHorizontalScrollIndicator = YES;
     containerScollView.backgroundColor = [UIColor brownColor];
-    
     
     [viewBuilder buildContainerScrollerView:containerScollView];
     [self setUptextViewTapGestureRecognizer];
@@ -296,7 +265,7 @@
 
 - (void)setupTextView:(UITextView *)textview {
     [viewBuilder buildMainContainerTextView:textview];
-    [self setUptextViewTapGestureRecognizer];
+    self.currentDayTextView.attributedText = textview.attributedText;
 }
 
 
@@ -308,7 +277,6 @@
     self.currentDayTextView.editable = YES;
     [self presentViewController:modalViewController animated:YES completion:^{
         textViewTapGestureRecognizer.delegate =  nil;
-
     }];
     
 }
@@ -330,25 +298,20 @@
 }
 
 -(void)resultTextView:(UITextView *)textView{
-    if(CGRectEqualToRect(originTextViewFrame, CGRectZero)){
-        originTextViewFrame = self.currentDayTextView.frame;
-    }
+    
+    NSLog(@"%@",checkBoxs);
     [self setupTextView:textView];
     [dbManager insertTextViewDataWith:textView cachedCheckBox:checkBoxs data:today];
     [self reloadAllofData];
-}
-
--(void)reloadAllofData{
-    [self.calendar.dataCache reloadData];
-    [self.calendarContentView reloadData];
-    [self.calendarContentView reloadAppearance];
 }
 
 -(void)removeCheckBox:(NSString *)cb{
 }
 
 -(void)insertCheckBtn:(NSTextAttachment *)textAtmt{
-    NSAttributedString *myAttrString = self.currentDayTextView.attributedText;
+
+    NSLog(@"%@",textAtmt);
+    NSAttributedString * myAttrString = self.currentDayTextView.attributedText;
     if(myAttrString){
         [myAttrString enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, myAttrString.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
             NSTextAttachment *  textAttachment = value;
@@ -358,16 +321,12 @@
                 if(!checkBoxs[key]){
                     CheckBox * newCheckBox = [[CheckBox alloc]initWithLoc:loc andStatus:0];
                     newCheckBox.date = today;
+                    NSLog(@"insertCheckBtn : %@",newCheckBox);
                     [checkBoxs setObject:newCheckBox forKey:key];
                 }
             }
         }];
     }
-}
-
-#pragma mark -scrollview Delegate
--(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-
 }
 
 #pragma mark
@@ -416,6 +375,7 @@
             containerScollView = [[ContainerScollView alloc]initWithCurrentScrollView:self.currentDayTextView];
             containerScollView.frame = CGRectZero;
             textViewTapGestureRecognizer = [[HPTextViewTapGestureRecognizer alloc]init];
+            textViewTapGestureRecognizer.delegate = self;
         }
         
         {
@@ -427,9 +387,8 @@
     {
         checkBoxs = [NSMutableDictionary new];
         images = [NSMutableDictionary new];
-        checkBoxImages =@[[UIImage imageNamed:@"af"] , [UIImage imageNamed:@"be"]];
+        checkBoxImages = @[[UIImage imageNamed:@"af"] , [UIImage imageNamed:@"be"]];
         originTextViewFrame = CGRectZero;
-        
     }
 }
 
@@ -439,12 +398,10 @@
     [self setupAndInit];
     [self setUpBottomBarContainer];
     [self setUpCalendar];
-//    [self setupTextView:self.currentDayTextView];
     [self setupContainerScollView];
     [self setUpBarButtonItems];
     [self addUpDownGesture];
     [self.view bringSubviewToFront:bottomBar];
-
 }
 
 - (void)viewDidLayoutSubviews {
@@ -453,7 +410,8 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated{
-    [sManager visibleToday];
+    [sManager visibleCurrentTextView:today];
+    
     if(textViewTapGestureRecognizer){
         textViewTapGestureRecognizer.delegate = self;
         self.currentDayTextView.editable = NO;
@@ -465,16 +423,12 @@
 }
 
 - (void)calendarDidDateSelected:(JTCalendar *)calendar date:(NSDate *)date {
-
     [self changeCurruntScrollView:date];
     
-    if([dbManager searchDataWithData:today]){
-        [sManager visibleCurrentTextView:date];
-    }else {
+    if(![dbManager searchDataWithData:today]){
         [sManager insertNewTextView:date];
-        [sManager visibleCurrentTextView:date];
     }
-    ///smanager에 선택한 날자에 이미지를 추가할수 있도록 해야한다.!!!! 한마디로 스크롤뷰 리load 근데 이미지로딩 방식이 존나 크다...그래서 잘해야함..ㅋㅋ씨발
+    [sManager visibleCurrentTextView:date];
 }
 
 -(void)changeScollerSelectedDay:(NSDate *)day withSelectTextView:(UITextView *)textView{
@@ -488,7 +442,6 @@
 -(void)changeCurruntScrollView:(NSDate *)date{
     
     today = date;
-    textViewTapGestureRecognizer.delegate = self;
     [self.currentDayTextView addGestureRecognizer:textViewTapGestureRecognizer];
     NSAttributedString *myAttrString= self.currentDayTextView.attributedText;
     
@@ -497,13 +450,21 @@
     }else{
         self.currentDayTextView.text = @"";
     }
+
     [checkBoxs removeAllObjects];
     [dbManager getImageInTheAttributeString:myAttrString cacheArr:checkBoxs Day:date];
+    NSLog(@"%@",checkBoxs);
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+} 
+
+-(void)reloadAllofData{
+    [self.calendar.dataCache reloadData];
+    [self.calendarContentView reloadData];
+    [self.calendarContentView reloadAppearance];
 }
+
 @end

@@ -70,7 +70,7 @@
 }
 -(void)buildMainContainerTextView:(UITextView *)textview{
     
-    target.currentDayTextView = textview;
+    target.currentDayTextView.attributedText = textview.attributedText;
     target.currentDayTextView.translatesAutoresizingMaskIntoConstraints = NO;
     target.currentDayTextView.scrollEnabled = YES;
     target.currentDayTextView.pagingEnabled = NO;
@@ -80,38 +80,38 @@
     target.currentDayTextView.font = [UIFont systemFontOfSize:15];
     target.currentDayTextView.editable = NO;
     
-    [target.view addSubview:target.currentDayTextView];
-    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:target.currentDayTextView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:target.calendarContentView
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    
-    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:target.currentDayTextView
-                                                          attribute:NSLayoutAttributeLeft
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:target.view
-                                                          attribute:NSLayoutAttributeLeft
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    
-    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:target.currentDayTextView
-                                                          attribute:NSLayoutAttributeWidth
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:target.view
-                                                          attribute:NSLayoutAttributeWidth
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    
-    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:target.currentDayTextView
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:bottomBar
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
+////    [target.view addSubview:target.currentDayTextView];
+//    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:target.currentDayTextView
+//                                                          attribute:NSLayoutAttributeTop
+//                                                          relatedBy:NSLayoutRelationEqual
+//                                                             toItem:target.calendarContentView
+//                                                          attribute:NSLayoutAttributeBottom
+//                                                         multiplier:1.0f
+//                                                           constant:0.0f]];
+//    
+//    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:target.currentDayTextView
+//                                                          attribute:NSLayoutAttributeLeft
+//                                                          relatedBy:NSLayoutRelationEqual
+//                                                             toItem:target.view
+//                                                          attribute:NSLayoutAttributeLeft
+//                                                         multiplier:1.0f
+//                                                           constant:0.0f]];
+//    
+//    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:target.currentDayTextView
+//                                                          attribute:NSLayoutAttributeWidth
+//                                                          relatedBy:NSLayoutRelationEqual
+//                                                             toItem:target.view
+//                                                          attribute:NSLayoutAttributeWidth
+//                                                         multiplier:1.0f
+//                                                           constant:0.0f]];
+//    
+//    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:target.currentDayTextView
+//                                                          attribute:NSLayoutAttributeBottom
+//                                                          relatedBy:NSLayoutRelationEqual
+//                                                             toItem:bottomBar
+//                                                          attribute:NSLayoutAttributeTop
+//                                                         multiplier:1.0f
+//                                                           constant:0.0f]];
 }
 
 -(void)buildContainerScrollerView:(UIScrollView *)scrollview{
