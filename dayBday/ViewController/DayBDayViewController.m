@@ -125,6 +125,7 @@
             NSTextAttachment * newAttrText;
             {
                 newAttrText = [NSTextAttachment new];
+                tempCheckBox.status = (tempCheckBox.status == 0 ? 1 : 0);
                 newAttrText.image = checkBoxImages[tempCheckBox.status];
                 newAttrText.image = [UIImage imageWithCGImage:newAttrText.image.CGImage scale:2.f orientation:UIImageOrientationUp];
                 [attributedText replaceCharactersInRange:characterRange withAttributedString:[NSAttributedString attributedStringWithAttachment:newAttrText]];
@@ -133,7 +134,6 @@
             if(tempCheckBox){
                 NSString * newKey = [NSString stringWithFormat:@"%ld",characterRange.location];
                 [checkBoxs removeObjectForKey:oldKey];
-                tempCheckBox.status = (tempCheckBox.status == 0 ? 1 : 0);
                 tempCheckBox.date = today;
                 [checkBoxs setObject:tempCheckBox forKey:newKey];
                 NSLog(@"%@,  %d",tempCheckBox.date , tempCheckBox.status);
@@ -151,8 +151,7 @@
                 temp = [[CheckBoxsDao getDefaultCheckBoxsDao]selectTargetDataWith:today withQeury:query].lastObject;
                 NSLog(@"2=== %d",temp.status);
             }
-            
-            self.currentDayTextView.attributedText = attributedText;
+            [self setCurrentDayAttrbutedString:attributedText];
         }else{
             [images setObject:textAttachment forKey:oldKey];
         }
@@ -274,8 +273,8 @@
 
 
 - (void)setupTextView:(UITextView *)textview {
-//    [viewBuilder buildMainContainerTextView:textview];
-    self.currentDayTextView.attributedText = textview.attributedText;
+    [viewBuilder buildMainContainerTextView:textview];
+    [self setCurrentDayAttrbutedString:textview.attributedText];
     [self setUptextViewTapGestureRecognizer];
 }
 
@@ -296,7 +295,7 @@
 -(void)removeThisEvent:(id)sender{
     [dbManager removeThisDayEvent:today];
     [self reloadAllofData];
-    self.currentDayTextView.attributedText = [[NSAttributedString alloc]initWithString:@""];
+    [self setCurrentDayAttrbutedString:[[NSAttributedString alloc]initWithString:@""]];
     [sManager removeDinnerData:[DinnerUtility DateToString:today]];
 }
 
@@ -401,11 +400,11 @@
             [sManager setContainer:containerScollView];
         }
     }
-    
+
     {
         checkBoxs = [NSMutableDictionary new];
         images = [NSMutableDictionary new];
-        checkBoxImages = @[[UIImage imageNamed:@"af"] , [UIImage imageNamed:@"be"]];
+        checkBoxImages = @[[UIImage imageNamed:@"checkbox_todo"] , [UIImage imageNamed:@"checkbox_did"]];
         originTextViewFrame = CGRectZero;
     }
 }
@@ -431,7 +430,6 @@
     
 //    [sManager visibleCurrentTextView:today];
 //    [self setUptextViewTapGestureRecognizer];
-    
 //    if(textViewTapGestureRecognizer){
 //        textViewTapGestureRecognizer.delegate = self;
 //        self.currentDayTextView.editable = NO;
@@ -489,10 +487,49 @@
         }
     }];
     
-    self.currentDayTextView.attributedText = myAttrString;
+    [self setCurrentDayAttrbutedString:myAttrString];
 
 }
 
+-(void)setCurrentDayAttrbutedString:(NSAttributedString *)attrStr{
+    
+    UIFont *fnt = [UIFont fontWithName:@"Helvetica" size:20.0];
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"GGG®GGG"
+                                                                                         attributes:@{NSFontAttributeName: [fnt fontWithSize:20]}];
+    [attributedString setAttributes:@{NSFontAttributeName : [fnt fontWithSize:10]
+                                      , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(3, 1)];
+    
+    
+    
+    NSMutableAttributedString * attriString = [[NSMutableAttributedString alloc]initWithAttributedString:attrStr];
+    [attriString enumerateAttribute:NSFontAttributeName inRange:NSMakeRange(0, attriString.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop){
+    
+        NSDictionary * attDic = [attriString attributesAtIndex:range.location effectiveRange:&range];
+        //If attrDic has NSOriginalFont, it is text
+
+        if(attDic[@"NSOriginalFont"]){
+//            NSMutableAttributedString * muteAttr = [[NSMutableAttributedString alloc]initWithAttributedString:[attriString attributedSubstringFromRange:range]];
+            if (value) {
+                UIFont *oldFont = (UIFont *)value;
+                UIFont *newFont = [oldFont fontWithSize:oldFont.pointSize];
+                [attriString removeAttribute:NSFontAttributeName range:range];
+                [attriString addAttribute:NSFontAttributeName value:newFont range:range];
+                
+                [attriString addAttribute:(__bridge NSString *)kCTSuperscriptAttributeName value:@(1) range:range];
+            }
+        }
+
+
+        
+    }];
+
+    
+    
+    self.currentDayTextView.textAlignment = NSTextAlignmentCenter;
+    
+    self.currentDayTextView.attributedText = attriString;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

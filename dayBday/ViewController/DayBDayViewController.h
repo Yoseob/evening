@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <CoreText/CoreText.h>
 #import "JTCalendar.h"
 #import "InputViewViewController.h"
 #import "HPTextViewTapGestureRecognizer.h"

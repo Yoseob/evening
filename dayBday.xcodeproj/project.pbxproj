@@ -12,6 +12,7 @@
 		232D5ECD1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 232D5ECC1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.m */; };
 		23351E0A1C1FA3EA00BB54FB /* DinnerUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 23351E091C1FA3EA00BB54FB /* DinnerUtility.m */; };
 		235BB65D1C0B302A00398B81 /* DataBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 235BB65C1C0B302A00398B81 /* DataBaseManager.m */; };
+		237035741C47AF0E008CC6EE /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 237035731C47AF0E008CC6EE /* CoreText.framework */; };
 		2394121A1C0F4930001B9B07 /* DinnerDay.m in Sources */ = {isa = PBXBuildFile; fileRef = 239412191C0F4930001B9B07 /* DinnerDay.m */; };
 		2394121E1C0F4A83001B9B07 /* ThumbnailDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 2394121D1C0F4A83001B9B07 /* ThumbnailDao.m */; };
 		239412221C0F52EF001B9B07 /* Thumbnail.m in Sources */ = {isa = PBXBuildFile; fileRef = 239412211C0F52EF001B9B07 /* Thumbnail.m */; };
@@ -81,6 +82,7 @@
 		23351E091C1FA3EA00BB54FB /* DinnerUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DinnerUtility.m; sourceTree = "<group>"; };
 		235BB65B1C0B302A00398B81 /* DataBaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBaseManager.h; sourceTree = "<group>"; };
 		235BB65C1C0B302A00398B81 /* DataBaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataBaseManager.m; sourceTree = "<group>"; };
+		237035731C47AF0E008CC6EE /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		239412181C0F4930001B9B07 /* DinnerDay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DinnerDay.h; sourceTree = "<group>"; };
 		239412191C0F4930001B9B07 /* DinnerDay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DinnerDay.m; sourceTree = "<group>"; };
 		2394121C1C0F4A83001B9B07 /* ThumbnailDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailDao.h; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				237035741C47AF0E008CC6EE /* CoreText.framework in Frameworks */,
 				23F1F9C21BFF7BA300479DC5 /* libsqlite3.0.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -270,6 +273,7 @@
 		23AE9DF41BE74B5A00E7E4CB = {
 			isa = PBXGroup;
 			children = (
+				237035731C47AF0E008CC6EE /* CoreText.framework */,
 				23AE9DFF1BE74B5A00E7E4CB /* dayBday */,
 				23AE9E1C1BE74B5A00E7E4CB /* dayBdayTests */,
 				23AE9E271BE74B5B00E7E4CB /* dayBdayUITests */,

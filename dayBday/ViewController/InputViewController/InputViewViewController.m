@@ -162,6 +162,7 @@
         case PHOTO+4:
         {
             if([inputTextView isFirstResponder]){
+                inputTextView.editable = false;
                 [inputTextView resignFirstResponder];
             }
             [self.delegate resultTextView:inputTextView];
