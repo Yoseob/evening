@@ -122,13 +122,13 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
     sizeCircle = roundf(sizeCircle);
     sizeDot = roundf(sizeDot);
     
-    CGFloat top_Left_Margin = 1;
+    CGFloat top_Left_Margin = 0;
     thumbnailImage.frame = CGRectMake(top_Left_Margin, top_Left_Margin, self.frame.size.width-top_Left_Margin*2, self.frame.size.height-(top_Left_Margin *2));
     thumbnailImage.center = CGPointMake(self.frame.size.width / 2., self.frame.size.height / 2.);
     
 
     CGFloat x = self.frame.size.width/2;
-    taskLabel.frame = CGRectMake(x - 10 , self.frame.size.height - 10, 20, 1.8);
+//    taskLabel.frame = CGRectMake(x - 10 , self.frame.size.height - 10, 20, 1.8);
     taskLabel.backgroundColor = [UIColor clearColor];
 
     taskLabel.font = [UIFont systemFontOfSize:10];
@@ -151,7 +151,6 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
     self->_date = date;
     
     textLabel.text = [dateFormatter stringFromDate:date];
-  
     cacheIsToday = -1;
     cacheCurrentDateText = nil;
 }

@@ -13,11 +13,8 @@
 -(void)resultTextView:(UITextView *)textView;
 -(CGFloat)controlBarheight;
 
-
-
-//
-
 -(void)insertCheckBtn:(NSTextAttachment *)textAtmt;
+-(void)insertCheckBtnWithString:(NSAttributedString *)attrText;
 
 @end
 @interface InputViewViewController : UIViewController <UIImagePickerControllerDelegate>

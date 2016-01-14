@@ -19,7 +19,7 @@
 -(void)getImageInTheAttributeString:(NSAttributedString*)attrStr cacheArr:(NSMutableDictionary *)checkBoxs Day:(NSDate * )day;
 -(void)insertTextViewDataWith:(UITextView *)textView cachedCheckBox:(NSDictionary *)checkBoxs data:(NSDate *)date;
 -(void)prepareAllOfDinnerData;
--(void)printDinnerData;
+-(NSArray *)getDinnerData;
 //thumb
 -(Thumbnail *)thumbNailWith:(NSDate *)day;
 -(NSMutableDictionary *)reloadCachedData;

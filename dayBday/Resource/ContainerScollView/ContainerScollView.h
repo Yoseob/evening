@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface ContainerScollView : UIScrollView
-@property (nonatomic ,strong) UIScrollView * currentScollView;
+@property (nonatomic ,strong) UITextView * curruentTextView;
 
 -(id)initWithCurrentScrollView:(UIScrollView *)sc;
+
 @end

@@ -9,16 +9,13 @@
 #import "ContainerScollView.h"
 
 @implementation ContainerScollView
-@synthesize currentScollView;
--(id)initWithCurrentScrollView:(UIScrollView *)sc{
+@synthesize curruentTextView;
+-(id)initWithCurrentScrollView:(UITextView *)sc{
     self = [super init];
     if(self){
-        currentScollView = sc;
+        curruentTextView = sc;
     }
     
     return self;
 }
-
-
-
 @end

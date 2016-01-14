@@ -42,14 +42,13 @@
     return  self;
 }
 -(NSAttributedString *) searchDataWithData:(NSDate *)day{
-        NSArray * result = [dao selectDayTextDataWith:day];
+    NSArray * result = [dao selectDayTextDataWith:day];
     NSAttributedString *myAttrString= nil;
     if(result.count > 0){
         for(NSData *data in result){
             myAttrString = [NSKeyedUnarchiver unarchiveObjectWithData: data];
         }
     }
-    
     return myAttrString;
 }
 
@@ -58,18 +57,15 @@
         [attrStr enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, attrStr.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
             NSTextAttachment *  textAttachment = value;
             if(textAttachment){
-                
-                NSLog(@"%@",textAttachment.image);
                 int loc = (int)range.location;
                 NSString  * query =[NSString stringWithFormat: @"SELECT * from checkboxs WHERE ownerDay = \"%@\" AND location = %d" , [DinnerUtility DateToString:day],loc];
-                NSString * key = [NSString stringWithFormat:@"%d",loc];
                 CheckBox * temp = [[CheckBoxsDao getDefaultCheckBoxsDao]selectTargetDataWith:day withQeury:query].lastObject;
+                NSString * key = [NSString stringWithFormat:@"%ld",temp.location];
+                NSLog(@"%@",temp);
                 if(temp)[checkBoxs setObject:temp forKey:key];
             }
         }];
-        
     }
-    
 }
 
 
@@ -86,10 +82,13 @@
             NSString * oldKey = [NSString stringWithFormat:@"%ld",range.location];
             CheckBox * obj = checkBoxs[oldKey];
             if(obj){
+                NSLog(@"%ld, %@",obj.location , checkBoxs);
                 [[CheckBoxsDao getDefaultCheckBoxsDao]insertDataWithCB:obj];
             }
         }
     }];
+    
+    
     NSMutableArray * imageArr = [NSMutableArray new];
     if(attrString.length > 0){
         [attrString enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, attrString.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
@@ -129,23 +128,15 @@
 -(void)prepareAllOfDinnerData{
     dinnerDataArchive = [[NSMutableArray alloc]initWithArray:[dao selectAllDataWith:nil]];
 }
-
--(void)printDinnerData{
-    for(DinnerDay *dinner in dinnerDataArchive){
-        NSLog(@"%@", dinner);
-    }
+-(NSArray *)getDinnerData{
+    return dinnerDataArchive;
 }
-
-
-
 
 #pragma makr - Thumbnail
 -(Thumbnail *)thumbNailWith:(NSDate *)day{
     NSString * key = [DinnerUtility DateToString:day];
     return [thumbNailDataArchive objectForKey:key];
 }
-
-
 
 -(NSMutableDictionary *)reloadCachedData{
     [thumbNailDataArchive removeAllObjects];
