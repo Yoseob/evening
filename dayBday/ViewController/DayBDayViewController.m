@@ -96,8 +96,6 @@
                                           }];
                      }];
     
-    
-    
 }
 
 -(void)gestureRecognizerNotthing{
