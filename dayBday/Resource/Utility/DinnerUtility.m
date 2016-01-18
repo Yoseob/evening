@@ -86,6 +86,34 @@
     return  newattributedText;
 }
 
+
+
++(NSAttributedString *)modifyAttributedString:(NSAttributedString *)originString{
+    NSMutableAttributedString * attriString = [[NSMutableAttributedString alloc]initWithAttributedString:originString];
+    [attriString enumerateAttribute:NSFontAttributeName inRange:NSMakeRange(0, attriString.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop){
+        
+        NSDictionary * attDic = [attriString attributesAtIndex:range.location effectiveRange:&range];
+        //If attrDic has NSOriginalFont, it is text
+        if(attDic[@"NSFont"]){
+            if (value) {
+                NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+                paragraphStyle.lineSpacing = 2;
+                NSDictionary *dict = @{NSParagraphStyleAttributeName : paragraphStyle };
+                [attriString addAttributes:dict range:range];
+//                
+//                UIFont *oldFont = (UIFont *)value;
+//                UIFont *newFont = [oldFont fontWithSize:oldFont.pointSize];
+//                [attriString removeAttribute:NSFontAttributeName range:range];
+//                [attriString addAttribute:NSFontAttributeName value:newFont range:range];
+                
+//                [attriString addAttribute:(__bridge NSString *)kCTSuperscriptAttributeName value:@(1) range:range];
+            }
+        }
+    }];
+    
+    return attriString;
+
+}
 - (instancetype)init
 {
     self = [super init];

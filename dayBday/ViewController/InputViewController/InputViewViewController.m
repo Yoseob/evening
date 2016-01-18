@@ -13,9 +13,6 @@
 
 @end
 
-
-
-
 @implementation InputViewViewController
 {
     UIView * inputControllerBar;
@@ -90,7 +87,10 @@
     inputTextView = [[UITextView alloc]initWithFrame:CGRectZero];
     inputTextView.translatesAutoresizingMaskIntoConstraints = NO;
     inputTextView.backgroundColor = [UIColor whiteColor];
+    inputTextView.delegate = self;
+    inputTextView.allowsEditingTextAttributes = YES;
     inputTextView.attributedText = [self.delegate textViewBinding].attributedText;
+    NSLog(@"%@",inputTextView.typingAttributes);
     [self.view addSubview:inputTextView];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:inputTextView
                                                           attribute:NSLayoutAttributeTopMargin
@@ -180,14 +180,12 @@
 
 
 -(void)insertCheckBoxButton{
-    UIImage *image = [UIImage imageNamed:@"be"];
-    //    NSData *imageData = UIImageJPEGRepresentation(image, 0.1);
-    NSTextAttachment * attach = [self addTextAttachmentWithImage:image textScale:2.f];
-//    [self.delegate insertCheckBtn:attach];
-    [self.delegate insertCheckBtnWithString:inputTextView.attributedText];
+    UIImage *image = [UIImage imageNamed:@"checkbox_todo"];
+    [self addTextAttachmentWithImage:image textScale:2.f];
+    inputTextView.attributedText = [self.delegate insertCheckBtnWithString:inputTextView.attributedText];
 }
 
--(NSTextAttachment *)addTextAttachmentWithImage:(UIImage *)image  textScale:(CGFloat)scaleFactor{
+-(void)addTextAttachmentWithImage:(UIImage *)image  textScale:(CGFloat)scaleFactor{
     
     UITextView *textView = inputTextView;
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]initWithAttributedString:textView.attributedText];
@@ -199,14 +197,18 @@
         CGFloat oldWidth = image.size.width;
         scaleFactor = oldWidth / (textView.frame.size.width - 10);
     }
-        NSData *data = UIImageJPEGRepresentation(image, 0.4);
+    
+    NSData *data = UIImageJPEGRepresentation(image, 0.4);
     textAttachment.image = [UIImage imageWithData:data scale:scaleFactor];
     //[UIImage imageWithCGImage:textAttachment.image.CGImage scale:scaleFactor orientation:UIImageOrientationUp|];
     NSAttributedString *attrStringWithImage = [NSAttributedString attributedStringWithAttachment:textAttachment];
+
+    NSAttributedString * space = [[NSAttributedString alloc]initWithString:@" "];
+    //@todo change insert where currunt cursor position
     [attributedString appendAttributedString:attrStringWithImage];
+    [attributedString appendAttributedString:space];
+
     textView.attributedText = attributedString;
-    
-    return textAttachment;
 
 }
 
@@ -302,5 +304,29 @@
     bottomContaint.constant= kbSize.height;
     [self viewIfLoaded];
 }
+
+#pragma mark - UITextViewDelegate 
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+
+    NSLog(@"shouldChangeTextInRange : %@ , range : %ld , %ld  , text : %@ " , textView.text , range.length, range.location , text );
+    return YES;
+}
+- (void)textViewDidChange:(UITextView *)textView{
+    NSLog(@"textViewDidChange :  %@ " , textView.text);
+}
+
+// use selction
+- (void)textViewDidChangeSelection:(UITextView *)textView{
+    //    textView.attributedText = [DinnerUtility modifyAttributedString:textView.attributedText];
+//    NSLog(@"textViewDidChangeSelection :  %@ " , textView.text);
+}
+
+- (BOOL)textView:(UITextView *)textView shouldInteractWithTextAttachment:(NSTextAttachment *)textAttachment inRange:(NSRange)characterRange{
+    NSLog(@"shouldInteractWithTextAttachment");
+    return YES;
+}
+
+
 
 @end

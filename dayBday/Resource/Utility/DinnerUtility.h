@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <CoreText/CoreText.h>
 @interface DinnerUtility : NSObject
 
 +(DinnerUtility *) defualtDinnerUtility;
@@ -25,4 +25,6 @@
 +(NSDate*)StringToDate:(NSString*)day;
 
 +(NSMutableAttributedString *)attributeTextResizeStable:(NSAttributedString *)attributedText withContainer:(UIScrollView *)scview;
+
++(NSMutableAttributedString *)modifyAttributedString:(NSAttributedString *)originString;
 @end

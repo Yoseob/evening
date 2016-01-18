@@ -77,7 +77,6 @@
 - (void)transitionCalendarMode {
     CGFloat newHeight = 240.f;
     CGFloat textViewHeight =containerScollView.frame.size.height;
-    NSLog(@"transitionCalendarMode");
     if(self.calendar.calendarAppearance.isWeekMode){
         newHeight = 40.0f;
     }
@@ -114,8 +113,6 @@
 
 -(void)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer handleTapOnTextAttachment:(NSTextAttachment*)textAttachment inRange:(NSRange)characterRange
 {
-    //디비에는 이미지 변경이 잘되는듯 하다. 그런데..로컬이 이상함 그러니..~~하삼
-    NSLog(@"%@",textAttachment);
     NSString * oldKey = [NSString stringWithFormat:@"%ld",characterRange.location];
     CheckBox * tempCheckBox = checkBoxs[oldKey];
     NSLog(@"oldKey = %@ %ld, %@",oldKey ,tempCheckBox.location , tempCheckBox);
@@ -324,8 +321,8 @@
 -(void)removeCheckBox:(NSString *)cb{
 
 }
--(void)insertCheckBtnWithString:(NSAttributedString *)attrText;{
-    NSAttributedString * myAttrString = attrText;
+-(NSMutableAttributedString *)insertCheckBtnWithString:(NSAttributedString *)attrText;{
+    NSMutableAttributedString * myAttrString = [[NSMutableAttributedString alloc]initWithAttributedString:attrText];
     if(myAttrString){
         [myAttrString enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, myAttrString.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
             NSTextAttachment *  textAttachment = value;
@@ -337,10 +334,17 @@
                     CheckBox * newCheckBox = [[CheckBox alloc]initWithLoc:loc andStatus:0];
                     newCheckBox.date = today;
                     [checkBoxs setObject:newCheckBox forKey:key];
+                    [myAttrString addAttribute:(__bridge NSString *)kCTSuperscriptAttributeName value:@(-1) range:range];
+                    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+                    paragraphStyle.lineSpacing = 5;
+                    NSDictionary *dict = @{NSParagraphStyleAttributeName : paragraphStyle };
+                    [myAttrString addAttributes:dict range:range];
+
                 }
             }
         }];
     }
+    return myAttrString;
 }
 
 -(void)insertCheckBtn:(NSTextAttachment *)textAtmt{
@@ -488,47 +492,10 @@
     }];
     
     [self setCurrentDayAttrbutedString:myAttrString];
-
 }
 
 -(void)setCurrentDayAttrbutedString:(NSAttributedString *)attrStr{
-    
-    UIFont *fnt = [UIFont fontWithName:@"Helvetica" size:20.0];
-    
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"GGG®GGG"
-                                                                                         attributes:@{NSFontAttributeName: [fnt fontWithSize:20]}];
-    [attributedString setAttributes:@{NSFontAttributeName : [fnt fontWithSize:10]
-                                      , NSBaselineOffsetAttributeName : @10} range:NSMakeRange(3, 1)];
-    
-    
-    
-    NSMutableAttributedString * attriString = [[NSMutableAttributedString alloc]initWithAttributedString:attrStr];
-    [attriString enumerateAttribute:NSFontAttributeName inRange:NSMakeRange(0, attriString.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop){
-    
-        NSDictionary * attDic = [attriString attributesAtIndex:range.location effectiveRange:&range];
-        //If attrDic has NSOriginalFont, it is text
-
-        if(attDic[@"NSOriginalFont"]){
-//            NSMutableAttributedString * muteAttr = [[NSMutableAttributedString alloc]initWithAttributedString:[attriString attributedSubstringFromRange:range]];
-            if (value) {
-                UIFont *oldFont = (UIFont *)value;
-                UIFont *newFont = [oldFont fontWithSize:oldFont.pointSize];
-                [attriString removeAttribute:NSFontAttributeName range:range];
-                [attriString addAttribute:NSFontAttributeName value:newFont range:range];
-                
-                [attriString addAttribute:(__bridge NSString *)kCTSuperscriptAttributeName value:@(1) range:range];
-            }
-        }
-
-
-        
-    }];
-
-    
-    
-    self.currentDayTextView.textAlignment = NSTextAlignmentCenter;
-    
-    self.currentDayTextView.attributedText = attriString;
+    self.currentDayTextView.attributedText = attrStr;//[DinnerUtility modifyAttributedString:attrStr];
 }
 
 - (void)didReceiveMemoryWarning {

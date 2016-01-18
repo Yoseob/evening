@@ -128,7 +128,7 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
     
 
     CGFloat x = self.frame.size.width/2;
-//    taskLabel.frame = CGRectMake(x - 10 , self.frame.size.height - 10, 20, 1.8);
+    taskLabel.frame = CGRectMake(x - 10 , self.frame.size.height - 10, 20, 1.8);
     taskLabel.backgroundColor = [UIColor clearColor];
 
     taskLabel.font = [UIFont systemFontOfSize:10];
@@ -230,7 +230,6 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
         if(!self.isOtherMonth){
             textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColorToday];
             taskLabel.backgroundColor = [UIColor redColor];
-
             taskLabel.textColor = [UIColor whiteColor];
             self.layer.borderWidth = 0.f;
 

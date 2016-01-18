@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DinnerUtility.h"
+#import <CoreText/CoreText.h>
 @protocol InputViewDelegate <NSObject>
 
 -(UITextView *) textViewBinding;
@@ -14,10 +16,10 @@
 -(CGFloat)controlBarheight;
 
 -(void)insertCheckBtn:(NSTextAttachment *)textAtmt;
--(void)insertCheckBtnWithString:(NSAttributedString *)attrText;
-
+//-(void)insertCheckBtnWithString:(NSAttributedString *)attrText;
+-(NSMutableAttributedString *)insertCheckBtnWithString:(NSAttributedString *)attrText;
 @end
-@interface InputViewViewController : UIViewController <UIImagePickerControllerDelegate>
+@interface InputViewViewController : UIViewController <UIImagePickerControllerDelegate , UITextViewDelegate>
 
 @property (nonatomic , weak) id<InputViewDelegate> delegate;
 @end
