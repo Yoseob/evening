@@ -43,6 +43,8 @@
 
 - (id)haveEvent:(NSDate *)date
 {
+    
+
     DataBaseManager * manager = [DataBaseManager getDefaultDataBaseManager];
     return [manager thumbNailWith:date];
 

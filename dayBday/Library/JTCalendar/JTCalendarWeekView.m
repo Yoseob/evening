@@ -60,7 +60,7 @@
 {
     CGFloat x = 0;
     CGFloat width = self.frame.size.width / 7.;
-    CGFloat height = self.frame.size.height;
+    CGFloat height = self.frame.size.height ;
     
     if(self.calendarManager.calendarAppearance.readFromRightToLeft){
         for(UIView *view in [[self.subviews reverseObjectEnumerator] allObjects]){
@@ -117,13 +117,17 @@
 - (void)reloadData
 {
     for(JTCalendarDayView *view in daysViews){
+        view.isHaveData = [self.calendarManager.dataSource calendarHaveEvent:self.calendarManager date:view.date];
+        view.thumbnail = [self.calendarManager.dataCache haveEvent:view.date];
         [view reloadData];
+
     }
 }
 
 - (void)reloadAppearance
 {
     for(JTCalendarDayView *view in daysViews){
+
         [view reloadAppearance];
     }
 }

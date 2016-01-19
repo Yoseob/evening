@@ -105,7 +105,6 @@
 - (void)setBeginningOfMonth:(NSDate *)date
 {
     NSDate *currentDate = date;
-        NSLog(@"%@",currentDate);
     NSCalendar *calendar = self.calendarManager.calendarAppearance.calendar;
     
     {

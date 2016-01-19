@@ -7,14 +7,11 @@
 
 #import "JTCalendarDayView.h"
 
-#import "JTCircleView.h"
-
 #import "DataBaseManager.h"
 
 @interface JTCalendarDayView (){
     UIView *backgroundView;
     UIImageView * thumbnailImage;
-    UIImage * tImage;
     UILabel *textLabel, *taskLabel;
     UIView * underBar;
     BOOL isSelected;
@@ -112,18 +109,12 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
     textLabel.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     backgroundView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
 
-
-    CGFloat sizeCircle = MIN(self.frame.size.width, self.frame.size.height);
-    CGFloat sizeDot = sizeCircle;
+    CGFloat top_Left_Margin = 1;
+    thumbnailImage.frame = CGRectMake(top_Left_Margin,
+                                      top_Left_Margin,
+                                      self.frame.size.width-(top_Left_Margin * 1),
+                                      self.frame.size.height-(top_Left_Margin * 1));
     
-    sizeCircle = sizeCircle * self.calendarManager.calendarAppearance.dayCircleRatio;
-    sizeDot = sizeDot * self.calendarManager.calendarAppearance.dayDotRatio;
-    
-    sizeCircle = roundf(sizeCircle);
-    sizeDot = roundf(sizeDot);
-    
-    CGFloat top_Left_Margin = 0;
-    thumbnailImage.frame = CGRectMake(top_Left_Margin, top_Left_Margin, self.frame.size.width-top_Left_Margin*2, self.frame.size.height-(top_Left_Margin *2));
     thumbnailImage.center = CGPointMake(self.frame.size.width / 2., self.frame.size.height / 2.);
     
 
@@ -135,8 +126,6 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
     taskLabel.layer.cornerRadius = 10.f;
     taskLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
     taskLabel.textAlignment = NSTextAlignmentCenter;
-    
-    
 }
 
 - (void)setDate:(NSDate *)date
@@ -153,6 +142,19 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
     textLabel.text = [dateFormatter stringFromDate:date];
     cacheIsToday = -1;
     cacheCurrentDateText = nil;
+    
+    if([self isToday]){
+        textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColorToday];
+        taskLabel.backgroundColor = [self.calendarManager.calendarAppearance dayTextColorToday];
+//    }else {
+//        taskLabel.backgroundColor = [UIColor clearColor];
+    }else if(!self.isOtherMonth){
+        textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColor];
+    }
+    else{
+        textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColorOtherMonth];
+    }
+
 }
 
 - (void)didTouch
@@ -206,72 +208,28 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
     
     if(selected){
         if(!self.isOtherMonth){
+//            self.layer.borderWidth = 1.f;
+//            self.layer.borderColor = [self.calendarManager.calendarAppearance dayCircleColorToday].CGColor;
+//            taskLabel.backgroundColor = [UIColor clearColor];
+//            taskLabel.textColor = [UIColor blackColor];
 
-//            textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColorSelected];
-            self.layer.borderWidth = 1.f;
-            self.layer.borderColor = [self.calendarManager.calendarAppearance dayCircleColorToday].CGColor;
-            taskLabel.backgroundColor = [UIColor clearColor];
-            taskLabel.textColor = [UIColor blackColor];
-            taskLabel.text = @"";
-
+//        }else{
+//            textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColorSelectedOtherMonth];
+//            self.layer.borderWidth = 0.f;
+//            thumbnailImage.image = nil;
+//            taskLabel.backgroundColor = [UIColor clearColor];
+//            taskLabel.textColor = [UIColor blackColor];
+//        }
+//        if([ self isToday]){
+//            taskLabel.backgroundColor = [UIColor redColor];
         }
-        else{
-
-            textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColorSelectedOtherMonth];
-            self.layer.borderWidth = 0.f;
-            thumbnailImage.image = nil;
-            taskLabel.backgroundColor = [UIColor clearColor];
-            taskLabel.textColor = [UIColor blackColor];
-          
-        }
-    
-    }
-    else if([self isToday]){
-        if(!self.isOtherMonth){
-            textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColorToday];
-            taskLabel.backgroundColor = [UIColor redColor];
-            taskLabel.textColor = [UIColor whiteColor];
-            self.layer.borderWidth = 0.f;
-
-        }
-        else{
-            textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColorTodayOtherMonth];
-            self.layer.borderWidth = 0.f;
-            taskLabel.backgroundColor = [UIColor clearColor];
-            taskLabel.textColor = [UIColor blackColor];
-            taskLabel.text = @"";
-        }
-    }else if(tImage){
-        if(!self.isOtherMonth){
-            textLabel.textColor = [UIColor whiteColor];//[self.calendarManager.calendarAppearance dayTextColorToday];
-            taskLabel.text = @"";
-            taskLabel.textColor = [UIColor whiteColor];
-            self.layer.borderWidth = 0.f;
-            
-        }
-        else{
-            textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColorTodayOtherMonth];
-            self.layer.borderWidth = 0.f;
-            taskLabel.backgroundColor = [UIColor clearColor];
-            taskLabel.textColor = [UIColor blackColor];
-            taskLabel.text = @"";
-        }
-
+   
     }else {
         if(!self.isOtherMonth){
             textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColor];
-            self.layer.borderWidth = 0.f;
-            taskLabel.backgroundColor = [UIColor clearColor];
-            taskLabel.textColor = [UIColor blackColor];
-            taskLabel.text = @"";
-            
         }
         else{
             textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColorOtherMonth];
-            self.layer.borderWidth = 0.f;
-            taskLabel.backgroundColor = [UIColor clearColor];
-            taskLabel.textColor = [UIColor blackColor];
-            taskLabel.text = @"";
         }
     }
 }
@@ -285,10 +243,13 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
 - (void)reloadData
 {
 
-    thumbnailImage.image = nil;
-    tImage = nil;
-    Thumbnail * thumbnail = [self.calendarManager.dataCache haveEvent:self.date];
-    thumbnailImage.image = thumbnail.image;
+    thumbnailImage.image = self.thumbnail.image;
+
+    if (thumbnailImage.image == nil && self.isHaveData){
+        thumbnailImage.backgroundColor = [UIColor whiteColor];
+    }else{
+        thumbnailImage.backgroundColor = [UIColor clearColor];
+    }
     
     BOOL selected = [self isSameDate:[self.calendarManager currentDateSelected]];
     [self setSelected:selected animated:NO];
@@ -327,6 +288,7 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
         cacheCurrentDateText = [dateFormatter stringFromDate:self.date];
     }
     
+ 
     NSString *dateText2 = [dateFormatter stringFromDate:date];
     
     if ([cacheCurrentDateText isEqualToString:dateText2]) {

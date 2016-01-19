@@ -166,12 +166,23 @@
     [container setContentOffset:selectedView.frame.origin animated:YES];
 }
 
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    NSLog(@"%lf",scrollView.contentOffset.x/scrollView.frame.size.width);
+    int index = scrollView.contentOffset.x/scrollView.frame.size.width;
+//    DinnerDay * d = dinners[index+1];
+//    [viewController changeScollerSelectedDay:[DinnerUtility StringToDate:d.dayStr] withSelectTextView:dataTable[d.dayStr]];
+    
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+}
 -(void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset{
     int index =targetContentOffset->x/scrollView.frame.size.width;
     
     DinnerDay * d = dinners[index];
     viewController.currentDayTextView = dataTable[d.dayStr];
     [viewController changeScollerSelectedDay:[DinnerUtility StringToDate:d.dayStr] withSelectTextView:dataTable[d.dayStr]];
+    
 }
 
 -(void)insertNewTextView:(NSDate *)date{

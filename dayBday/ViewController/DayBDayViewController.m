@@ -440,8 +440,8 @@
 //    }
 }
 
-- (id)calendarHaveEvent:(JTCalendar *)calendar date:(NSDate *)date{
-    return  nil;
+- (BOOL)calendarHaveEvent:(JTCalendar *)calendar date:(NSDate *)date{
+    return [sManager isDateDinner:[DinnerUtility DateToString:date]];
 }
 
 - (void)calendarDidDateSelected:(JTCalendar *)calendar date:(NSDate *)date {
@@ -458,6 +458,12 @@
     [self.calendar setCurrentDateSelected:day];
     [self.calendar setCurrentDate:day];
     [self changeCurruntScrollView:day];
+}
+
+-(void)willChangeCurrentDayViewWith:(NSDate *)oldDate andNewData:(NSDate *)newDate{
+}
+-(void)persentChangeCurrentDay:(float)percent{
+    
 }
 
 -(void)changeCurruntScrollView:(NSDate *)date{

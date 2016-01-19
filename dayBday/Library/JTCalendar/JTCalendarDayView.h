@@ -8,12 +8,14 @@
 #import <UIKit/UIKit.h>
 
 #import "JTCalendar.h"
-
+#import "DataBaseManager.h"
 @interface JTCalendarDayView : UIView
 
 @property (weak, nonatomic) JTCalendar *calendarManager;
 
 @property (strong, nonatomic) NSDate *date;
+@property (assign ,nonatomic) BOOL isHaveData;
+@property (strong,nonatomic) Thumbnail * thumbnail;
 @property (assign, nonatomic) BOOL isOtherMonth;
 
 - (void)reloadData;
