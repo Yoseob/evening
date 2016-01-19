@@ -12,7 +12,7 @@
 @interface JTCalendarDayView (){
     UIView *backgroundView;
     UIImageView * thumbnailImage;
-    UILabel *textLabel, *taskLabel;
+    UILabel *textLabel, *bottomLineView;
     UIView * underBar;
     BOOL isSelected;
     
@@ -78,9 +78,9 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
     }
     
     {
-        taskLabel = [UILabel new];
+        bottomLineView = [UILabel new];
 
-        [self addSubview:taskLabel];
+        [self addSubview:bottomLineView];
     }
     
 
@@ -119,13 +119,13 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
     
 
     CGFloat x = self.frame.size.width/2;
-    taskLabel.frame = CGRectMake(x - 10 , self.frame.size.height - 10, 20, 1.8);
-    taskLabel.backgroundColor = [UIColor clearColor];
+    bottomLineView.frame = CGRectMake(x - 10 , self.frame.size.height - 10, 20, 1.8);
+    bottomLineView.backgroundColor = [UIColor clearColor];
 
-    taskLabel.font = [UIFont systemFontOfSize:10];
-    taskLabel.layer.cornerRadius = 10.f;
-    taskLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
-    taskLabel.textAlignment = NSTextAlignmentCenter;
+    bottomLineView.font = [UIFont systemFontOfSize:10];
+    bottomLineView.layer.cornerRadius = 10.f;
+    bottomLineView.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
+    bottomLineView.textAlignment = NSTextAlignmentCenter;
 }
 
 - (void)setDate:(NSDate *)date
@@ -138,22 +138,10 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
     }
     
     self->_date = date;
-    
     textLabel.text = [dateFormatter stringFromDate:date];
     cacheIsToday = -1;
     cacheCurrentDateText = nil;
     
-    if([self isToday]){
-        textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColorToday];
-        taskLabel.backgroundColor = [self.calendarManager.calendarAppearance dayTextColorToday];
-//    }else {
-//        taskLabel.backgroundColor = [UIColor clearColor];
-    }else if(!self.isOtherMonth){
-        textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColor];
-    }
-    else{
-        textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColorOtherMonth];
-    }
 
 }
 
@@ -161,7 +149,7 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
 {
     [self setSelected:YES animated:YES];
     [self.calendarManager setCurrentDateSelected:self.date];
-    
+    [self.calendarManager selectedDayView:self];
     [[NSNotificationCenter defaultCenter] postNotificationName:kJTCalendarDaySelected object:self.date];
     
     [self.calendarManager.dataSource calendarDidDateSelected:self.calendarManager date:self.date];
@@ -200,59 +188,53 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
 
+    NSLog(@"yoseob");
     if(isSelected == selected){
         animated = NO;
     }
 
     isSelected = selected;
-    
-    if(selected){
-        if(!self.isOtherMonth){
-//            self.layer.borderWidth = 1.f;
-//            self.layer.borderColor = [self.calendarManager.calendarAppearance dayCircleColorToday].CGColor;
-//            taskLabel.backgroundColor = [UIColor clearColor];
-//            taskLabel.textColor = [UIColor blackColor];
 
-//        }else{
-//            textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColorSelectedOtherMonth];
-//            self.layer.borderWidth = 0.f;
-//            thumbnailImage.image = nil;
-//            taskLabel.backgroundColor = [UIColor clearColor];
-//            taskLabel.textColor = [UIColor blackColor];
-//        }
-//        if([ self isToday]){
-//            taskLabel.backgroundColor = [UIColor redColor];
-        }
-   
-    }else {
-        if(!self.isOtherMonth){
-            textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColor];
-        }
-        else{
-            textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColorOtherMonth];
-        }
-    }
+    
 }
 
 - (void)setIsOtherMonth:(BOOL)isOtherMonth
 {
     self->_isOtherMonth = isOtherMonth;
-    [self setSelected:isSelected animated:NO];
+//    [self setSelected:isSelected animated:NO];
 }
 
 - (void)reloadData
 {
 
+    if(!self.isOtherMonth){
+        textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColor];
+    }
+    else{
+        textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColorOtherMonth];
+    }
+    if([self isToday]){
+        textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColorToday];
+        bottomLineView.backgroundColor = [self.calendarManager.calendarAppearance dayTextColorToday];
+    }else {
+        bottomLineView.backgroundColor = [UIColor clearColor];
+    }
+
     thumbnailImage.image = self.thumbnail.image;
 
     if (thumbnailImage.image == nil && self.isHaveData){
         thumbnailImage.backgroundColor = [UIColor whiteColor];
+        
+    }else if(thumbnailImage.image){
+        thumbnailImage.backgroundColor = [UIColor clearColor];
+        textLabel.textColor = [UIColor whiteColor];
     }else{
         thumbnailImage.backgroundColor = [UIColor clearColor];
     }
     
-    BOOL selected = [self isSameDate:[self.calendarManager currentDateSelected]];
-    [self setSelected:selected animated:NO];
+//
+//    BOOL selected = [self isSameDate:[self.calendarManager currentDateSelected]];
+//    [self setSelected:selected animated:NO];
 }
 
 - (BOOL)isToday
@@ -309,15 +291,15 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
 {
 
     textLabel.textAlignment = NSTextAlignmentCenter;
-    taskLabel.textAlignment = NSTextAlignmentCenter;
+    bottomLineView.textAlignment = NSTextAlignmentCenter;
     textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Thin" size:13];//
     //HelveticaNeue-Thin , HelveticaNeue-Light
     backgroundView.backgroundColor = self.calendarManager.calendarAppearance.dayBackgroundColor;
     backgroundView.layer.borderWidth = self.calendarManager.calendarAppearance.dayBorderWidth;
     backgroundView.layer.borderColor = self.calendarManager.calendarAppearance.dayBorderColor.CGColor;
     
-    [self configureConstraintsForSubviews];
-    [self setSelected:isSelected animated:NO];
+//    [self configureConstraintsForSubviews];
+//    [self setSelected:isSelected animated:NO];
 }
 
 @end

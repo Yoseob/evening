@@ -12,7 +12,7 @@
 
 #import "JTCalendarMenuView.h"
 #import "JTCalendarContentView.h"
-
+#import "JTCalendarDayView.h"
 #import "JTCalendarDataCache.h"
 
 @interface JTCalendar : NSObject<UIScrollViewDelegate>
@@ -36,7 +36,7 @@
 
 - (void)loadPreviousPage;
 - (void)loadNextPage;
-
+- (void)selectedDayView:(id)view;
 - (void)repositionViews;
 
 @end

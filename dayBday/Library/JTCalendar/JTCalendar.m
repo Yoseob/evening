@@ -12,6 +12,7 @@
 @interface JTCalendar(){
     BOOL cacheLastWeekMode;
     NSUInteger cacheFirstWeekDay;
+    JTCalendarDayView * preDayView;
 }
 
 @end
@@ -250,6 +251,19 @@
     frame.origin.x = frame.size.width * ((NUMBER_PAGES_LOADED / 2) - 1);
     frame.origin.y = 0;
     [self.contentView scrollRectToVisible:frame animated:YES];
+}
+
+-(void)selectedDayView:(id)view{
+    
+    if(preDayView){
+        preDayView.layer.borderWidth = 0.f;
+    }
+    
+    JTCalendarDayView * targetView =(JTCalendarDayView*)view;
+    targetView.layer.borderWidth = 1.f;
+    targetView.layer.borderColor = [self.calendarAppearance dayCircleColorToday].CGColor;
+    
+    preDayView = targetView;
 }
 
 @end
