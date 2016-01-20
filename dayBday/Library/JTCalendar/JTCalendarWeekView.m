@@ -114,13 +114,14 @@
     }
 }
 
-- (void)reloadData
-{
+- (void)reloadData{
     for(JTCalendarDayView *view in daysViews){
         view.isHaveData = [self.calendarManager.dataSource calendarHaveEvent:self.calendarManager date:view.date];
         view.thumbnail = [self.calendarManager.dataCache haveEvent:view.date];
+        if(view.isHaveData || view.thumbnail){
+            [self.calendarManager.dataCache addDayView:view];
+        }
         [view reloadData];
-
     }
 }
 

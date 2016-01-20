@@ -11,7 +11,7 @@
 #import "JTCalendar.h"
 
 @interface JTCalendarDataCache(){
-    NSMutableDictionary *events;
+    NSMutableDictionary *events,*views;
     NSDateFormatter *dateFormatter;
 };
 
@@ -25,16 +25,14 @@
     if(!self){
         return nil;
     }
-    
+    views = [[DataBaseManager getDefaultDataBaseManager]dinnerViewArchive];
     dateFormatter = [NSDateFormatter new];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
     return self;
 }
 
-- (void)reloadData
-{
-
+- (void)reloadData{
     DataBaseManager * manager = [DataBaseManager getDefaultDataBaseManager];
     [manager reloadCachedData];
     [manager prepareAllOfDinnerData];
@@ -43,11 +41,21 @@
 
 - (id)haveEvent:(NSDate *)date
 {
-    
-
     DataBaseManager * manager = [DataBaseManager getDefaultDataBaseManager];
     return [manager thumbNailWith:date];
-
 }
+-(void)removeViews{
+    [views removeAllObjects];
+}
+-(void)addDayView:(JTCalendarDayView *)view{
+    NSString * key = [DinnerUtility DateToString:view.date];
+    if(!views[key]){
+        [views setObject:view forKey:key];
+    }
+}
+-(JTCalendarDayView *)getDayViewWtihIndex:(NSString*)date{
+    return views[date];
+}
+
 
 @end

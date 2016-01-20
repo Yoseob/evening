@@ -150,6 +150,7 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
     [self setSelected:YES animated:YES];
     [self.calendarManager setCurrentDateSelected:self.date];
     [self.calendarManager selectedDayView:self];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:kJTCalendarDaySelected object:self.date];
     
     [self.calendarManager.dataSource calendarDidDateSelected:self.calendarManager date:self.date];
@@ -188,7 +189,6 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
 
-    NSLog(@"yoseob");
     if(isSelected == selected){
         animated = NO;
     }

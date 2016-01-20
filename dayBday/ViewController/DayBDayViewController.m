@@ -160,7 +160,7 @@
 #pragma mark Subview setup
 
 - (void)setUpCalendar {
-    self.calendar = [JTCalendar new];
+    self.calendar = [JTCalendar getDefaultJTCalendar];
     self.calendar.calendarAppearance.menuMonthTextFont = [UIFont systemFontOfSize:13.0f];
     self.calendar.calendarAppearance.menuMonthTextColor = [UIColor grayColor];
     self.calendar.calendarAppearance.monthBlock = ^NSString *(NSDate *date, JTCalendar *jt_calendar){
@@ -263,8 +263,8 @@
     containerScollView.showsHorizontalScrollIndicator = YES;
     containerScollView.backgroundColor = [UIColor brownColor];
     
-    [viewBuilder buildContainerScrollerView:containerScollView];
-    [sManager DinnerDataBind:[dbManager getDinnerData]];
+
+    [sManager DinnerDataBind:nil];
     [self setUptextViewTapGestureRecognizer];
 }
 
@@ -291,9 +291,10 @@
 
 -(void)removeThisEvent:(id)sender{
     [dbManager removeThisDayEvent:today];
+    [sManager removeDinnerData:[DinnerUtility DateToString:today]];
     [self reloadAllofData];
     [self setCurrentDayAttrbutedString:[[NSAttributedString alloc]initWithString:@""]];
-    [sManager removeDinnerData:[DinnerUtility DateToString:today]];
+
 }
 
 #pragma mark 
@@ -381,12 +382,9 @@
 }
 
 -(void)setupAndInit{
-    dbManager = [[DataBaseManager alloc]init];
+    dbManager = [DataBaseManager getDefaultDataBaseManager];
     viewBuilder = [[MainViewBuilder alloc]initWithTarget:self];
-    {
-        [dbManager prepareAllOfDinnerData];
-    }
-
+    
     {
         self.navigationController.navigationBar.translucent = NO;
         self.view.backgroundColor = [UIColor whiteColor];
@@ -417,11 +415,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupAndInit];
+    [self setupContainerScollView];
     [self setUpBottomBarContainer];
     [self setUpCalendar];
-    [self setupContainerScollView];
     [self setUpBarButtonItems];
     [self addUpDownGesture];
+    [viewBuilder buildContainerScrollerView:containerScollView];
     [self.view bringSubviewToFront:bottomBar];
 }
 
@@ -441,12 +440,12 @@
 }
 
 - (BOOL)calendarHaveEvent:(JTCalendar *)calendar date:(NSDate *)date{
-    return [sManager isDateDinner:[DinnerUtility DateToString:date]];
+    return [dbManager isDateDinner:[DinnerUtility DateToString:date]];
 }
 
 - (void)calendarDidDateSelected:(JTCalendar *)calendar date:(NSDate *)date {
     today = date;
-    if(![dbManager searchDataWithData:date] && ![sManager isDateDinner:[DinnerUtility DateToString:date]]){
+    if(![dbManager searchDataWithData:date] && ![dbManager isDateDinner:[DinnerUtility DateToString:date]]){
         [sManager insertNewTextView:date];
     }
     [sManager visibleCurrentTextView:date];
@@ -461,7 +460,9 @@
 }
 
 -(void)willChangeCurrentDayViewWith:(NSDate *)oldDate andNewData:(NSDate *)newDate{
+
 }
+
 -(void)persentChangeCurrentDay:(float)percent{
     
 }
@@ -484,7 +485,6 @@
                                         characterIndex:range.location];
             }
             
-            NSLog(@"%lf" , image.size.width);
             if(image.size.width < 50){
                 NSString * key = [NSString stringWithFormat:@"%ld",range.location];
                 CheckBox * check = checkBoxs[key];

@@ -254,16 +254,19 @@
 }
 
 -(void)selectedDayView:(id)view{
-    
     if(preDayView){
         preDayView.layer.borderWidth = 0.f;
     }
-    
     JTCalendarDayView * targetView =(JTCalendarDayView*)view;
     targetView.layer.borderWidth = 1.f;
     targetView.layer.borderColor = [self.calendarAppearance dayCircleColorToday].CGColor;
-    
     preDayView = targetView;
 }
+
+-(void)selectedDayViewWithIndex:(NSString *)dayStr{
+    JTCalendarDayView * targetView =(JTCalendarDayView*)[self.dataCache getDayViewWtihIndex:dayStr];
+    [self selectedDayView:targetView];
+}
+
 
 @end

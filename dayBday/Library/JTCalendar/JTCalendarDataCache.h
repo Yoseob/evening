@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 
 @class JTCalendar;
+@class JTCalendarDayView;
 
 @interface JTCalendarDataCache : NSObject
 
@@ -16,6 +17,7 @@
 - (void)reloadData;
 - (id)haveEvent:(NSDate *)date;
 
-
-
+-(void)removeViews;
+-(void)addDayView:(JTCalendarDayView *)view;
+-(JTCalendarDayView *)getDayViewWtihIndex:(NSString*)date;
 @end

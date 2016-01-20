@@ -33,7 +33,7 @@
     if(self){
         self.viewController = vc;
         textViews = [NSMutableArray new];
-        dataTable = [NSMutableDictionary new];
+        dataTable = [[DataBaseManager getDefaultDataBaseManager]dinnerWithViewTable];
     }
     return  self;
 }
@@ -41,7 +41,7 @@
 //prepare leftView
 
 -(void)prepareWithLeftDay:(DinnerDay *)day{
-    
+
 }
 
 //prepare rightView
@@ -51,8 +51,8 @@
 }
 
 -(void)DinnerDataBind:(NSArray * )dinnerDatas{
-    dinners = [[NSMutableArray alloc]initWithArray:dinnerDatas];
-    [self containerViewEstimateScrollView];
+    [self reloadData];
+    [self reloadView];
 }
 
 -(void)containerViewEstimateScrollView{
@@ -167,8 +167,8 @@
 }
 
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
-    NSLog(@"%lf",scrollView.contentOffset.x/scrollView.frame.size.width);
-    int index = scrollView.contentOffset.x/scrollView.frame.size.width;
+//    NSLog(@"%lf",scrollView.contentOffset.x/scrollView.frame.size.width);
+//    int index = scrollView.contentOffset.x/scrollView.frame.size.width;
 //    DinnerDay * d = dinners[index+1];
 //    [viewController changeScollerSelectedDay:[DinnerUtility StringToDate:d.dayStr] withSelectTextView:dataTable[d.dayStr]];
     
@@ -181,6 +181,10 @@
     
     DinnerDay * d = dinners[index];
     viewController.currentDayTextView = dataTable[d.dayStr];
+    
+    
+    [viewController.calendar selectedDayViewWithIndex:d.dayStr];
+    
     [viewController changeScollerSelectedDay:[DinnerUtility StringToDate:d.dayStr] withSelectTextView:dataTable[d.dayStr]];
     
 }
@@ -243,15 +247,14 @@
         x = [self makeContextWithDinnerData:newDinner textViewFrame:CGRectMake(x, 0, width, height)];
         index++;
     }
-    
 
 }
+
 -(void)removeDinnerData:(NSString *)dayStr{
     [dataTable removeObjectForKey:dayStr];
     for(DinnerDay * dinner in dinners){
         NSLog(@"%@ , %@", dayStr , dinner.dayStr);
         if([dayStr isEqualToString:dinner.dayStr]){
-//            [dinners removeObject:dinner];
         }
     }
 }
@@ -260,12 +263,31 @@
     
 }
 -(void)reloadView{
-//    [self containerViewEstimateScrollView];
+    
+    container.delegate = self;
+    container.contentOffset = CGPointMake(container.contentOffset.x, 0); // Prevent bug when contentOffset.y is negative
+    CGFloat x = 0.f;
+    CGFloat width = viewController.view.frame.size.width;
+    CGFloat height = container.frame.size.height;
+    
+    container.contentSize = CGSizeMake(dinners.count * viewController.view.frame.size.width,
+                                       container.contentSize.height);
+    container.pagingEnabled = YES;
+    
+    todayPos = CGPointZero;
+    
+    //create before today
+    DinnerDay * dinner;
+    int index = 0;
+    while (dinners.count > 0 && (dinner = dinners[index++]) ) {
+        x = [self makeContextWithDinnerData:dinner textViewFrame:CGRectMake(x, 0, width, height)];
+    }
 }
 
 -(void)reloadData{
+    [[DataBaseManager getDefaultDataBaseManager]prepareAllOfDinnerData];
+    dinners = [[DataBaseManager getDefaultDataBaseManager]dinnerDataArchive];
+
 }
--(BOOL)isDateDinner:(NSString *)dayStr{
-    return dataTable[dayStr] != nil;
-}
+
 @end

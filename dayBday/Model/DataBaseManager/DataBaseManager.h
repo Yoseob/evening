@@ -12,6 +12,9 @@
 #import "CheckBoxsDao.h"
 #import "ThumbnailDao.h"
 @interface DataBaseManager : NSObject
+@property (nonatomic,strong)NSMutableDictionary * thumbNailDataArchive ;
+@property (nonatomic,strong)NSMutableArray *dinnerDataArchive;
+@property (nonatomic,strong)NSMutableDictionary * dinnerWithViewTable ,*dinnerViewArchive;
 
 //dinner
 +(id)getDefaultDataBaseManager;
@@ -26,4 +29,8 @@
 
 //remove
 -(void)removeThisDayEvent:(NSDate *)day;
+
+
+
+-(BOOL)isDateDinner:(NSString*)dayStr;
 @end

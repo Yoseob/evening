@@ -39,5 +39,5 @@
 
 -(void)insertNewTextView:(NSDate *)date;
 -(void)removeDinnerData:(NSString *)dayStr;
--(BOOL)isDateDinner:(NSString*)dayStr;
+
 @end
