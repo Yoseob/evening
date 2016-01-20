@@ -47,12 +47,12 @@
 -(void)removeViews{
     [views removeAllObjects];
 }
+
 -(void)addDayView:(JTCalendarDayView *)view{
     NSString * key = [DinnerUtility DateToString:view.date];
-    if(!views[key]){
-        [views setObject:view forKey:key];
-    }
+    [views setObject:view forKey:key];
 }
+
 -(JTCalendarDayView *)getDayViewWtihIndex:(NSString*)date{
     return views[date];
 }

@@ -128,7 +128,6 @@
 - (void)reloadAppearance
 {
     for(JTCalendarDayView *view in daysViews){
-
         [view reloadAppearance];
     }
 }

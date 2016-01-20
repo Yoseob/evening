@@ -12,7 +12,9 @@
 @interface JTCalendar(){
     BOOL cacheLastWeekMode;
     NSUInteger cacheFirstWeekDay;
-    JTCalendarDayView * preDayView;
+    JTCalendarDayView * preDayView , *currentDayView , *nextDayView;
+    
+    
 }
 
 @end
@@ -254,19 +256,31 @@
 }
 
 -(void)selectedDayView:(id)view{
-    if(preDayView){
-        preDayView.layer.borderWidth = 0.f;
-    }
+    if(preDayView) preDayView.backgroundColor = [UIColor clearColor];
+    currentDayView.backgroundColor = [UIColor clearColor];
+    nextDayView.backgroundColor = [UIColor clearColor];
+    
     JTCalendarDayView * targetView =(JTCalendarDayView*)view;
-    targetView.layer.borderWidth = 1.f;
-    targetView.layer.borderColor = [self.calendarAppearance dayCircleColorToday].CGColor;
+    targetView.backgroundColor = [self.calendarAppearance dayCircleColorToday];
     preDayView = targetView;
 }
 
 -(void)selectedDayViewWithIndex:(NSString *)dayStr{
-    JTCalendarDayView * targetView =(JTCalendarDayView*)[self.dataCache getDayViewWtihIndex:dayStr];
-    [self selectedDayView:targetView];
+//    nextDayView = (JTCalendarDayView*)[self.dataCache getDayViewWtihIndex:dayStr];
+//    nextDayView.backgroundColor = [UIColor whiteColor];
 }
 
+-(void)currentDayViewWithDayString:(NSString *)dayStr{
+    currentDayView = (JTCalendarDayView*)[self.dataCache getDayViewWtihIndex:dayStr];
+}
+
+-(void)nextDayViewDayWithDayString:(NSString *)dayStr{
+    nextDayView = (JTCalendarDayView*)[self.dataCache getDayViewWtihIndex:dayStr];
+}
+
+-(void)changingPercent:(float)alhpa{
+    currentDayView.backgroundColor = [UIColor colorWithRed:0x33/256. green:0xB3/256. blue:0xEC/256. alpha:1-alhpa];
+    nextDayView.backgroundColor = [UIColor colorWithRed:0x33/256. green:0xB3/256. blue:0xEC/256. alpha:alhpa];
+}
 
 @end

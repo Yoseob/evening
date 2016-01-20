@@ -39,4 +39,9 @@
 -(void)selectedDayViewWithIndex:(NSString *)dayStr;
 - (void)repositionViews;
 
+
+-(void)currentDayViewWithDayString:(NSString *)dayStr;
+-(void)nextDayViewDayWithDayString:(NSString *)dayStr;
+-(void)changingPercent:(float)alhpa;
+
 @end

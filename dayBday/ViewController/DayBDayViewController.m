@@ -65,6 +65,7 @@
     NSDate *currentDate = [NSDate date];
     [self.calendar setCurrentDateSelected:currentDate];
     [self.calendar setCurrentDate:currentDate];
+    [self.calendar selectedDayViewWithIndex:[DinnerUtility DateToString:currentDate]];
     [self calendarDidDateSelected:self.calendar date:currentDate];;
 }
 
@@ -294,6 +295,8 @@
     [sManager removeDinnerData:[DinnerUtility DateToString:today]];
     [self reloadAllofData];
     [self setCurrentDayAttrbutedString:[[NSAttributedString alloc]initWithString:@""]];
+    [self pushTodayButton:nil];
+
 
 }
 
@@ -430,13 +433,6 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated{
-    
-//    [sManager visibleCurrentTextView:today];
-//    [self setUptextViewTapGestureRecognizer];
-//    if(textViewTapGestureRecognizer){
-//        textViewTapGestureRecognizer.delegate = self;
-//        self.currentDayTextView.editable = NO;
-//    }
 }
 
 - (BOOL)calendarHaveEvent:(JTCalendar *)calendar date:(NSDate *)date{
@@ -450,6 +446,7 @@
     }
     [sManager visibleCurrentTextView:date];
     [self changeCurruntScrollView:today];
+    [self reloadAllofData];
 }
 
 -(void)changeScollerSelectedDay:(NSDate *)day withSelectTextView:(UITextView *)textView{

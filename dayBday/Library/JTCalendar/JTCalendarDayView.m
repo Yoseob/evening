@@ -11,7 +11,7 @@
 
 @interface JTCalendarDayView (){
     UIView *backgroundView;
-    UIImageView * thumbnailImage;
+//    UIImageView * thumbnailImage;
     UILabel *textLabel, *bottomLineView;
     UIView * underBar;
     BOOL isSelected;
@@ -19,12 +19,13 @@
     int cacheIsToday;
     NSString *cacheCurrentDateText;
 }
+
 @end
 
 static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
 
 @implementation JTCalendarDayView
-
+@synthesize thumbnailImage;
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -147,7 +148,7 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
 
 - (void)didTouch
 {
-    [self setSelected:YES animated:YES];
+//    [self setSelected:YES animated:YES];
     [self.calendarManager setCurrentDateSelected:self.date];
     [self.calendarManager selectedDayView:self];
     

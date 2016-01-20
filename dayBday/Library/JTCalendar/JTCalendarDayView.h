@@ -17,7 +17,7 @@
 @property (assign ,nonatomic) BOOL isHaveData;
 @property (strong,nonatomic) Thumbnail * thumbnail;
 @property (assign, nonatomic) BOOL isOtherMonth;
-
+@property (strong,nonatomic) UIImageView * thumbnailImage;
 - (void)reloadData;
 - (void)reloadAppearance;
 
