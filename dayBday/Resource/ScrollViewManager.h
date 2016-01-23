@@ -17,18 +17,8 @@
 
 -(id)initWithViewController:(DayBDayViewController *)vc;
 
-
+-(void)initialScrollViewWith:(NSDate *)today;
 -(void)DinnerDataBind:(NSArray * )dinnerDatas;
-
-
-//prepare leftView
-
--(void)prepareWithLeftDay:(DinnerDay *)day;
-
-//prepare rightView
-
--(void)prepareWithRightDay:(DinnerDay *)day;
-
 
 -(void)changeContainerViewSize:(CGFloat)height;
 

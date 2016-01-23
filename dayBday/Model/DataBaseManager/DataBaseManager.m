@@ -21,7 +21,7 @@
 @synthesize thumbNailDataArchive;
 @synthesize dinnerDataArchive;
 @synthesize dinnerWithViewTable;
-@synthesize dinnerViewArchive;
+@synthesize calendarDayViewArchive;
 
 
 +(id)getDefaultDataBaseManager{
@@ -36,7 +36,8 @@
     self = [super init];
     if(self){
         dinnerWithViewTable = [NSMutableDictionary new];
-        dinnerViewArchive = [NSMutableDictionary new];
+        calendarDayViewArchive = [NSMutableDictionary new];
+        innerdinnerDataArchive = [NSMutableDictionary new];
         dao = [DinnerObjDao getDefaultDinnerObjDao];
         tDao =[ThumbnailDao getDefaultThumbnailDao];
         cDao = [CheckBoxsDao getDefaultCheckBoxsDao];
@@ -47,22 +48,13 @@
     }
     return  self;
 }
--(NSAttributedString *) searchDataWithData:(NSDate *)day{
-    NSAttributedString *myAttrString= nil;
-    myAttrString = ((DinnerDay *) [innerdinnerDataArchive objectForKey:[DinnerUtility DateToString:day]]).attrText;
-    if(myAttrString){
-        NSLog(@"searchDataWithData");
-        return myAttrString;
+-(DinnerDay *) searchDataWithData:(NSDate *)day{
+    DinnerDay * retDinner= ([innerdinnerDataArchive objectForKey:[DinnerUtility DateToString:day]]);
+    if(!retDinner){
+        NSArray * result = [dao selectDayWith:day];
+        retDinner = result.firstObject;
     }
-    
-    
-    NSArray * result = [dao selectDayTextDataWith:day];
-    if(result.count > 0){
-        for(NSData *data in result){
-            myAttrString = [NSKeyedUnarchiver unarchiveObjectWithData: data];
-        }
-    }
-    return myAttrString;
+    return retDinner;
 }
 
 -(void)getImageInTheAttributeString:(NSAttributedString *)attrStr cacheArr:(NSMutableDictionary *)checkBoxs Day:(NSDate *)day{
@@ -130,7 +122,7 @@
 }
 
 -(void)removeThisDayEvent:(NSDate *)day{
-    [self.dinnerViewArchive removeObjectForKey:[DinnerUtility DateToString:day]];
+    [self.calendarDayViewArchive removeObjectForKey:[DinnerUtility DateToString:day]];
     
     [tDao removeThumbnailWith:day];
     [dao deleteRowWithData:day];
@@ -142,10 +134,12 @@
     NSLog(@"prepareAllOfDinnerData");
     dinnerDataArchive = [[NSMutableArray alloc]initWithArray:[dao selectAllDataWith:nil]];
     thumbNailDataArchive = [tDao selectThumbnails];
+
     for (DinnerDay * dinner in dinnerDataArchive) {
         [innerdinnerDataArchive setObject:dinner forKey:dinner.dayStr];
     }
 }
+
 -(NSArray *)getDinnerData{
     return dinnerDataArchive;
 }

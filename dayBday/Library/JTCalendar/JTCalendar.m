@@ -264,7 +264,7 @@
 -(void)selectedDayViewWithIndex:(NSString *)dayStr{
 //    nextDayView = (JTCalendarDayView*)[self.dataCache getDayViewWtihIndex:dayStr];
 //    nextDayView.backgroundColor = [UIColor whiteColor];
-    NSMutableDictionary * dic = [[DataBaseManager getDefaultDataBaseManager]dinnerViewArchive];
+    NSMutableDictionary * dic = [[DataBaseManager getDefaultDataBaseManager]calendarDayViewArchive];
     for (NSString * key in dic.allKeys ){
         JTCalendarDayView * temp = dic[key];
         if([key isEqualToString:dayStr]){
@@ -284,6 +284,7 @@
 }
 
 -(void)changingPercent:(float)alhpa{
+
     currentDayView.backgroundColor = [UIColor colorWithRed:0x33/256. green:0xB3/256. blue:0xEC/256. alpha:1-alhpa];
     nextDayView.backgroundColor = [UIColor colorWithRed:0x33/256. green:0xB3/256. blue:0xEC/256. alpha:alhpa];
 }

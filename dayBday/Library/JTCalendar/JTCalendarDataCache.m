@@ -25,7 +25,7 @@
     if(!self){
         return nil;
     }
-    views = [[DataBaseManager getDefaultDataBaseManager]dinnerViewArchive];
+    views = [[DataBaseManager getDefaultDataBaseManager]calendarDayViewArchive];
     dateFormatter = [NSDateFormatter new];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
@@ -54,6 +54,8 @@
 }
 
 -(JTCalendarDayView *)getDayViewWtihIndex:(NSString*)date{
+    
+    
     return views[date];
 }
 

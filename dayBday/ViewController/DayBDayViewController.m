@@ -265,8 +265,8 @@
     containerScollView.showsHorizontalScrollIndicator = YES;
     containerScollView.backgroundColor = [UIColor brownColor];
     
-
-    [sManager DinnerDataBind:nil];
+    
+    [sManager initialScrollViewWith:[NSDate new]];
     [self setUptextViewTapGestureRecognizer];
 }
 
@@ -441,12 +441,11 @@
 }
 
 - (void)calendarDidDateSelected:(JTCalendar *)calendar date:(NSDate *)date {
-    NSLog(@"calendarDidDateSelected");
     today = date;
     if(![dbManager searchDataWithData:date] && ![dbManager isDateDinner:[DinnerUtility DateToString:date]]){
+        
         [sManager insertNewTextView:date];
     }
-    NSLog(@"calendarDidDateSelected 1");
     
     [sManager visibleCurrentTextView:date];
     [self changeCurruntScrollView:today];
