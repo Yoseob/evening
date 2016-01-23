@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ContainerScollView : UIScrollView
-@property (nonatomic ,strong) UITextView * curruentTextView;
+@interface ContainerScollView : UIView
+@property (nonatomic ,strong) UITextView * textView;
 
--(id)initWithCurrentScrollView:(UIScrollView *)sc;
-
+-(id)initWithFrame:(CGRect)frame;
+-(void)addTextView:(UITextView *)_textView;
+- (void) moveViewPosition:(CGPoint)point;
+- (void) moveViewPositionToInitial;
 @end

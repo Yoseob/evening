@@ -12,7 +12,7 @@
 #import "DinnerDay.h"
 @interface ScrollViewManager : NSObject <UIScrollViewDelegate ,HPTextViewTapGestureRecognizerDelegate>
 @property (strong ,nonatomic)DayBDayViewController * viewController;
-@property (strong,nonatomic)ContainerScollView * container;
+@property (strong,nonatomic)UIScrollView * container;
 
 
 -(id)initWithViewController:(DayBDayViewController *)vc;

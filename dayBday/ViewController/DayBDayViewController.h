@@ -10,6 +10,7 @@
 #import "JTCalendar.h"
 #import "InputViewViewController.h"
 #import "HPTextViewTapGestureRecognizer.h"
+#import "ContainerScollView.h"
 
 @interface DayBDayViewController : UIViewController <JTCalendarDataSource , InputViewDelegate,HPTextViewTapGestureRecognizerDelegate ,UIScrollViewDelegate>
 {

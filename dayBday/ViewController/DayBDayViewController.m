@@ -20,7 +20,6 @@
 #import "CheckBox.h"
 
 #import "DataBaseManager.h"
-#import "ContainerScollView.h"
 #import "ScrollViewManager.h"
 @interface DayBDayViewController () < UIScrollViewDelegate,  UITextViewDelegate>
 
@@ -54,7 +53,7 @@
     NSArray * checkBoxImages;
     
     UIView * keyBoardController;
-    ContainerScollView * containerScollView;
+    UIScrollView * containerScollView;
     ScrollViewManager * sManager;
 
 }
@@ -394,7 +393,7 @@
         self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:38/255.f green:38/255.f blue:38/255.f alpha:1.f];
         {
             self.currentDayTextView = [[UITextView alloc] initWithFrame:CGRectZero];
-            containerScollView = [[ContainerScollView alloc]initWithCurrentScrollView:self.currentDayTextView];
+            containerScollView = [[UIScrollView alloc]initWithFrame:CGRectZero];
             containerScollView.frame = CGRectZero;
             textViewTapGestureRecognizer = [[HPTextViewTapGestureRecognizer alloc]init];
             textViewTapGestureRecognizer.delegate = self;
@@ -420,9 +419,9 @@
     
     
     [self setupAndInit];
-    [self setupContainerScollView];
     [self setUpBottomBarContainer];
     [self setUpCalendar];
+    [self setupContainerScollView];
     [self setUpBarButtonItems];
     [self addUpDownGesture];
     [viewBuilder buildContainerScrollerView:containerScollView];
