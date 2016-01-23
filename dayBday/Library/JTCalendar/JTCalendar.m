@@ -123,6 +123,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)sender
 {
+
     if(self.calendarAppearance.isWeekMode){
         return;
     }
@@ -248,7 +249,6 @@
 - (void)loadPreviousPage
 {
     self.menuMonthsView.scrollEnabled = NO;
-    
     CGRect frame = self.contentView.frame;
     frame.origin.x = frame.size.width * ((NUMBER_PAGES_LOADED / 2) - 1);
     frame.origin.y = 0;
@@ -256,18 +256,23 @@
 }
 
 -(void)selectedDayView:(id)view{
-    if(preDayView) preDayView.backgroundColor = [UIColor clearColor];
-    currentDayView.backgroundColor = [UIColor clearColor];
-    nextDayView.backgroundColor = [UIColor clearColor];
-    
     JTCalendarDayView * targetView =(JTCalendarDayView*)view;
-    targetView.backgroundColor = [self.calendarAppearance dayCircleColorToday];
-    preDayView = targetView;
+//    targetView.backgroundColor = [UIColor colorWithRed:0x33/256. green:0xB3/256. blue:0xEC/256. alpha:1.f];
+    [self selectedDayViewWithIndex:[DinnerUtility DateToString:targetView.date]];
 }
 
 -(void)selectedDayViewWithIndex:(NSString *)dayStr{
 //    nextDayView = (JTCalendarDayView*)[self.dataCache getDayViewWtihIndex:dayStr];
 //    nextDayView.backgroundColor = [UIColor whiteColor];
+    NSMutableDictionary * dic = [[DataBaseManager getDefaultDataBaseManager]dinnerViewArchive];
+    for (NSString * key in dic.allKeys ){
+        JTCalendarDayView * temp = dic[key];
+        if([key isEqualToString:dayStr]){
+            temp.backgroundColor = [UIColor colorWithRed:0x33/256. green:0xB3/256. blue:0xEC/256. alpha:1.f];
+        }else{
+            temp.backgroundColor = [UIColor clearColor];
+        }
+    }
 }
 
 -(void)currentDayViewWithDayString:(NSString *)dayStr{

@@ -20,8 +20,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //   [application setStatusBarHidden:YES];
     
-    JTCalendar* c =[JTCalendar getDefaultJTCalendar];
-    [c.dataCache reloadData];
     
     [application setStatusBarStyle:UIStatusBarStyleLightContent];
     [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];

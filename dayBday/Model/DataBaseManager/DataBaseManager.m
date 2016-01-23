@@ -15,7 +15,7 @@
     DinnerObjDao * dao;
     ThumbnailDao * tDao;
     CheckBoxsDao * cDao;
-    NSMutableArray *dinnerDataArchive;
+    NSMutableDictionary * innerdinnerDataArchive;
 
 }
 @synthesize thumbNailDataArchive;
@@ -48,8 +48,15 @@
     return  self;
 }
 -(NSAttributedString *) searchDataWithData:(NSDate *)day{
-    NSArray * result = [dao selectDayTextDataWith:day];
     NSAttributedString *myAttrString= nil;
+    myAttrString = ((DinnerDay *) [innerdinnerDataArchive objectForKey:[DinnerUtility DateToString:day]]).attrText;
+    if(myAttrString){
+        NSLog(@"searchDataWithData");
+        return myAttrString;
+    }
+    
+    
+    NSArray * result = [dao selectDayTextDataWith:day];
     if(result.count > 0){
         for(NSData *data in result){
             myAttrString = [NSKeyedUnarchiver unarchiveObjectWithData: data];
@@ -132,8 +139,12 @@
 }
 
 -(void)prepareAllOfDinnerData{
+    NSLog(@"prepareAllOfDinnerData");
     dinnerDataArchive = [[NSMutableArray alloc]initWithArray:[dao selectAllDataWith:nil]];
     thumbNailDataArchive = [tDao selectThumbnails];
+    for (DinnerDay * dinner in dinnerDataArchive) {
+        [innerdinnerDataArchive setObject:dinner forKey:dinner.dayStr];
+    }
 }
 -(NSArray *)getDinnerData{
     return dinnerDataArchive;

@@ -13,6 +13,7 @@
     NSMutableArray * dinners;
     NSMutableArray * textViews;
     NSMutableDictionary * dataTable;
+    NSMutableDictionary * textViewTable;
     CGPoint todayPos;
     DinnerDay * nextDinner;
     
@@ -36,6 +37,7 @@
     if(self){
         self.viewController = vc;
         textViews = [NSMutableArray new];
+        textViewTable = [NSMutableDictionary new];
         dataTable = [[DataBaseManager getDefaultDataBaseManager]dinnerWithViewTable];
     }
     return  self;
@@ -106,26 +108,33 @@
 
 
 -(CGFloat)makeContextWithDinnerData:(DinnerDay *)dinner textViewFrame:(CGRect)frame{
-
-    UITextView * textView = [[UITextView alloc]initWithFrame:container.frame];
-    textView.translatesAutoresizingMaskIntoConstraints = NO;
-    textView.scrollEnabled = YES;
-    textView.pagingEnabled = NO;
-    textView.showsHorizontalScrollIndicator = YES;
-    textView.editable = NO;
-    textView.frame = frame;
-    textView.backgroundColor = [UIColor whiteColor];
-    textView.attributedText = [DinnerUtility attributeTextResizeStable:dinner.attrText withContainer:textView];
-
+    UITextView * textView = nil;
+    textView  = dataTable[dinner.dayStr];
+    if(!textView){
+        textView = [[UITextView alloc]initWithFrame:container.frame];
+        textView.translatesAutoresizingMaskIntoConstraints = NO;
+        textView.scrollEnabled = YES;
+        textView.pagingEnabled = NO;
+        textView.showsHorizontalScrollIndicator = YES;
+        textView.editable = NO;
+        textView.frame = frame;
+        textView.backgroundColor = [UIColor whiteColor];
+        textView.attributedText = [DinnerUtility attributeTextResizeStable:dinner.attrText withContainer:textView];
+        [dataTable setObject:textView forKey:dinner.dayStr];
+    }else{
+        textView.frame = frame;
+    }
+    
     [container addSubview:textView];
-    [dataTable setObject:textView forKey:dinner.dayStr];
-    [textViews addObject:textView];
+
+
 
     return CGRectGetMaxX(textView.frame);
 }
 
+//이때 바꿔도 될듯. 버튼들을..
 -(void)changeContainerViewSize:(CGFloat)height{
-    for(UIView * view in textViews){
+    for(UITextView *view in dataTable.allValues){
         view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, height);
     }
 }
@@ -148,7 +157,7 @@
 }
 
 -(void)impliVisible:(UITextView *)selectedView{
-    [container setContentOffset:selectedView.frame.origin animated:YES];
+    [container setContentOffset:selectedView.frame.origin animated:NO];
     [viewController setCurrentDayTextView:selectedView];
 }
 
@@ -169,7 +178,6 @@
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     int index = currentIndex;
     float fIndex = scrollView.contentOffset.x/scrollView.frame.size.width - currentIndex;
-    NSLog(@"dir == %lf",fIndex);
     if(!nextDinner){
         if(fIndex > 0.f && dinners.count-1 > index){
             nextDinner = dinners[index+1];
@@ -179,6 +187,9 @@
         [viewController.calendar nextDayViewDayWithDayString:nextDinner.dayStr];
     }else{
         fIndex = fabsf(fIndex);
+        if(fIndex == 1.0f){
+//            [viewController changeScollerSelectedDay:[DinnerUtility StringToDate:nextDinner.dayStr] withSelectTextView:dataTable[nextDinner.dayStr]];
+        }
         [viewController.calendar changingPercent:fIndex];
     }
 }
@@ -187,6 +198,7 @@
 -(void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset{
 
     /*
+    int index = targetContentOffset->x/scrollView.frame.size.width;
     DinnerDay * d = dinners[index];
     viewController.currentDayTextView = dataTable[d.dayStr];
     [viewController changeScollerSelectedDay:[DinnerUtility StringToDate:d.dayStr] withSelectTextView:dataTable[d.dayStr]];
@@ -202,8 +214,6 @@
     nextDinner = nil;
     viewController.currentDayTextView = dataTable[d.dayStr];
     [viewController changeScollerSelectedDay:[DinnerUtility StringToDate:d.dayStr] withSelectTextView:dataTable[d.dayStr]];
-//    
-    d = dinners[currentIndex];
     [viewController.calendar selectedDayViewWithIndex:d.dayStr];
 
 
@@ -211,6 +221,7 @@
 }
 
 -(void)insertNewTextView:(NSDate *)date{
+    NSLog(@"insertNewTextView");
     NSDateFormatter * formatter = [[NSDateFormatter alloc]init];
     [formatter setDateFormat:@"yyyy-MM-dd"];
     NSString * dateString = [formatter stringFromDate:date];
@@ -242,6 +253,7 @@
         index++;
     }
     [self reloadView];
+    NSLog(@"insertNewTextView end");
 }
 
 -(void)removeDinnerData:(NSString *)dayStr{
@@ -249,9 +261,11 @@
     for(DinnerDay * dinner in dinners){
         if([dayStr isEqualToString:dinner.dayStr]){
             [dinners removeObject:dinner];
-            break;
+            [self reloadView];
+            return;
         }
     }
+
 }
 
 -(void)shiftTextViewRightWithId:(NSString *)textviewID{
@@ -278,9 +292,9 @@
 }
 
 -(void)reloadData{
+    
     [[DataBaseManager getDefaultDataBaseManager]prepareAllOfDinnerData];
     dinners = [[DataBaseManager getDefaultDataBaseManager]dinnerDataArchive];
-
 }
 
 @end

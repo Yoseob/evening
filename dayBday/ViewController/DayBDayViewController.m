@@ -217,6 +217,8 @@
     [weekdaysView reloadAppearance];
 
 }
+
+
 - (void)setUpContentView {
     self.calendarContentView = [[JTCalendarContentView alloc] initWithFrame:CGRectZero];
     self.calendarContentView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -296,8 +298,6 @@
     [self reloadAllofData];
     [self setCurrentDayAttrbutedString:[[NSAttributedString alloc]initWithString:@""]];
     [self pushTodayButton:nil];
-
-
 }
 
 #pragma mark 
@@ -417,6 +417,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
     [self setupAndInit];
     [self setupContainerScollView];
     [self setUpBottomBarContainer];
@@ -440,10 +442,13 @@
 }
 
 - (void)calendarDidDateSelected:(JTCalendar *)calendar date:(NSDate *)date {
+    NSLog(@"calendarDidDateSelected");
     today = date;
     if(![dbManager searchDataWithData:date] && ![dbManager isDateDinner:[DinnerUtility DateToString:date]]){
         [sManager insertNewTextView:date];
     }
+    NSLog(@"calendarDidDateSelected 1");
+    
     [sManager visibleCurrentTextView:date];
     [self changeCurruntScrollView:today];
     [self reloadAllofData];
@@ -451,8 +456,8 @@
 
 -(void)changeScollerSelectedDay:(NSDate *)day withSelectTextView:(UITextView *)textView{
     today = day;
+    [self.calendar setCurrentDate:today];
     [self.calendar setCurrentDateSelected:day];
-    [self.calendar setCurrentDate:day];
     [self changeCurruntScrollView:day];
 }
 

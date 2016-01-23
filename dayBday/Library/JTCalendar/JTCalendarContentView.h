@@ -9,7 +9,7 @@
 
 @class JTCalendar;
 
-@interface JTCalendarContentView : UIScrollView
+@interface JTCalendarContentView : UIScrollView 
 
 @property (weak, nonatomic) JTCalendar *calendarManager;
 

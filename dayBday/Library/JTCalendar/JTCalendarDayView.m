@@ -148,14 +148,12 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
 
 - (void)didTouch
 {
-//    [self setSelected:YES animated:YES];
-    [self.calendarManager setCurrentDateSelected:self.date];
-    [self.calendarManager selectedDayView:self];
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:kJTCalendarDaySelected object:self.date];
     
     [self.calendarManager.dataSource calendarDidDateSelected:self.calendarManager date:self.date];
-    
+    [self.calendarManager setCurrentDateSelected:self.date];
+    [self.calendarManager selectedDayView:self];
+
     if(!self.isOtherMonth || !self.calendarManager.calendarAppearance.autoChangeMonth){
         return;
     }
@@ -225,12 +223,12 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
 
     if (thumbnailImage.image == nil && self.isHaveData){
         thumbnailImage.backgroundColor = [UIColor whiteColor];
-        
     }else if(thumbnailImage.image){
         thumbnailImage.backgroundColor = [UIColor clearColor];
         textLabel.textColor = [UIColor whiteColor];
     }else{
         thumbnailImage.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = [UIColor clearColor];
     }
     
 //

@@ -48,7 +48,6 @@
 - (void)commonInit
 {
     monthsViews = [NSMutableArray new];
-    
     self.showsHorizontalScrollIndicator = NO;
     self.showsVerticalScrollIndicator = NO;
     self.pagingEnabled = YES;
@@ -59,20 +58,21 @@
         [self addSubview:monthView];
         [monthsViews addObject:monthView];
     }
+}
 
+-(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
+    NSLog(@"scrollViewWillBeginDecelerating");
 }
 
 - (void)layoutSubviews
 {
     [self configureConstraintsForSubviews];
-    
     [super layoutSubviews];
 }
 
 - (void)configureConstraintsForSubviews
 {
     self.contentOffset = CGPointMake(self.contentOffset.x, 0); // Prevent bug when contentOffset.y is negative
- 
     CGFloat x = 0;
     CGFloat width = self.frame.size.width;
     CGFloat height = self.frame.size.height;
@@ -110,14 +110,12 @@
         
         if(!self.calendarManager.calendarAppearance.isWeekMode){
             dayComponent.month = i - (NUMBER_PAGES_LOADED / 2);
-         
             NSDate *monthDate = [calendar dateByAddingComponents:dayComponent toDate:self.currentDate options:0];
             monthDate = [self beginningOfMonth:monthDate];
             [monthView setBeginningOfMonth:monthDate];
         }
         else{
             dayComponent.day = 7 * (i - (NUMBER_PAGES_LOADED / 2));
-            
             NSDate *monthDate = [calendar dateByAddingComponents:dayComponent toDate:self.currentDate options:0];
             monthDate = [self beginningOfWeek:monthDate];
             [monthView setBeginningOfMonth:monthDate];
@@ -128,7 +126,7 @@
 - (NSDate *)beginningOfMonth:(NSDate *)date
 {
     NSCalendar *calendar = self.calendarManager.calendarAppearance.calendar;
-    NSDateComponents *componentsCurrentDate = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitWeekday|NSCalendarUnitWeekOfMonth fromDate:date];
+    NSDateComponents *componentsCurrentDate = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitWeekday | NSCalendarUnitWeekOfMonth fromDate:date];
     
     NSDateComponents *componentsNewDate = [NSDateComponents new];
     
@@ -154,6 +152,8 @@
     
     return [calendar dateFromComponents:componentsNewDate];
 }
+
+
 
 #pragma mark - JTCalendarManager
 
