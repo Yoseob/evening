@@ -292,6 +292,8 @@
 }
 
 -(void)removeThisEvent:(id)sender{
+    
+    //다~~~ 지워야함 
     [dbManager removeThisDayEvent:today];
     [sManager removeDinnerData:[DinnerUtility DateToString:today]];
     [self reloadAllofData];
@@ -310,8 +312,11 @@
 }
 
 -(void)resultTextView:(UITextView *)textView{
+    
     [self setupTextView:textView];
-    [dbManager insertTextViewDataWith:textView cachedCheckBox:checkBoxs data:today];
+    DinnerDay * dinner = [dbManager insertTextViewDataWith:textView cachedCheckBox:checkBoxs data:today];
+    [sManager insertNewTextView:today];
+    
     [self reloadAllofData];
 }
 
@@ -442,8 +447,7 @@
 
 - (void)calendarDidDateSelected:(JTCalendar *)calendar date:(NSDate *)date {
     today = date;
-    if(![dbManager searchDataWithData:date] && ![dbManager isDateDinner:[DinnerUtility DateToString:date]]){
-        
+    if(![dbManager isDateDinner:[DinnerUtility DateToString:date]]){
         [sManager insertNewTextView:date];
     }
     

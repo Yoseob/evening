@@ -15,7 +15,7 @@
 @property(copy,nonatomic)NSString * orignText;
 @property(strong,nonatomic)NSData * attrData;
 @property(strong,nonatomic)NSAttributedString * attrText;
-
+@property(strong,nonatomic)DinnerDay * left,*right;
 
 
 @end

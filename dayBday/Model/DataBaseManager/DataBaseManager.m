@@ -12,16 +12,20 @@
 
 @implementation DataBaseManager
 {
+    
+    DinnerDay * headerDinner;
+    DinnerDay * tailDinner;
+    DinnerDay * hCursor , * tCursor;
     DinnerObjDao * dao;
     ThumbnailDao * tDao;
     CheckBoxsDao * cDao;
     NSMutableDictionary * innerdinnerDataArchive;
 
 }
-@synthesize thumbNailDataArchive;
-@synthesize dinnerDataArchive;
-@synthesize dinnerWithViewTable;
-@synthesize calendarDayViewArchive;
+@synthesize thumbNailDataArchive; //썸네일 보관
+@synthesize dinnerDataArchive; // 디너 정보들 보관
+@synthesize dinnerWithViewTable; // textView / container 보관
+@synthesize calendarDayViewArchive; // 켈린더 뷰들 보관
 
 
 +(id)getDefaultDataBaseManager{
@@ -48,13 +52,23 @@
     }
     return  self;
 }
+
 -(DinnerDay *) searchDataWithData:(NSDate *)day{
+    
+    return [self serchAtList:[DinnerUtility DateToString:day]];
+    
+    
     DinnerDay * retDinner= ([innerdinnerDataArchive objectForKey:[DinnerUtility DateToString:day]]);
     if(!retDinner){
         NSArray * result = [dao selectDayWith:day];
         retDinner = result.firstObject;
     }
     return retDinner;
+}
+
+-(void)achiveDinnerAtInnderDictionany:(DinnerDay*)dinner{
+    [innerdinnerDataArchive setObject:dinner forKey:dinner.dayStr];
+    [self insertAtAfterSourceDinner:dinner];
 }
 
 -(void)getImageInTheAttributeString:(NSAttributedString *)attrStr cacheArr:(NSMutableDictionary *)checkBoxs Day:(NSDate *)day{
@@ -73,10 +87,17 @@
     }
 }
 
--(void)insertTextViewDataWith:(UITextView *)textView cachedCheckBox:(NSDictionary *)checkBoxs data:(NSDate *)date{
+-(DinnerDay *)insertTextViewDataWith:(UITextView *)textView cachedCheckBox:(NSDictionary *)checkBoxs data:(NSDate *)date{
     NSMutableAttributedString * attrString = [[NSMutableAttributedString alloc]initWithAttributedString:textView.attributedText];
     NSData* stringData = [NSKeyedArchiver archivedDataWithRootObject:attrString];
-
+    
+    DinnerDay * dinner = [DinnerDay new];
+    dinner.attrData = stringData;
+    dinner.attrText = attrString;
+    dinner.dayStr = [DinnerUtility DateToString:date];
+    [innerdinnerDataArchive setObject:dinner forKey:dinner.dayStr];
+    [self insertAtAfterSourceDinner:dinner];
+    
     [dao insertDataWithString:textView.text attribute:stringData targetDate:date];
     [[CheckBoxsDao getDefaultCheckBoxsDao]deleteRowWithData:date];
     
@@ -109,6 +130,9 @@
             
                 if(image.size.width > 50){
                     [tDao inserThumbnail:image withDate:date];
+                    Thumbnail * thumb = [[Thumbnail alloc]init];
+                    thumb.image = image;
+                    [thumbNailDataArchive setObject:thumb forKey:[DinnerUtility DateToString:date]];
                     [imageArr addObject:image];
                     *stop = YES;
                 }
@@ -119,10 +143,14 @@
             [tDao removeThumbnailWith:date];
         }
     }
+    
+    return dinner;
 }
 
 -(void)removeThisDayEvent:(NSDate *)day{
     [self.calendarDayViewArchive removeObjectForKey:[DinnerUtility DateToString:day]];
+    
+    //remove all memory;
     
     [tDao removeThumbnailWith:day];
     [dao deleteRowWithData:day];
@@ -133,10 +161,16 @@
 -(void)prepareAllOfDinnerData{
     NSLog(@"prepareAllOfDinnerData");
     dinnerDataArchive = [[NSMutableArray alloc]initWithArray:[dao selectAllDataWith:nil]];
-    thumbNailDataArchive = [tDao selectThumbnails];
-
-    for (DinnerDay * dinner in dinnerDataArchive) {
-        [innerdinnerDataArchive setObject:dinner forKey:dinner.dayStr];
+    [self setheader:dinnerDataArchive.firstObject];
+    [self setTail:dinnerDataArchive.lastObject];
+    
+    DinnerDay * temp = nil;
+    int length = (int)dinnerDataArchive.count -1;
+    for(int i = 1; i < length; i ++){
+        temp = dinnerDataArchive[i];
+        [self addHeadertDinnerAtList:temp];
+        [innerdinnerDataArchive setObject:temp forKey:temp.dayStr];
+        [self addTailDiinerAtList:dinnerDataArchive[length - i]];
     }
 }
 
@@ -157,6 +191,75 @@
 }
 -(BOOL)isDateDinner:(NSString *)dayStr{
     return dinnerWithViewTable[dayStr] != nil;
+}
+
+
+#pragma mark - make linkedList
+
+-(DinnerDay *)serchAtList:(NSString *)date{
+    DinnerDay * temp = headerDinner;
+    while (temp) {
+        if([temp.dayStr isEqualToString:date]){
+            return temp;
+        }
+        temp = temp.right;
+    }
+    
+    return  nil;
+}
+
+-(int)intFromDateString:(NSString *)str{
+    NSDate * dt = [DinnerUtility StringToDate:str];
+    return [dt timeIntervalSince1970];
+}
+
+-(void)insertAtAfterSourceDinner:(DinnerDay *)src{
+
+    int fivot = [self intFromDateString:src.dayStr];
+    int cusor = 0;
+    DinnerDay * temp = headerDinner;
+    while (temp) {
+        cusor = [self intFromDateString:temp.dayStr];
+        if(cusor >= fivot){
+            [self linkSrc:temp endDesc:src];
+        }
+        temp = temp.right;
+    }
+}
+
+-(void)linkSrc:(DinnerDay *)old endDesc:(DinnerDay *)new{
+    new.left = old.left;
+    new.right = old;
+    old.left = new;
+}
+
+-(void)addHeadertDinnerAtList:(DinnerDay *)dinner{
+    dinner.right = hCursor.right;
+    hCursor.right = dinner;
+    hCursor = dinner;
+}
+
+-(void)addTailDiinerAtList:(DinnerDay *)dinner{
+    dinner.left = tCursor.left;
+    tCursor.left = dinner;
+    tCursor = dinner;
+}
+-(void)setheader:(DinnerDay *)header{
+    headerDinner = header;
+    
+    headerDinner.left = nil;
+    headerDinner.right = dinnerDataArchive.lastObject;
+    
+    hCursor = headerDinner;
+}
+-(void)setTail:(DinnerDay *)tail{
+    tailDinner = tail;
+    
+    tailDinner.right = nil;
+    tailDinner.left = headerDinner;
+    
+    tCursor = tailDinner;
+    
 }
 
 

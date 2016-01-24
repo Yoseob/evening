@@ -48,41 +48,21 @@
 //prepare leftView
 
 -(void)prepareWithLeftDay:(DinnerDay *)day{
-    NSDate * date = [DinnerUtility StringToDate:day.dayStr];
-    NSLog(@"prepareWithLeftDay :  %@ , %@",day.dayStr,date);
-    [self insertWithDinner:day withDate:date];
+    [self prepareImpliment:day];
 }
 
 //prepare rightView
 -(void)prepareWithRightDay:(DinnerDay *)day{
-    NSDate * date = [DinnerUtility StringToDate:day.dayStr];
-    NSLog(@"prepareWithRightDay :  %@  , %@",day.dayStr ,date);
-    [self insertWithDinner:day withDate:date];
+    [self prepareImpliment:day];
 }
 
--(void)loadBothTextView:(DinnerDay *)inserted{
-    NSMutableArray * arc = [[DataBaseManager getDefaultDataBaseManager]dinnerDataArchive];
-    int index = 0;
-    for (DinnerDay * dinner in arc){
-        if(dinner == inserted){
-            NSLog(@"loadBothTextView : %@", dinner.dayStr);
-            if(index > 0 || index <= arc.count){
-                [self prepareWithLeftDay:arc[index-1]];
-                return;
-            }
+-(void)prepareImpliment:(DinnerDay*)day{
+    if(day){
+        if(dataTable[day.dayStr]  && day) {
+            return;
         }
-        index ++;
-    }
-    index = 0;
-    for (DinnerDay * dinner in arc){
-        if(dinner == inserted){
-            NSLog(@"loadBothTextView : %@", dinner.dayStr);
-            if(index > 0 || index <= arc.count){
-                [self prepareWithLeftDay:arc[index+1]];
-                return;
-            }
-        }
-        index ++;
+        NSDate * date = [DinnerUtility StringToDate:day.dayStr];
+        [self insertWithDinner:day withDate:date];
     }
 }
 
@@ -92,9 +72,9 @@
         init = [DinnerDay new];
     }
     [self insertWithDinner:init withDate:today];
-
-    [self loadBothTextView:init];
     
+    [self prepareWithLeftDay:init.left];
+    [self prepareWithRightDay:init.right];
 }
 
 
@@ -113,7 +93,9 @@
 
 -(void)insertDinnerAtArc:(DinnerDay *)newDinner withDate:(NSDate *)date{
     
-    
+    if (dataTable[newDinner.dayStr]) {
+        return;
+    }
     NSString * dateString = [formatter stringFromDate:date];
     NSDate * today = [formatter dateFromString:dateString];
 
@@ -149,29 +131,9 @@
 
 
 -(CGFloat)makeContextWithDinnerData:(DinnerDay *)dinner textViewFrame:(CGRect)frame{
-    
     return [self makeContextWithDinnerData2:dinner textViewFrame:frame];
-    
-    UITextView * textView = nil;
-    textView  = dataTable[dinner.dayStr];
-    if(!textView){
-        textView = [[UITextView alloc]initWithFrame:frame];
-        textView.translatesAutoresizingMaskIntoConstraints = NO;
-        textView.scrollEnabled = YES;
-        textView.pagingEnabled = NO;
-        textView.showsHorizontalScrollIndicator = YES;
-        textView.editable = NO;
-        textView.frame = frame;
-        textView.backgroundColor = [UIColor whiteColor];
-        textView.attributedText = [DinnerUtility attributeTextResizeStable:dinner.attrText withContainer:textView];
-        [dataTable setObject:textView forKey:dinner.dayStr];
-    }else{
-        textView.frame = frame;
-    }
-
-    [container addSubview:textView];
-    return CGRectGetMaxX(textView.frame);
 }
+
 -(CGFloat)makeContextWithDinnerData2:(DinnerDay *)dinner textViewFrame:(CGRect)frame{
     
     ContainerScollView * containerScrollerView = nil;
@@ -280,10 +242,16 @@
             [viewController changeScollerSelectedDay:[DinnerUtility StringToDate:d.dayStr] withSelectTextView:dataTable[d.dayStr]];
             [viewController.calendar selectedDayViewWithIndex:d.dayStr];
             nextDinner = nil; //never remove
-   
         }
+
+        [self prepareWithLeftDay:d.left];
+        [self prepareWithRightDay:d.right];
+        [self visibleCurrentTextView:[DinnerUtility StringToDate:d.dayStr]];
+//        container.contentOffset = CGPointMake(container.frame.size.width * index, 0); // Prevent bug when contentOffset.y is negative
     }
+
 }
+
 
 - (void)posterImagePosition:(NSInteger)posterIndex point:(CGPoint)point
 {
@@ -297,7 +265,19 @@
 }
 
 -(void)insertNewTextView:(NSDate *)date{
-    [self insertWithDinner:[DinnerDay new] withDate:date];
+    DinnerDay * init = [[DataBaseManager getDefaultDataBaseManager]searchDataWithData:date];
+    if(!init){
+        init = [DinnerDay new];
+    }
+    
+    NSLog(@"isnert date : %@ ",date);
+    if(!date) {
+        return;
+    }
+    [self insertWithDinner:init withDate:date];
+    [self prepareWithLeftDay:init.left];
+    [self prepareWithRightDay:init.right];
+
 }
 
 -(void)insertWithDinner:(DinnerDay *)newDinner withDate:(NSDate *)date{
@@ -321,6 +301,7 @@
     if(!newDinner.attrText){
         newDinner.dayStr= dateString;
         newDinner.attrText = [[NSAttributedString alloc]initWithString:dateString];
+        [[DataBaseManager getDefaultDataBaseManager]achiveDinnerAtInnderDictionany:newDinner];
     }
     
     if(!haveToday){
@@ -329,10 +310,11 @@
         }else{
             [loadedDinners insertObject:newDinner atIndex:index];
         }
-        index++;
+
     }
-    [self reloadView];
     [self insertDinnerAtArc:newDinner withDate:date];
+    [self reloadView];
+
 
 
 }
@@ -353,7 +335,7 @@
 }
 -(void)reloadView{
     container.delegate = self;
-    container.contentOffset = CGPointMake(container.contentOffset.x, 0); // Prevent bug when contentOffset.y is negative
+//    container.contentOffset = CGPointMake(container.contentOffset.x, 0); // Prevent bug when contentOffset.y is negative
     CGFloat x = 0.f;
     CGFloat width = viewController.view.frame.size.width;
     CGFloat height = container.frame.size.height;

@@ -11,7 +11,7 @@
 @implementation DinnerDay
 @synthesize attrData;
 @synthesize attrText;
-
+@synthesize left,right;
 -(void)setAttrData:(NSData *)attrData{
     self.attrText = [NSKeyedUnarchiver unarchiveObjectWithData: attrData];
 }

@@ -19,6 +19,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //   [application setStatusBarHidden:YES];
+    DataBaseManager * manager = [DataBaseManager getDefaultDataBaseManager];
+    [manager reloadCachedData];
+    [manager prepareAllOfDinnerData];
     
     JTCalendar* c =[JTCalendar getDefaultJTCalendar];
     [c.dataCache reloadData];
