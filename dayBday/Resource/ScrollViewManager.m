@@ -243,13 +243,13 @@
             [viewController.calendar selectedDayViewWithIndex:d.dayStr];
             nextDinner = nil; //never remove
         }
-
+        
+        
+        NSLog(@"%@ , %@ , %@ ",d.left.dayStr , d.dayStr , d.right.dayStr);
         [self prepareWithLeftDay:d.left];
         [self prepareWithRightDay:d.right];
         [self visibleCurrentTextView:[DinnerUtility StringToDate:d.dayStr]];
-//        container.contentOffset = CGPointMake(container.frame.size.width * index, 0); // Prevent bug when contentOffset.y is negative
     }
-
 }
 
 
@@ -268,12 +268,10 @@
     DinnerDay * init = [[DataBaseManager getDefaultDataBaseManager]searchDataWithData:date];
     if(!init){
         init = [DinnerDay new];
+        init.left = init;
+        init.right = init;
     }
-    
-    NSLog(@"isnert date : %@ ",date);
-    if(!date) {
-        return;
-    }
+
     [self insertWithDinner:init withDate:date];
     [self prepareWithLeftDay:init.left];
     [self prepareWithRightDay:init.right];
@@ -281,6 +279,15 @@
 }
 
 -(void)insertWithDinner:(DinnerDay *)newDinner withDate:(NSDate *)date{
+    
+    if(!date && (!newDinner.left || !newDinner.right)) {
+        return;
+    }
+    
+    if (newDinner.left == newDinner) {
+        newDinner.left = nil;
+        newDinner.right = nil;
+    }
     
     NSString * dateString = [formatter stringFromDate:date];
     NSDate * today = [formatter dateFromString:dateString];
@@ -317,6 +324,11 @@
 
 
 
+}
+
+-(BOOL)ExistDinner:(NSDate *)date{
+    NSString * key = [DinnerUtility DateToString:date];
+    return dataTable[key];
 }
 
 -(void)removeDinnerData:(NSString *)dayStr{

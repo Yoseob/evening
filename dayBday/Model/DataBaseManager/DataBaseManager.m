@@ -54,16 +54,7 @@
 }
 
 -(DinnerDay *) searchDataWithData:(NSDate *)day{
-    
     return [self serchAtList:[DinnerUtility DateToString:day]];
-    
-    
-    DinnerDay * retDinner= ([innerdinnerDataArchive objectForKey:[DinnerUtility DateToString:day]]);
-    if(!retDinner){
-        NSArray * result = [dao selectDayWith:day];
-        retDinner = result.firstObject;
-    }
-    return retDinner;
 }
 
 -(void)achiveDinnerAtInnderDictionany:(DinnerDay*)dinner{
@@ -144,7 +135,7 @@
         }
     }
     
-    return dinner;
+    return  dinner;
 }
 
 -(void)removeThisDayEvent:(NSDate *)day{
@@ -161,17 +152,29 @@
 -(void)prepareAllOfDinnerData{
     NSLog(@"prepareAllOfDinnerData");
     dinnerDataArchive = [[NSMutableArray alloc]initWithArray:[dao selectAllDataWith:nil]];
-    [self setheader:dinnerDataArchive.firstObject];
-    [self setTail:dinnerDataArchive.lastObject];
-    
+
+    [self setheader:nil];
     DinnerDay * temp = nil;
-    int length = (int)dinnerDataArchive.count -1;
-    for(int i = 1; i < length; i ++){
+    int length = (int)dinnerDataArchive.count ;
+    for(int i = 0; i < length; i ++){
         temp = dinnerDataArchive[i];
         [self addHeadertDinnerAtList:temp];
         [innerdinnerDataArchive setObject:temp forKey:temp.dayStr];
-        [self addTailDiinerAtList:dinnerDataArchive[length - i]];
+        [self addTailDiinerAtList:dinnerDataArchive[length - i -1]];
     }
+    
+    temp = tailDinner;
+    while (temp) {
+        NSLog(@"%@",temp.dayStr);
+        temp = temp.left;
+    }
+    
+    temp = headerDinner;
+    while (temp) {
+        NSLog(@" h %@",temp.dayStr);
+        temp = temp.right;
+    }
+    
 }
 
 -(NSArray *)getDinnerData{
@@ -190,7 +193,8 @@
     return thumbNailDataArchive;
 }
 -(BOOL)isDateDinner:(NSString *)dayStr{
-    return dinnerWithViewTable[dayStr] != nil;
+    
+    return (innerdinnerDataArchive[dayStr] != nil); //원래는 모든 텍스트가 한번에 했으니깐 있겟징
 }
 
 
@@ -220,17 +224,26 @@
     DinnerDay * temp = headerDinner;
     while (temp) {
         cusor = [self intFromDateString:temp.dayStr];
-        if(cusor >= fivot){
+        if(cusor >fivot){
             [self linkSrc:temp endDesc:src];
+            break;
         }
         temp = temp.right;
     }
 }
 
 -(void)linkSrc:(DinnerDay *)old endDesc:(DinnerDay *)new{
-    new.left = old.left;
+
+    if(old.left == nil){
+        new.left = headerDinner;
+    }else{
+        new.left = old.left;
+    }
+    old.left = new;
     new.right = old;
     old.left = new;
+    
+    
 }
 
 -(void)addHeadertDinnerAtList:(DinnerDay *)dinner{
@@ -245,22 +258,19 @@
     tCursor = dinner;
 }
 -(void)setheader:(DinnerDay *)header{
-    headerDinner = header;
+    headerDinner = [DinnerDay new];
+    tailDinner = [DinnerDay new];
     
     headerDinner.left = nil;
-    headerDinner.right = dinnerDataArchive.lastObject;
-    
-    hCursor = headerDinner;
-}
--(void)setTail:(DinnerDay *)tail{
-    tailDinner = tail;
+    headerDinner.right = tailDinner;
     
     tailDinner.right = nil;
     tailDinner.left = headerDinner;
     
+    hCursor = headerDinner;
     tCursor = tailDinner;
-    
 }
+
 
 
 

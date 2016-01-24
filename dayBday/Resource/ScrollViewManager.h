@@ -30,4 +30,6 @@
 -(void)insertNewTextView:(NSDate *)date;
 -(void)removeDinnerData:(NSString *)dayStr;
 
+
+-(BOOL)ExistDinner:(NSDate *)date;
 @end

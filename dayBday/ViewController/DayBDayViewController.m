@@ -446,10 +446,16 @@
 }
 
 - (void)calendarDidDateSelected:(JTCalendar *)calendar date:(NSDate *)date {
+    
+    
+    NSLog(@"%@",date);
     today = date;
     if(![dbManager isDateDinner:[DinnerUtility DateToString:date]]){
         [sManager insertNewTextView:date];
+    }else if([dbManager searchDataWithData:date]!=nil && dbManager.dinnerWithViewTable[[DinnerUtility DateToString:date]] == nil){
+        [sManager insertNewTextView:date];
     }
+
     
     [sManager visibleCurrentTextView:date];
     [self changeCurruntScrollView:today];
