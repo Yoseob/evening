@@ -54,7 +54,7 @@
 }
 
 -(DinnerDay *) searchDataWithData:(NSDate *)day{
-    return [self serchAtList:[DinnerUtility DateToString:day]];
+    return [self searchAtList:[DinnerUtility DateToString:day]];
 }
 
 -(void)achiveDinnerAtInnderDictionany:(DinnerDay*)dinner{
@@ -104,7 +104,6 @@
         }
     }];
     
-    
     NSMutableArray * imageArr = [NSMutableArray new];
     if(attrString.length > 0){
         [attrString enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, attrString.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
@@ -134,25 +133,32 @@
             [tDao removeThumbnailWith:date];
         }
     }
-    
     return  dinner;
 }
 
 -(void)removeThisDayEvent:(NSDate *)day{
-    [self.calendarDayViewArchive removeObjectForKey:[DinnerUtility DateToString:day]];
-    
-    //remove all memory;
     
     [tDao removeThumbnailWith:day];
     [dao deleteRowWithData:day];
     [cDao deleteRowWithData:day];
     
+    NSString * targetKey = [DinnerUtility DateToString:day];
+    [calendarDayViewArchive removeObjectForKey:targetKey];
+    [thumbNailDataArchive removeObjectForKey:targetKey];
+    [innerdinnerDataArchive removeObjectForKey:targetKey];
+    
+    for(DinnerDay * dinner in dinnerDataArchive){
+        if([targetKey isEqualToString:dinner.dayStr]){
+            [self removeAtList:dinner];
+            [dinnerDataArchive removeObject:dinner];
+            return;
+        }
+    }
 }
 
 -(void)prepareAllOfDinnerData{
     NSLog(@"prepareAllOfDinnerData");
     dinnerDataArchive = [[NSMutableArray alloc]initWithArray:[dao selectAllDataWith:nil]];
-
     [self setheader:nil];
     DinnerDay * temp = nil;
     int length = (int)dinnerDataArchive.count ;
@@ -162,19 +168,6 @@
         [innerdinnerDataArchive setObject:temp forKey:temp.dayStr];
         [self addTailDiinerAtList:dinnerDataArchive[length - i -1]];
     }
-    
-    temp = tailDinner;
-    while (temp) {
-        NSLog(@"%@",temp.dayStr);
-        temp = temp.left;
-    }
-    
-    temp = headerDinner;
-    while (temp) {
-        NSLog(@" h %@",temp.dayStr);
-        temp = temp.right;
-    }
-    
 }
 
 -(NSArray *)getDinnerData{
@@ -192,15 +185,15 @@
     thumbNailDataArchive = [tDao selectThumbnails];
     return thumbNailDataArchive;
 }
+
 -(BOOL)isDateDinner:(NSString *)dayStr{
-    
     return (innerdinnerDataArchive[dayStr] != nil); //원래는 모든 텍스트가 한번에 했으니깐 있겟징
 }
 
 
 #pragma mark - make linkedList
 
--(DinnerDay *)serchAtList:(NSString *)date{
+-(DinnerDay *)searchAtList:(NSString *)date{
     DinnerDay * temp = headerDinner;
     while (temp) {
         if([temp.dayStr isEqualToString:date]){
@@ -211,6 +204,14 @@
     
     return  nil;
 }
+
+-(void)removeAtList:(DinnerDay *)dinner{
+    DinnerDay * left = dinner.left;
+    dinner =  dinner.right;
+    left.right = dinner;
+    dinner.left = left;
+}
+
 
 -(int)intFromDateString:(NSString *)str{
     NSDate * dt = [DinnerUtility StringToDate:str];
@@ -257,6 +258,7 @@
     tCursor.left = dinner;
     tCursor = dinner;
 }
+
 -(void)setheader:(DinnerDay *)header{
     headerDinner = [DinnerDay new];
     tailDinner = [DinnerDay new];

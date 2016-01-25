@@ -152,7 +152,6 @@
         textView.attributedText = [DinnerUtility attributeTextResizeStable:dinner.attrText withContainer:textView];
 
         [containerScrollerView addTextView:textView];
-        
         [dataTable setObject:containerScrollerView forKey:dinner.dayStr];
     }else{
         containerScrollerView.frame = frame;
@@ -243,9 +242,6 @@
             [viewController.calendar selectedDayViewWithIndex:d.dayStr];
             nextDinner = nil; //never remove
         }
-        
-        
-        NSLog(@"%@ , %@ , %@ ",d.left.dayStr , d.dayStr , d.right.dayStr);
         [self prepareWithLeftDay:d.left];
         [self prepareWithRightDay:d.right];
         [self visibleCurrentTextView:[DinnerUtility StringToDate:d.dayStr]];
@@ -332,6 +328,7 @@
 }
 
 -(void)removeDinnerData:(NSString *)dayStr{
+    
     [dataTable removeObjectForKey:dayStr];
     for(DinnerDay * dinner in loadedDinners){
         if([dayStr isEqualToString:dinner.dayStr]){

@@ -6,7 +6,7 @@
 //
 
 #import "JTCalendarDayView.h"
-
+#import "JTCircleView.h"
 #import "DataBaseManager.h"
 
 @interface JTCalendarDayView (){
@@ -117,8 +117,6 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
                                       self.frame.size.height-(top_Left_Margin * 1));
     
     thumbnailImage.center = CGPointMake(self.frame.size.width / 2., self.frame.size.height / 2.);
-    
-
     CGFloat x = self.frame.size.width/2;
     bottomLineView.frame = CGRectMake(x - 10 , self.frame.size.height - 10, 20, 1.8);
     bottomLineView.backgroundColor = [UIColor clearColor];
@@ -154,6 +152,34 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
     [self.calendarManager setCurrentDateSelected:self.date];
     [self.calendarManager selectedDayView:self];
 
+    
+    JTCircleView * circleView = [JTCircleView new];
+    [self addSubview:circleView];
+    
+    /*
+    CGFloat sizeCircle = MIN(self.frame.size.width, self.frame.size.height);
+    sizeCircle = sizeCircle * self.calendarManager.calendarAppearance.dayCircleRatio;
+    sizeCircle = roundf(sizeCircle);
+    circleView.frame = CGRectMake(0, 0, sizeCircle, sizeCircle);
+    circleView.center = CGPointMake(self.frame.size.width / 2., self.frame.size.height / 2.);
+    circleView.layer.cornerRadius = sizeCircle / 2.;
+    circleView.color = [UIColor whiteColor];
+    
+    CGFloat opacity = 1.;
+    [UIView animateWithDuration:0.1 animations:^{
+        circleView.layer.opacity = opacity;
+        circleView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.1, 0.1);
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.2 animations:^{
+            circleView.layer.opacity = opacity;
+            circleView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1, 1);
+        }completion:^(BOOL finished) {
+            circleView.hidden = YES;
+        }];
+
+    }];
+     */
+    
     if(!self.isOtherMonth || !self.calendarManager.calendarAppearance.autoChangeMonth){
         return;
     }

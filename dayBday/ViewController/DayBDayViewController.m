@@ -293,12 +293,11 @@
 
 -(void)removeThisEvent:(id)sender{
     
-    //다~~~ 지워야함 
     [dbManager removeThisDayEvent:today];
     [sManager removeDinnerData:[DinnerUtility DateToString:today]];
-    [self reloadAllofData];
     [self setCurrentDayAttrbutedString:[[NSAttributedString alloc]initWithString:@""]];
-    [self pushTodayButton:nil];
+    [self reloadAllofData];
+
 }
 
 #pragma mark 
@@ -314,8 +313,11 @@
 -(void)resultTextView:(UITextView *)textView{
     
     [self setupTextView:textView];
-    DinnerDay * dinner = [dbManager insertTextViewDataWith:textView cachedCheckBox:checkBoxs data:today];
-    [sManager insertNewTextView:today];
+    [dbManager insertTextViewDataWith:textView cachedCheckBox:checkBoxs data:today];
+    if([dbManager searchDataWithData:today]!=nil && dbManager.dinnerWithViewTable[[DinnerUtility DateToString:today]] == nil){
+         [sManager insertNewTextView:today];
+        
+    }
     
     [self reloadAllofData];
 }
@@ -421,8 +423,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    
     [self setupAndInit];
     [self setUpBottomBarContainer];
     [self setUpCalendar];
@@ -446,16 +446,13 @@
 }
 
 - (void)calendarDidDateSelected:(JTCalendar *)calendar date:(NSDate *)date {
-    
-    
-    NSLog(@"%@",date);
+
     today = date;
     if(![dbManager isDateDinner:[DinnerUtility DateToString:date]]){
         [sManager insertNewTextView:date];
     }else if([dbManager searchDataWithData:date]!=nil && dbManager.dinnerWithViewTable[[DinnerUtility DateToString:date]] == nil){
         [sManager insertNewTextView:date];
     }
-
     
     [sManager visibleCurrentTextView:date];
     [self changeCurruntScrollView:today];
