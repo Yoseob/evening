@@ -23,7 +23,8 @@
     NSMutableArray * subBtns;
     
     CGRect originRect;
-
+    
+    BOOL endCheckBox;
 }
 
 
@@ -32,6 +33,7 @@
     self = [super initWithCoder:coder];
     if (self) {
         [self registerForKeyboardNotifications];
+        endCheckBox = NO;
     }
     return self;
 }
@@ -39,7 +41,7 @@
 -(void)setUpBottonBarView{
     
     CGFloat height =[self.delegate controlBarheight];
-
+    controllBar.backgroundColor = [UIColor colorWithRed:242/255.f green:242/255.f blue:242/255.f alpha:1.f];
     controllBar  =[[UIView alloc]initWithFrame:CGRectZero];
     controllBar.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:controllBar];
@@ -75,11 +77,7 @@
                                                   multiplier:1.0f
                                                     constant:0.0f];
     [self.view addConstraint:bottomContaint];
-    controllBar.backgroundColor = [UIColor lightGrayColor];
 
-
-    
-    
 }
 
 -(void)setUpTextView{
@@ -90,7 +88,8 @@
     inputTextView.delegate = self;
     inputTextView.allowsEditingTextAttributes = YES;
     inputTextView.attributedText = [self.delegate textViewBinding].attributedText;
-    NSLog(@"%@",inputTextView.typingAttributes);
+    
+    [inputTextView setFont:[UIFont fontWithName:@"AppleSDGothicNeo-Light" size:14]];
     [self.view addSubview:inputTextView];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:inputTextView
                                                           attribute:NSLayoutAttributeTopMargin
@@ -136,51 +135,42 @@
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
--(void)buttonSelector:(id)sender{
+#pragma mark - buttom actions 
+-(void)addimage:(id)sender{
     UIImagePickerController * imagePickerViewController= [[UIImagePickerController alloc]init];
     imagePickerViewController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     imagePickerViewController.allowsEditing = NO;
     imagePickerViewController.delegate = self;
     imagePickerViewController.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType: UIImagePickerControllerSourceTypePhotoLibrary];
-    UIButton * btn = (UIButton *)sender;
-    switch (btn.tag) {
-        case PHOTO:
-            [self presentViewController:imagePickerViewController animated:YES completion:nil];
-            break;
-        case PHOTO+1:
-            [self dismissViewControllerAnimated:YES completion:^{
-                //비동기 디비 insert
-            }];
-
-        case PHOTO+2:
-            break;
-        case PHOTO+3:
-        {
-            [self insertCheckBoxButton];
-             break;
-        }
-        case PHOTO+4:
-        {
-            if([inputTextView isFirstResponder]){
-                inputTextView.editable = false;
-                [inputTextView resignFirstResponder];
-            }
-            [self.delegate resultTextView:inputTextView];
-            [self dismissViewControllerAnimated:YES completion:^{
-                //비동기 디비 insert 
-            }];
-            break;
-
-        }
-            
-        default:
-            break;
-    }
+    [self presentViewController:imagePickerViewController animated:YES completion:nil];
 }
+-(void)addTmsp:(id)sender{
+
+}
+
+-(void)addCheckBox:(id)sender{
+    [self insertCheckBoxButton];
+}
+
+-(void)addNewLine:(id)sender{
+}
+
+-(void)addJustAndFinish:(id)sender{
+    if([inputTextView isFirstResponder]){
+        inputTextView.editable = false;
+        [inputTextView resignFirstResponder];
+    }
+    [self.delegate resultTextView:inputTextView];
+    [self dismissViewControllerAnimated:YES completion:^{
+        //비동기 디비 insert
+    }];
+}
+
 
 
 -(void)insertCheckBoxButton{
     UIImage *image = [UIImage imageNamed:@"checkbox_todo"];
+    endCheckBox = true;
     [self addTextAttachmentWithImage:image textScale:2.f];
     inputTextView.attributedText = [self.delegate insertCheckBtnWithString:inputTextView.attributedText];
 }
@@ -188,6 +178,7 @@
 -(void)addTextAttachmentWithImage:(UIImage *)image  textScale:(CGFloat)scaleFactor{
     
     UITextView *textView = inputTextView;
+    
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]initWithAttributedString:textView.attributedText];
     if(!attributedString){
         attributedString = [[NSMutableAttributedString alloc] initWithString:textView.text];
@@ -209,25 +200,25 @@
     [attributedString appendAttributedString:space];
 
     textView.attributedText = attributedString;
-
+    [inputTextView setFont:[UIFont fontWithName:@"AppleSDGothicNeo-Light" size:14]];
 }
 
 -(void)customBottomBar:(UIView *)barView{
-
     CGFloat bar_Height = controllBar.frame.size.height;
     CGFloat leftMagin = 5.f;
     CGFloat tempX = 0.f;
-    
-    NSLog(@"%f" ,bar_Height);
+
+    SEL selecters[] = { @selector(addimage:),@selector(addTmsp:),@selector(addCheckBox:),@selector(addNewLine:),@selector(addJustAndFinish:)};
     
     for(int i = 0 ; i < 5; i ++){
         UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.userInteractionEnabled = YES;
-        button.backgroundColor = [ UIColor blackColor];
-        button.tag = i+1;
-        [button addTarget:self action:@selector(buttonSelector:) forControlEvents:UIControlEventTouchUpInside];
-        button.frame =CGRectMake(leftMagin* (i + 1) + tempX, leftMagin, bar_Height- (leftMagin * 2), bar_Height - (leftMagin*2));
-        tempX += (button.frame.size.width);
+        NSString * imageName = [NSString stringWithFormat:@"input_%d",i];
+        [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+        [button addTarget:self action:selecters[i] forControlEvents:UIControlEventTouchUpInside];
+        button.frame =CGRectMake(leftMagin + tempX, leftMagin, bar_Height- (leftMagin * 2), bar_Height - (leftMagin*2));
+        tempX = CGRectGetMaxX(button.frame);
+
         [subBtns addObject:button];
         [controllBar addSubview:button];
     }
@@ -243,7 +234,6 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated{
-    NSLog(@"%lf",controllBar.frame.size.height);
     if(subBtns.count == 0){
         [self customBottomBar:nil];
     }
@@ -288,8 +278,9 @@
 // Called when the UIKeyboardDidShowNotification is sent.
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
+    
     NSDictionary* info = [aNotification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     bottomContaint.constant= -kbSize.height;
     [self viewIfLoaded];
 
@@ -297,10 +288,9 @@
 
 // Called when the UIKeyboardWillHideNotification is sent
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification{
-
     NSLog(@"keyboardWillBeHidden");
     NSDictionary* info = [aNotification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     bottomContaint.constant= kbSize.height;
     [self viewIfLoaded];
 }
@@ -308,12 +298,24 @@
 #pragma mark - UITextViewDelegate 
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-
-    NSLog(@"shouldChangeTextInRange : %@ , range : %ld , %ld  , text : %@ " , textView.text , range.length, range.location , text );
+    if([text isEqualToString:@"\n"] && endCheckBox){
+        NSMutableAttributedString * temp = [[NSMutableAttributedString alloc]initWithAttributedString:inputTextView.attributedText];
+        [temp appendAttributedString:[[NSAttributedString alloc]initWithString:@"\n"]];
+        inputTextView.attributedText = temp;
+        [self insertCheckBoxButton];
+        textView.attributedText  = inputTextView.attributedText;
+        return NO;
+    }
+    NSDictionary * first =  [textView.attributedText attributesAtIndex:range.location-1 effectiveRange:&range];
+    if (endCheckBox && first) {
+        NSDictionary * dic =  [textView.attributedText attributesAtIndex:range.location effectiveRange:&range];
+        if(dic[@"NSAttachment"]){
+            endCheckBox = !endCheckBox;
+        }
+    }
     return YES;
 }
 - (void)textViewDidChange:(UITextView *)textView{
-    NSLog(@"textViewDidChange :  %@ " , textView.text);
 }
 
 // use selction

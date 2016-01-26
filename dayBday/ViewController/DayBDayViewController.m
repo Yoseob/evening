@@ -121,11 +121,15 @@
             NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc]initWithAttributedString:self.currentDayTextView.attributedText];
             NSTextAttachment * newAttrText;
             {
+
                 newAttrText = [NSTextAttachment new];
                 tempCheckBox.status = (tempCheckBox.status == 0 ? 1 : 0);
                 newAttrText.image = checkBoxImages[tempCheckBox.status];
                 newAttrText.image = [UIImage imageWithCGImage:newAttrText.image.CGImage scale:2.f orientation:UIImageOrientationUp];
                 [attributedText replaceCharactersInRange:characterRange withAttributedString:[NSAttributedString attributedStringWithAttachment:newAttrText]];
+                [attributedText addAttribute:(__bridge NSString *)kCTSuperscriptAttributeName value:@(-1) range:characterRange];
+
+
             }
             
             if(tempCheckBox){
@@ -339,7 +343,7 @@
             if(textAttachment){
                 int loc = (int)range.location;
                 NSString * key = [NSString stringWithFormat:@"%d",loc];
-                NSLog(@"%@",key);
+                
                 if(!checkBoxs[key]){
                     CheckBox * newCheckBox = [[CheckBox alloc]initWithLoc:loc andStatus:0];
                     newCheckBox.date = today;
@@ -479,35 +483,11 @@
     NSMutableAttributedString *myAttrString = [[NSMutableAttributedString alloc]initWithAttributedString:self.currentDayTextView.attributedText];
     [checkBoxs removeAllObjects];
     [dbManager getImageInTheAttributeString:myAttrString cacheArr:checkBoxs Day:date];
-    
-    [myAttrString enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, myAttrString.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
-        NSTextAttachment *  textAttachment = value;
-        UIImage * image = nil;
-        if(textAttachment){
-            if ([textAttachment image]){
-                image = [textAttachment image];
-            }else{
-                image = [textAttachment imageForBounds:[textAttachment bounds]
-                                         textContainer:nil
-                                        characterIndex:range.location];
-            }
-            
-            if(image.size.width < 50){
-                NSString * key = [NSString stringWithFormat:@"%ld",range.location];
-                CheckBox * check = checkBoxs[key];
-                NSTextAttachment * newAttrText;
-                newAttrText = [NSTextAttachment new];
-                newAttrText.image = checkBoxImages[check.status];
-                newAttrText.image = [UIImage imageWithCGImage:newAttrText.image.CGImage scale:2.f orientation:UIImageOrientationUp];
-                [myAttrString replaceCharactersInRange:range withAttributedString:[NSAttributedString attributedStringWithAttachment:newAttrText]];
-            }
-        }
-    }];
-    
     [self setCurrentDayAttrbutedString:myAttrString];
 }
 
 -(void)setCurrentDayAttrbutedString:(NSAttributedString *)attrStr{
+    [self.currentDayTextView setFont:[UIFont fontWithName:@"AppleSDGothicNeo-Light" size:14]];
     self.currentDayTextView.attributedText = attrStr;//[DinnerUtility modifyAttributedString:attrStr];
 }
 

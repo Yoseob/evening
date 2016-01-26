@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreText/CoreText.h>
+
 @interface DinnerUtility : NSObject
 
 +(DinnerUtility *) defualtDinnerUtility;
@@ -27,4 +28,6 @@
 +(NSMutableAttributedString *)attributeTextResizeStable:(NSAttributedString *)attributedText withContainer:(UIScrollView *)scview;
 
 +(NSMutableAttributedString *)modifyAttributedString:(NSAttributedString *)originString;
++(NSMutableAttributedString *)attributeTextResizeStable:(NSAttributedString *)attributedText withContainer:(UIScrollView *)scview andCheckBox:(NSDictionary *)checkBoxs;
+
 @end

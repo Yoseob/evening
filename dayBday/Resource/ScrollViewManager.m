@@ -138,10 +138,12 @@
     
     ContainerScollView * containerScrollerView = nil;
     containerScrollerView  = dataTable[dinner.dayStr];
+    DataBaseManager * dbManager = [DataBaseManager getDefaultDataBaseManager];
+    NSAttributedString * attrString = [dbManager getImageInTheAttributeString:dinner.attrText cacheArr: nil Day:[DinnerUtility StringToDate:dinner.dayStr]];
+
+    
     if(!containerScrollerView){
-        
         containerScrollerView = [[ContainerScollView alloc]initWithFrame:frame];
-        
         UITextView * textView = [[UITextView alloc]initWithFrame:frame];
         textView.translatesAutoresizingMaskIntoConstraints = NO;
         textView.scrollEnabled = YES;
@@ -149,8 +151,9 @@
         textView.showsHorizontalScrollIndicator = YES;
         textView.editable = NO;
         textView.backgroundColor = [UIColor whiteColor];
-        textView.attributedText = [DinnerUtility attributeTextResizeStable:dinner.attrText withContainer:textView];
-
+        textView.attributedText = [DinnerUtility attributeTextResizeStable:attrString withContainer:textView];
+        [textView setFont:[UIFont fontWithName:@"AppleSDGothicNeo-Light" size:14]];
+        
         [containerScrollerView addTextView:textView];
         [dataTable setObject:containerScrollerView forKey:dinner.dayStr];
     }else{

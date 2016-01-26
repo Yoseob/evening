@@ -62,20 +62,32 @@
     [self insertAtAfterSourceDinner:dinner];
 }
 
--(void)getImageInTheAttributeString:(NSAttributedString *)attrStr cacheArr:(NSMutableDictionary *)checkBoxs Day:(NSDate *)day{
-    if(attrStr){
-        [attrStr enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, attrStr.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+-(NSMutableAttributedString *)getImageInTheAttributeString:(NSAttributedString *)attrStr cacheArr:(NSMutableDictionary *)checkBoxs Day:(NSDate *)day{
+    NSMutableAttributedString * myAttrString = [[NSMutableAttributedString alloc]initWithAttributedString:attrStr];
+    if(myAttrString){
+        [myAttrString enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, myAttrString.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
             NSTextAttachment *  textAttachment = value;
             if(textAttachment){
                 int loc = (int)range.location;
                 NSString  * query =[NSString stringWithFormat: @"SELECT * from checkboxs WHERE ownerDay = \"%@\" AND location = %d" , [DinnerUtility DateToString:day],loc];
                 CheckBox * temp = [[CheckBoxsDao getDefaultCheckBoxsDao]selectTargetDataWith:day withQeury:query].lastObject;
                 NSString * key = [NSString stringWithFormat:@"%ld",temp.location];
-                NSLog(@"%@",temp);
-                if(temp)[checkBoxs setObject:temp forKey:key];
+                
+                if(temp){
+                    NSString * imageName = temp.status == 0? @"checkbox_todo" : @"checkbox_did";
+                    NSTextAttachment * newAttrText;
+                    newAttrText = [NSTextAttachment new];
+                    newAttrText.image = [UIImage imageNamed:imageName];
+                    newAttrText.image = [UIImage imageWithCGImage:newAttrText.image.CGImage scale:2.f orientation:UIImageOrientationUp];
+                    [myAttrString replaceCharactersInRange:range withAttributedString:[NSAttributedString attributedStringWithAttachment:newAttrText]];
+                    [myAttrString addAttribute:(__bridge NSString *)kCTSuperscriptAttributeName value:@(-1) range:range];
+                    
+                    [checkBoxs setObject:temp forKey:key];
+                }
             }
         }];
     }
+    return myAttrString;
 }
 
 -(DinnerDay *)insertTextViewDataWith:(UITextView *)textView cachedCheckBox:(NSDictionary *)checkBoxs data:(NSDate *)date{

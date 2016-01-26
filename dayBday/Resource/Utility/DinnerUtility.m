@@ -7,9 +7,8 @@
 //
 
 #import "DinnerUtility.h"
-
+#import "CheckBox.h"
 @implementation DinnerUtility
-
 +(DinnerUtility *) defualtDinnerUtility{
     static DinnerUtility * dinner = nil;
     if(!dinner){
@@ -54,9 +53,41 @@
     UIGraphicsEndImageContext();
     return newImage;
 }
+/*
+ NSMutableAttributedString *myAttrString = [[NSMutableAttributedString alloc]initWithAttributedString:self.currentDayTextView.attributedText];
+ [checkBoxs removeAllObjects];
+ [dbManager getImageInTheAttributeString:myAttrString cacheArr:checkBoxs Day:date];
+ 
+ [myAttrString enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, myAttrString.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+ NSTextAttachment *  textAttachment = value;
+ UIImage * image = nil;
+ if(textAttachment){
+ if ([textAttachment image]){
+ image = [textAttachment image];
+ }else{
+ image = [textAttachment imageForBounds:[textAttachment bounds]
+ textContainer:nil
+ characterIndex:range.location];
+ }
+ 
+ if(image.size.width < 50){
+ NSString * key = [NSString stringWithFormat:@"%ld",range.location];
+ CheckBox * check = checkBoxs[key];
+ NSTextAttachment * newAttrText;
+ newAttrText = [NSTextAttachment new];
+ newAttrText.image = checkBoxImages[check.status];
+ newAttrText.image = [UIImage imageWithCGImage:newAttrText.image.CGImage scale:2.f orientation:UIImageOrientationUp];
+ [myAttrString replaceCharactersInRange:range withAttributedString:[NSAttributedString attributedStringWithAttachment:newAttrText]];
+ [myAttrString addAttribute:(__bridge NSString *)kCTSuperscriptAttributeName value:@(-1) range:range];
+ }
+ }
+ }];
 
+ 
+ */
 
 +(NSMutableAttributedString *)attributeTextResizeStable:(NSAttributedString *)attributedText withContainer:(UIScrollView *)scview{
+    
     NSMutableAttributedString * newattributedText = [[NSMutableAttributedString alloc]initWithAttributedString:attributedText];
     [newattributedText enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, newattributedText.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
         NSTextAttachment *  textAttachment = value;
@@ -85,7 +116,48 @@
     
     return  newattributedText;
 }
-
++(NSMutableAttributedString *)attributeTextResizeStable:(NSAttributedString *)attributedText withContainer:(UIScrollView *)scview andCheckBox:(NSDictionary *)checkBoxs{
+    
+    NSArray * checkBoxImages = @[[UIImage imageNamed:@"checkbox_todo"] , [UIImage imageNamed:@"checkbox_did"]];
+    
+    NSMutableAttributedString * myAttrString = [[NSMutableAttributedString alloc]initWithAttributedString:attributedText];
+    
+    [myAttrString enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, myAttrString.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+        NSTextAttachment *  textAttachment = value;
+        UIImage * image = nil;
+        if(textAttachment){
+            if ([textAttachment image]){
+                image = [textAttachment image];
+            }else{
+                image = [textAttachment imageForBounds:[textAttachment bounds]
+                                         textContainer:nil
+                                        characterIndex:range.location];
+            }
+            
+            if(image.size.width < 50){
+                NSString * key = [NSString stringWithFormat:@"%ld",range.location];
+                CheckBox * check = checkBoxs[key];
+                NSTextAttachment * newAttrText;
+                newAttrText = [NSTextAttachment new];
+                newAttrText.image = checkBoxImages[check.status];
+                newAttrText.image = [UIImage imageWithCGImage:newAttrText.image.CGImage scale:2.f orientation:UIImageOrientationUp];
+                [myAttrString replaceCharactersInRange:range withAttributedString:[NSAttributedString attributedStringWithAttachment:newAttrText]];
+                [myAttrString addAttribute:(__bridge NSString *)kCTSuperscriptAttributeName value:@(-1) range:range];
+            }else{
+                NSTextAttachment *newAttrText = [NSTextAttachment new];
+                CGFloat oldWidth = image.size.width;
+                CGFloat  scaleFactor = oldWidth / (scview.frame.size.width - 10);
+                newAttrText.image = [UIImage imageWithData:UIImagePNGRepresentation(image) scale:scaleFactor];
+                
+                
+                [myAttrString replaceCharactersInRange:range withAttributedString:[NSAttributedString attributedStringWithAttachment:newAttrText]];
+            }
+        }
+    }];
+    return myAttrString;
+    
+    
+}
 
 
 +(NSAttributedString *)modifyAttributedString:(NSAttributedString *)originString{

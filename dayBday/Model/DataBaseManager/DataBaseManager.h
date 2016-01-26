@@ -21,7 +21,7 @@
 -(DinnerDay *)searchDataWithData:(NSDate *)day;
 -(void)achiveDinnerAtInnderDictionany:(DinnerDay*)dinner;
 
--(void)getImageInTheAttributeString:(NSAttributedString*)attrStr cacheArr:(NSMutableDictionary *)checkBoxs Day:(NSDate * )day;
+-(NSMutableAttributedString*)getImageInTheAttributeString:(NSAttributedString*)attrStr cacheArr:(NSMutableDictionary *)checkBoxs Day:(NSDate * )day;
 -(DinnerDay *)insertTextViewDataWith:(UITextView *)textView cachedCheckBox:(NSDictionary *)checkBoxs data:(NSDate *)date;
 -(void)prepareAllOfDinnerData;
 -(NSArray *)getDinnerData;
