@@ -77,7 +77,6 @@
     target.currentDayTextView.showsHorizontalScrollIndicator = YES;
     target.currentDayTextView.delegate = target;
     target.currentDayTextView.backgroundColor = [UIColor whiteColor];
-    target.currentDayTextView.font = [UIFont systemFontOfSize:15];
     target.currentDayTextView.editable = NO;
     
 ////    [target.view addSubview:target.currentDayTextView];

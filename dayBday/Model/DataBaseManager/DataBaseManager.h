@@ -33,7 +33,7 @@
 -(NSMutableDictionary *)reloadCachedData;
 
 //remove
--(void)removeThisDayEvent:(NSDate *)day;
+-(DinnerDay *)removeThisDayEvent:(NSDate *)day;
 
 
 

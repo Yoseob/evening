@@ -8,14 +8,20 @@
 
 #import "DinnerUtility.h"
 #import "CheckBox.h"
+
 @implementation DinnerUtility
 +(DinnerUtility *) defualtDinnerUtility{
     static DinnerUtility * dinner = nil;
     if(!dinner){
         dinner = [[DinnerUtility alloc]init];
+
     }
     
     return dinner;
+}
+
++(UIColor *)mainbackgroundColor{
+    return  [UIColor colorWithRed:242/255.f green:242/255.f blue:242/255.f alpha:1.f];;
 }
 
 +(int)DateToInterval:(NSDate *)date{
@@ -100,15 +106,26 @@
                                          textContainer:nil
                                         characterIndex:range.location];
             }
-            
-            if(image.size.width > 50){
+            if(image.size.height > 50){
                 NSTextAttachment *newAttrText = [NSTextAttachment new];
                 CGFloat oldWidth = image.size.width;
                 CGFloat  scaleFactor = oldWidth / (scview.frame.size.width - 10);
                 newAttrText.image = [UIImage imageWithData:UIImagePNGRepresentation(image) scale:scaleFactor];
-                
-                
                 [newattributedText replaceCharactersInRange:range withAttributedString:[NSAttributedString attributedStringWithAttachment:newAttrText]];
+            }else if (image.size.height == 2.0f){
+                NSTextAttachment *newAttrText = [NSTextAttachment new];
+                
+                UIImageView * lineImage = [[UIImageView alloc]initWithFrame:CGRectMake(10, 0, image.size.width/2 , 1)];
+                lineImage.backgroundColor = [UIColor lightGrayColor]; //[DinnerUtility mainbackgroundColor];
+                
+                UIGraphicsBeginImageContextWithOptions(lineImage.bounds.size, lineImage.opaque, 0.0);
+                [lineImage.layer renderInContext:UIGraphicsGetCurrentContext()];
+                UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+                UIGraphicsEndImageContext();
+
+                newAttrText.image = image;
+                [newattributedText replaceCharactersInRange:range withAttributedString:[NSAttributedString attributedStringWithAttachment:newAttrText]];
+
             }
         }
         

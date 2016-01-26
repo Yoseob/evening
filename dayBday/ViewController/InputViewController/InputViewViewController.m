@@ -9,6 +9,14 @@
 #import "InputViewViewController.h"
 
 #define  PHOTO 1
+#define VIEW_MARGIN 10
+
+typedef enum : NSUInteger {
+    seperaterLine,
+    checkBox,
+    justImage,
+} AttrImageType;
+
 @interface InputViewViewController ()
 
 @end
@@ -39,9 +47,8 @@
 }
 
 -(void)setUpBottonBarView{
-    
     CGFloat height =[self.delegate controlBarheight];
-    controllBar.backgroundColor = [UIColor colorWithRed:242/255.f green:242/255.f blue:242/255.f alpha:1.f];
+    controllBar.backgroundColor = [DinnerUtility mainbackgroundColor];
     controllBar  =[[UIView alloc]initWithFrame:CGRectZero];
     controllBar.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:controllBar];
@@ -127,7 +134,7 @@
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     [self dismissViewControllerAnimated: YES completion: nil];
     UIImage *image = [info valueForKey: UIImagePickerControllerOriginalImage];
-    [self addTextAttachmentWithImage:image textScale:0.f];
+    [self addTextAttachmentWithImage:image textScale:0.f withType:justImage];
 }
 
 
@@ -153,6 +160,9 @@
 }
 
 -(void)addNewLine:(id)sender{
+    UIImageView * lineImage = [[UIImageView alloc]initWithFrame:CGRectMake(VIEW_MARGIN, 0, inputTextView.frame.size.width - (VIEW_MARGIN), 1)];
+    lineImage.backgroundColor = [UIColor lightGrayColor]; //[DinnerUtility mainbackgroundColor];
+    [self addTextAttachmentWithImage:[self getImageFromView:lineImage] textScale:0.f withType:seperaterLine];
 }
 
 -(void)addJustAndFinish:(id)sender{
@@ -171,11 +181,11 @@
 -(void)insertCheckBoxButton{
     UIImage *image = [UIImage imageNamed:@"checkbox_todo"];
     endCheckBox = true;
-    [self addTextAttachmentWithImage:image textScale:2.f];
+    [self addTextAttachmentWithImage:image textScale:2.f withType:checkBox];
     inputTextView.attributedText = [self.delegate insertCheckBtnWithString:inputTextView.attributedText];
 }
 
--(void)addTextAttachmentWithImage:(UIImage *)image  textScale:(CGFloat)scaleFactor{
+-(void)addTextAttachmentWithImage:(UIImage *)image  textScale:(CGFloat)scaleFactor withType:(AttrImageType)type{
     
     UITextView *textView = inputTextView;
     
@@ -186,19 +196,31 @@
     NSTextAttachment *textAttachment = [[NSTextAttachment alloc] init];
     if(scaleFactor == 0.f){
         CGFloat oldWidth = image.size.width;
-        scaleFactor = oldWidth / (textView.frame.size.width - 10);
+        scaleFactor = oldWidth / (textView.frame.size.width - VIEW_MARGIN);
     }
     
-    NSData *data = UIImageJPEGRepresentation(image, 0.4);
-    textAttachment.image = [UIImage imageWithData:data scale:scaleFactor];
+    
+    if(seperaterLine == type){
+        textAttachment.image = image;
+        
+    }else{
+        NSData *data = UIImageJPEGRepresentation(image, 0.4);
+        textAttachment.image = [UIImage imageWithData:data scale:scaleFactor];
+    }
+    
     //[UIImage imageWithCGImage:textAttachment.image.CGImage scale:scaleFactor orientation:UIImageOrientationUp|];
     NSAttributedString *attrStringWithImage = [NSAttributedString attributedStringWithAttachment:textAttachment];
-
     NSAttributedString * space = [[NSAttributedString alloc]initWithString:@" "];
     //@todo change insert where currunt cursor position
     [attributedString appendAttributedString:attrStringWithImage];
+    {
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphStyle.lineSpacing = 5;
+        NSDictionary *dict = @{NSParagraphStyleAttributeName : paragraphStyle };
+        [attributedString addAttributes:dict range:NSMakeRange(attributedString.length-1, 1)];
+    }
+    
     [attributedString appendAttributedString:space];
-
     textView.attributedText = attributedString;
     [inputTextView setFont:[UIFont fontWithName:@"AppleSDGothicNeo-Light" size:14]];
 }
@@ -223,41 +245,13 @@
         [controllBar addSubview:button];
     }
 }
-
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    subBtns = [[NSMutableArray alloc]init];
-    [self setUpBottonBarView];
-    [self setUpTextView];
-    [inputTextView becomeFirstResponder];
-}
-
--(void)viewDidAppear:(BOOL)animated{
-    if(subBtns.count == 0){
-        [self customBottomBar:nil];
-    }
-}
-
--(void)viewDidDisappear:(BOOL)animated{
-    if([inputTextView isFirstResponder]){
-        [inputTextView resignFirstResponder];
-    }
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
--(void)dealloc{
-    [[NSNotificationCenter defaultCenter]
-     removeObserver:self
-     name:UIKeyboardDidShowNotification object:nil];
+-(UIImage *)getImageFromView:(UIView *)view{
     
-    [[NSNotificationCenter defaultCenter]
-     removeObserver:self
-     name:UIKeyboardWillHideNotification object:nil];
-    self.delegate = nil;
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
 }
 
 - (void)registerForKeyboardNotifications
@@ -306,11 +300,13 @@
         textView.attributedText  = inputTextView.attributedText;
         return NO;
     }
-    NSDictionary * first =  [textView.attributedText attributesAtIndex:range.location-1 effectiveRange:&range];
-    if (endCheckBox && first) {
-        NSDictionary * dic =  [textView.attributedText attributesAtIndex:range.location effectiveRange:&range];
-        if(dic[@"NSAttachment"]){
-            endCheckBox = !endCheckBox;
+    if(textView.attributedText.length > 1){
+        NSDictionary * first =  [textView.attributedText attributesAtIndex:range.location-1 effectiveRange:&range];
+        if (endCheckBox && first) {
+            NSDictionary * dic =  [textView.attributedText attributesAtIndex:range.location effectiveRange:&range];
+            if(dic[@"NSAttachment"]){
+                endCheckBox = !endCheckBox;
+            }
         }
     }
     return YES;
@@ -329,6 +325,40 @@
     return YES;
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    subBtns = [[NSMutableArray alloc]init];
+    [self setUpBottonBarView];
+    [self setUpTextView];
+    [inputTextView becomeFirstResponder];
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    if(subBtns.count == 0){
+        [self customBottomBar:nil];
+    }
+}
+
+-(void)viewDidDisappear:(BOOL)animated{
+    if([inputTextView isFirstResponder]){
+        [inputTextView resignFirstResponder];
+    }
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter]
+     removeObserver:self
+     name:UIKeyboardDidShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter]
+     removeObserver:self
+     name:UIKeyboardWillHideNotification object:nil];
+    self.delegate = nil;
+}
 
 
 @end

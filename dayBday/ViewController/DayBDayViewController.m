@@ -126,8 +126,18 @@
                 tempCheckBox.status = (tempCheckBox.status == 0 ? 1 : 0);
                 newAttrText.image = checkBoxImages[tempCheckBox.status];
                 newAttrText.image = [UIImage imageWithCGImage:newAttrText.image.CGImage scale:2.f orientation:UIImageOrientationUp];
-                [attributedText replaceCharactersInRange:characterRange withAttributedString:[NSAttributedString attributedStringWithAttachment:newAttrText]];
-                [attributedText addAttribute:(__bridge NSString *)kCTSuperscriptAttributeName value:@(-1) range:characterRange];
+                {
+                    [attributedText replaceCharactersInRange:characterRange withAttributedString:[NSAttributedString attributedStringWithAttachment:newAttrText]];
+                    [attributedText addAttribute:(__bridge NSString *)kCTSuperscriptAttributeName value:@(-1) range:characterRange];
+                    
+                }
+                {
+                    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+                    paragraphStyle.lineSpacing = 5;
+                    NSDictionary *dict = @{NSParagraphStyleAttributeName : paragraphStyle };
+                    [attributedText addAttributes:dict range:characterRange];
+                    
+                }
 
 
             }
@@ -322,7 +332,6 @@
          [sManager insertNewTextView:today];
         
     }
-    
     [self reloadAllofData];
 }
 
@@ -341,19 +350,32 @@
         [myAttrString enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, myAttrString.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
             NSTextAttachment *  textAttachment = value;
             if(textAttachment){
-                int loc = (int)range.location;
-                NSString * key = [NSString stringWithFormat:@"%d",loc];
+                UIImage * image = nil;
+                if ([textAttachment image]){
+                    image = [textAttachment image];
+                }else{
+                    image = [textAttachment imageForBounds:[textAttachment bounds]
+                                             textContainer:nil
+                                            characterIndex:range.location];
+                }
                 
-                if(!checkBoxs[key]){
-                    CheckBox * newCheckBox = [[CheckBox alloc]initWithLoc:loc andStatus:0];
-                    newCheckBox.date = today;
-                    [checkBoxs setObject:newCheckBox forKey:key];
-                    [myAttrString addAttribute:(__bridge NSString *)kCTSuperscriptAttributeName value:@(-1) range:range];
-                    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-                    paragraphStyle.lineSpacing = 5;
-                    NSDictionary *dict = @{NSParagraphStyleAttributeName : paragraphStyle };
-                    [myAttrString addAttributes:dict range:range];
-
+                CGFloat imageSize = image.size.height;
+                if(imageSize != 1.f && imageSize < 50.f){
+                    
+                    int loc = (int)range.location;
+                    NSString * key = [NSString stringWithFormat:@"%d",loc];
+                    
+                    if(!checkBoxs[key]){
+                        CheckBox * newCheckBox = [[CheckBox alloc]initWithLoc:loc andStatus:0];
+                        newCheckBox.date = today;
+                        [checkBoxs setObject:newCheckBox forKey:key];
+                        [myAttrString addAttribute:(__bridge NSString *)kCTSuperscriptAttributeName value:@(-1) range:range];
+                        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+                        paragraphStyle.lineSpacing = 5;
+                        NSDictionary *dict = @{NSParagraphStyleAttributeName : paragraphStyle };
+                        [myAttrString addAttributes:dict range:range];
+                        
+                    }
                 }
             }
         }];
@@ -483,6 +505,41 @@
     NSMutableAttributedString *myAttrString = [[NSMutableAttributedString alloc]initWithAttributedString:self.currentDayTextView.attributedText];
     [checkBoxs removeAllObjects];
     [dbManager getImageInTheAttributeString:myAttrString cacheArr:checkBoxs Day:date];
+    /*
+    [myAttrString enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, myAttrString.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+        NSTextAttachment *  textAttachment = value;
+        UIImage * image = nil;
+        if(textAttachment){
+            if ([textAttachment image]){
+                image = [textAttachment image];
+            }else{
+                image = [textAttachment imageForBounds:[textAttachment bounds]
+                                         textContainer:nil
+                                        characterIndex:range.location];
+            }
+            
+            if(image.size.height < 50 && image.size.height != 1.f){
+                NSString * key = [NSString stringWithFormat:@"%ld",range.location];
+                CheckBox * check = checkBoxs[key];
+                NSTextAttachment * newAttrText;
+                newAttrText = [NSTextAttachment new];
+                newAttrText.image = checkBoxImages[check.status];
+                newAttrText.image = [UIImage imageWithCGImage:newAttrText.image.CGImage scale:2.f orientation:UIImageOrientationUp];
+                [myAttrString replaceCharactersInRange:range withAttributedString:[NSAttributedString attributedStringWithAttachment:newAttrText]];
+                [myAttrString addAttribute:(__bridge NSString *)kCTSuperscriptAttributeName value:@(-1) range:range];
+                {
+                    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+                    paragraphStyle.lineSpacing = 5;
+                    NSDictionary *dict = @{NSParagraphStyleAttributeName : paragraphStyle };
+                    [myAttrString addAttributes:dict range:range];
+                    
+                }
+
+                [myAttrString replaceCharactersInRange:range withAttributedString:[NSAttributedString attributedStringWithAttachment:newAttrText]];
+            }
+        }
+    }];
+     */
     [self setCurrentDayAttrbutedString:myAttrString];
 }
 

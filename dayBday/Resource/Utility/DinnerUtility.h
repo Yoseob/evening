@@ -29,5 +29,5 @@
 
 +(NSMutableAttributedString *)modifyAttributedString:(NSAttributedString *)originString;
 +(NSMutableAttributedString *)attributeTextResizeStable:(NSAttributedString *)attributedText withContainer:(UIScrollView *)scview andCheckBox:(NSDictionary *)checkBoxs;
-
++(UIColor *)mainbackgroundColor;
 @end

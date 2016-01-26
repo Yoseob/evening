@@ -331,15 +331,17 @@
 }
 
 -(void)removeDinnerData:(NSString *)dayStr{
-    
     [dataTable removeObjectForKey:dayStr];
+    DinnerDay * next = nil;
     for(DinnerDay * dinner in loadedDinners){
         if([dayStr isEqualToString:dinner.dayStr]){
+            next = dinner.right;
             [loadedDinners removeObject:dinner];
-            [self reloadView];
-            return;
+            break;
         }
     }
+    [self reloadView];
+    [viewController.calendar selectedDayViewWithIndex:next.dayStr];
 }
 
 -(void)shiftTextViewRightWithId:(NSString *)textviewID{

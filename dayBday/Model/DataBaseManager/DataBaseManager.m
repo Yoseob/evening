@@ -59,7 +59,9 @@
 
 -(void)achiveDinnerAtInnderDictionany:(DinnerDay*)dinner{
     [innerdinnerDataArchive setObject:dinner forKey:dinner.dayStr];
+
     [self insertAtAfterSourceDinner:dinner];
+
 }
 
 -(NSMutableAttributedString *)getImageInTheAttributeString:(NSAttributedString *)attrStr cacheArr:(NSMutableDictionary *)checkBoxs Day:(NSDate *)day{
@@ -81,7 +83,13 @@
                     newAttrText.image = [UIImage imageWithCGImage:newAttrText.image.CGImage scale:2.f orientation:UIImageOrientationUp];
                     [myAttrString replaceCharactersInRange:range withAttributedString:[NSAttributedString attributedStringWithAttachment:newAttrText]];
                     [myAttrString addAttribute:(__bridge NSString *)kCTSuperscriptAttributeName value:@(-1) range:range];
-                    
+                    {
+                        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+                        paragraphStyle.lineSpacing = 5;
+                        NSDictionary *dict = @{NSParagraphStyleAttributeName : paragraphStyle };
+                        [myAttrString addAttributes:dict range:range];
+                        
+                    }
                     [checkBoxs setObject:temp forKey:key];
                 }
             }
@@ -130,7 +138,7 @@
                                              characterIndex:range.location];
                 }
             
-                if(image.size.width > 50){
+                if(image.size.height > 50){
                     [tDao inserThumbnail:image withDate:date];
                     Thumbnail * thumb = [[Thumbnail alloc]init];
                     thumb.image = image;
@@ -148,7 +156,7 @@
     return  dinner;
 }
 
--(void)removeThisDayEvent:(NSDate *)day{
+-(DinnerDay *)removeThisDayEvent:(NSDate *)day{
     
     [tDao removeThumbnailWith:day];
     [dao deleteRowWithData:day];
@@ -159,13 +167,19 @@
     [thumbNailDataArchive removeObjectForKey:targetKey];
     [innerdinnerDataArchive removeObjectForKey:targetKey];
     
+    DinnerDay * newCnt = nil;
+    
     for(DinnerDay * dinner in dinnerDataArchive){
         if([targetKey isEqualToString:dinner.dayStr]){
+            newCnt = dinner.right;
             [self removeAtList:dinner];
             [dinnerDataArchive removeObject:dinner];
-            return;
+            return newCnt;
         }
     }
+
+
+    return newCnt;
 }
 
 -(void)prepareAllOfDinnerData{
@@ -213,15 +227,15 @@
         }
         temp = temp.right;
     }
-    
     return  nil;
 }
 
--(void)removeAtList:(DinnerDay *)dinner{
+-(DinnerDay *)removeAtList:(DinnerDay *)dinner{
     DinnerDay * left = dinner.left;
     dinner =  dinner.right;
     left.right = dinner;
     dinner.left = left;
+    return  dinner;
 }
 
 
@@ -237,7 +251,7 @@
     DinnerDay * temp = headerDinner;
     while (temp) {
         cusor = [self intFromDateString:temp.dayStr];
-        if(cusor >fivot){
+        if((fivot-cusor) < 0){
             [self linkSrc:temp endDesc:src];
             break;
         }
@@ -245,18 +259,14 @@
     }
 }
 
--(void)linkSrc:(DinnerDay *)old endDesc:(DinnerDay *)new{
 
-    if(old.left == nil){
-        new.left = headerDinner;
-    }else{
-        new.left = old.left;
-    }
-    old.left = new;
+//old 앞에 new를 삽입
+-(void)linkSrc:(DinnerDay *)old endDesc:(DinnerDay *)new{
+    DinnerDay * pre = old.left;
+    pre.right = new;
+    new.left = pre;
     new.right = old;
     old.left = new;
-    
-    
 }
 
 -(void)addHeadertDinnerAtList:(DinnerDay *)dinner{

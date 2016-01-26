@@ -56,8 +56,6 @@
 
 
 -(NSArray *)selectTargetDataWith:(NSDate *)target withQeury:(NSString *)query{
-
-    NSLog(@"selectTargetDataWith");
     NSMutableArray * result = [NSMutableArray new];
     [connection getRecords:[connection getdbPath] where:query callbackBlock:^(sqlite3_stmt *stmt) {
         int location = sqlite3_column_int(stmt, 1);
