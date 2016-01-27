@@ -322,9 +322,6 @@
     }
     [self insertDinnerAtArc:newDinner withDate:date];
     [self reloadView];
-
-
-
 }
 
 -(BOOL)ExistDinner:(NSDate *)date{
@@ -333,8 +330,6 @@
 }
 
 -(DinnerDay *)removeDinnerData:(NSString *)dayStr{
-
-    
     [dataTable removeObjectForKey:dayStr];
     DinnerDay * next = nil;
     for(DinnerDay * dinner in loadedDinners){
@@ -345,16 +340,13 @@
         }
     }
     [self reloadView];
+    [self visibleCurrentTextView:[DinnerUtility StringToDate:next.dayStr]];
     [viewController.calendar selectedDayViewWithIndex:next.dayStr];
     return next;
 }
 
--(void)shiftTextViewRightWithId:(NSString *)textviewID{
-    
-}
 -(void)reloadView{
     container.delegate = self;
-//    container.contentOffset = CGPointMake(container.contentOffset.x, 0); // Prevent bug when contentOffset.y is negative
     CGFloat x = 0.f;
     CGFloat width = viewController.view.frame.size.width;
     CGFloat height = container.frame.size.height;

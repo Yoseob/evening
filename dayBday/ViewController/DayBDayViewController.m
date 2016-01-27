@@ -12,7 +12,7 @@
 #import "BottomContainerView.h"
 #import "DinnerUtility.h"
 #import "MainViewBuilder.h"
-
+#import "SearchViewController.h"
 
 //will remove after DAO test
 #import "DinnerUtility.h"
@@ -72,6 +72,14 @@
     self.calendar.calendarAppearance.isWeekMode = !self.calendar.calendarAppearance.isWeekMode;
     [self transitionCalendarMode];
 
+}
+
+-(void)showSearchViewController{
+    UIStoryboard * sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+
+    SearchViewController  *vc =(SearchViewController *)[sb instantiateViewControllerWithIdentifier:@"SearchViewController"];
+    vc.view.backgroundColor = [UIColor whiteColor];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)transitionCalendarMode {
@@ -272,7 +280,6 @@
 }
 
 -(void)setupContainerScollView{
-    
     containerScollView.translatesAutoresizingMaskIntoConstraints = NO;
     containerScollView.scrollEnabled = YES;
     containerScollView.pagingEnabled = NO;
@@ -386,7 +393,9 @@
 
 #pragma mark
 - (void)setUpBarButtonItems {
-    SEL naviSelecters[] = { @selector(pushChangeModeButton:),@selector(pushChangeModeButton:)};
+    
+    //first search , second setting
+    SEL naviSelecters[] = { @selector(showSearchViewController),@selector(pushChangeModeButton:)};
     [viewBuilder createNaviBarWithSelecters:naviSelecters];
 }
 

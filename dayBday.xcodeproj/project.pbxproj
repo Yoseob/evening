@@ -18,6 +18,11 @@
 		239412221C0F52EF001B9B07 /* Thumbnail.m in Sources */ = {isa = PBXBuildFile; fileRef = 239412211C0F52EF001B9B07 /* Thumbnail.m */; };
 		239412261C10B26D001B9B07 /* ContainerScollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 239412251C10B26D001B9B07 /* ContainerScollView.m */; };
 		239412291C10B408001B9B07 /* ScrollViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 239412281C10B408001B9B07 /* ScrollViewManager.m */; };
+		23961CCE1C58568700F8EF64 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23961CCD1C58568700F8EF64 /* SearchViewController.m */; };
+		23961CD11C587E1300F8EF64 /* FeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23961CD01C587E1300F8EF64 /* FeedCell.xib */; };
+		23961CD31C587E3100F8EF64 /* SearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23961CD21C587E3100F8EF64 /* SearchCell.xib */; };
+		23961CD61C5887BC00F8EF64 /* FeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23961CD51C5887BC00F8EF64 /* FeedCell.m */; };
+		23961CD91C5887C800F8EF64 /* SearchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23961CD81C5887C800F8EF64 /* SearchCell.m */; };
 		23AE9E021BE74B5A00E7E4CB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AE9E011BE74B5A00E7E4CB /* main.m */; };
 		23AE9E051BE74B5A00E7E4CB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AE9E041BE74B5A00E7E4CB /* AppDelegate.m */; };
 		23AE9E0B1BE74B5A00E7E4CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23AE9E091BE74B5A00E7E4CB /* Main.storyboard */; };
@@ -93,6 +98,14 @@
 		239412251C10B26D001B9B07 /* ContainerScollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContainerScollView.m; sourceTree = "<group>"; };
 		239412271C10B408001B9B07 /* ScrollViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewManager.h; sourceTree = "<group>"; };
 		239412281C10B408001B9B07 /* ScrollViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewManager.m; sourceTree = "<group>"; };
+		23961CCC1C58568700F8EF64 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		23961CCD1C58568700F8EF64 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
+		23961CD01C587E1300F8EF64 /* FeedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeedCell.xib; sourceTree = "<group>"; };
+		23961CD21C587E3100F8EF64 /* SearchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchCell.xib; sourceTree = "<group>"; };
+		23961CD41C5887BC00F8EF64 /* FeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedCell.h; sourceTree = "<group>"; };
+		23961CD51C5887BC00F8EF64 /* FeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedCell.m; sourceTree = "<group>"; };
+		23961CD71C5887C800F8EF64 /* SearchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchCell.h; sourceTree = "<group>"; };
+		23961CD81C5887C800F8EF64 /* SearchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchCell.m; sourceTree = "<group>"; };
 		23AE9DFD1BE74B5A00E7E4CB /* dayBday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dayBday.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23AE9E011BE74B5A00E7E4CB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		23AE9E031BE74B5A00E7E4CB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -270,6 +283,29 @@
 			path = ContainerScollView;
 			sourceTree = "<group>";
 		};
+		23961CCB1C58566900F8EF64 /* SearchViewController */ = {
+			isa = PBXGroup;
+			children = (
+				23961CCF1C587DE000F8EF64 /* CustomCell */,
+				23961CCC1C58568700F8EF64 /* SearchViewController.h */,
+				23961CCD1C58568700F8EF64 /* SearchViewController.m */,
+			);
+			path = SearchViewController;
+			sourceTree = "<group>";
+		};
+		23961CCF1C587DE000F8EF64 /* CustomCell */ = {
+			isa = PBXGroup;
+			children = (
+				23961CD01C587E1300F8EF64 /* FeedCell.xib */,
+				23961CD21C587E3100F8EF64 /* SearchCell.xib */,
+				23961CD41C5887BC00F8EF64 /* FeedCell.h */,
+				23961CD51C5887BC00F8EF64 /* FeedCell.m */,
+				23961CD71C5887C800F8EF64 /* SearchCell.h */,
+				23961CD81C5887C800F8EF64 /* SearchCell.m */,
+			);
+			path = CustomCell;
+			sourceTree = "<group>";
+		};
 		23AE9DF41BE74B5A00E7E4CB = {
 			isa = PBXGroup;
 			children = (
@@ -340,6 +376,7 @@
 		23AE9E361BE74C4D00E7E4CB /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				23961CCB1C58566900F8EF64 /* SearchViewController */,
 				232D5E201BEB33FB0026C62E /* InputViewController */,
 				23AE9E641BE74C6700E7E4CB /* DayBDayViewController.h */,
 				23AE9E651BE74C6700E7E4CB /* DayBDayViewController.m */,
@@ -611,7 +648,9 @@
 				23AE9E561BE74C5200E7E4CB /* eventlist.ics in Resources */,
 				23AE9E101BE74B5A00E7E4CB /* Assets.xcassets in Resources */,
 				23AE9E571BE74C5200E7E4CB /* gazette.ics in Resources */,
+				23961CD31C587E3100F8EF64 /* SearchCell.xib in Resources */,
 				23AE9E0B1BE74B5A00E7E4CB /* Main.storyboard in Resources */,
+				23961CD11C587E1300F8EF64 /* FeedCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -645,6 +684,7 @@
 				2394121A1C0F4930001B9B07 /* DinnerDay.m in Sources */,
 				2305F9D91C3EBB38009FF083 /* MainViewBuilder.m in Sources */,
 				23C01E641C02020E0002ACCA /* DataBaseAccessObject.m in Sources */,
+				23961CD61C5887BC00F8EF64 /* FeedCell.m in Sources */,
 				232D5ECD1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.m in Sources */,
 				23AE9E5B1BE74C5200E7E4CB /* JTCalendarDataCache.m in Sources */,
 				23AE9E611BE74C5200E7E4CB /* JTCalendarWeekView.m in Sources */,
@@ -658,6 +698,7 @@
 				23AE9E601BE74C5200E7E4CB /* JTCalendarMonthWeekDaysView.m in Sources */,
 				23F711DA1C05FB0300B202B1 /* TransferAble.m in Sources */,
 				23AE9E5E1BE74C5200E7E4CB /* JTCalendarMenuView.m in Sources */,
+				23961CCE1C58568700F8EF64 /* SearchViewController.m in Sources */,
 				23C01E6A1C0203B40002ACCA /* ImagesDao.m in Sources */,
 				23AE9E591BE74C5200E7E4CB /* JTCalendarAppearance.m in Sources */,
 				23C01E611C0201E30002ACCA /* DinnerDao.m in Sources */,
@@ -665,6 +706,7 @@
 				23351E0A1C1FA3EA00BB54FB /* DinnerUtility.m in Sources */,
 				23AE9E021BE74B5A00E7E4CB /* main.m in Sources */,
 				23AE9E581BE74C5200E7E4CB /* JTCalendar.m in Sources */,
+				23961CD91C5887C800F8EF64 /* SearchCell.m in Sources */,
 				23AE9E621BE74C5200E7E4CB /* JTCircleView.m in Sources */,
 				23AE9E5C1BE74C5200E7E4CB /* JTCalendarDayView.m in Sources */,
 				23F711C71C0571B300B202B1 /* DinnerObjDao.m in Sources */,
