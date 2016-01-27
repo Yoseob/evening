@@ -70,6 +70,8 @@
     DinnerDay * init = [[DataBaseManager getDefaultDataBaseManager]searchDataWithData:today];
     if(!init){
         init = [DinnerDay new];
+        init.left = nil ;
+        init.right = nil;
     }
     [self insertWithDinner:init withDate:today];
     
@@ -330,7 +332,9 @@
     return dataTable[key];
 }
 
--(void)removeDinnerData:(NSString *)dayStr{
+-(DinnerDay *)removeDinnerData:(NSString *)dayStr{
+
+    
     [dataTable removeObjectForKey:dayStr];
     DinnerDay * next = nil;
     for(DinnerDay * dinner in loadedDinners){
@@ -342,6 +346,7 @@
     }
     [self reloadView];
     [viewController.calendar selectedDayViewWithIndex:next.dayStr];
+    return next;
 }
 
 -(void)shiftTextViewRightWithId:(NSString *)textviewID{

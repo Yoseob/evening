@@ -306,10 +306,9 @@
 }
 
 -(void)removeThisEvent:(id)sender{
-    
     [dbManager removeThisDayEvent:today];
-    [sManager removeDinnerData:[DinnerUtility DateToString:today]];
-    [self setCurrentDayAttrbutedString:[[NSAttributedString alloc]initWithString:@""]];
+    DinnerDay * new = [sManager removeDinnerData:[DinnerUtility DateToString:today]];
+    today = [DinnerUtility StringToDate:new.dayStr];
     [self reloadAllofData];
 
 }
@@ -325,12 +324,10 @@
 }
 
 -(void)resultTextView:(UITextView *)textView{
-    
     [self setupTextView:textView];
     [dbManager insertTextViewDataWith:textView cachedCheckBox:checkBoxs data:today];
     if([dbManager searchDataWithData:today]!=nil && dbManager.dinnerWithViewTable[[DinnerUtility DateToString:today]] == nil){
          [sManager insertNewTextView:today];
-        
     }
     [self reloadAllofData];
 }
@@ -360,6 +357,7 @@
                 }
                 
                 CGFloat imageSize = image.size.height;
+                NSLog(@"imagesize : %lf",imageSize);
                 if(imageSize != 1.f && imageSize < 50.f){
                     
                     int loc = (int)range.location;

@@ -116,7 +116,7 @@
                 NSTextAttachment *newAttrText = [NSTextAttachment new];
                 
                 UIImageView * lineImage = [[UIImageView alloc]initWithFrame:CGRectMake(10, 0, image.size.width/2 , 1)];
-                lineImage.backgroundColor = [UIColor lightGrayColor]; //[DinnerUtility mainbackgroundColor];
+                lineImage.backgroundColor = [DinnerUtility mainbackgroundColor];
                 
                 UIGraphicsBeginImageContextWithOptions(lineImage.bounds.size, lineImage.opaque, 0.0);
                 [lineImage.layer renderInContext:UIGraphicsGetCurrentContext()];

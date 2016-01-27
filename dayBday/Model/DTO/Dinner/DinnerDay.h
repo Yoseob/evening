@@ -18,4 +18,7 @@
 @property DinnerDay * left,*right;
 
 
+-(double)numberFromDateString;
+
+
 @end

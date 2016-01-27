@@ -99,6 +99,8 @@
 }
 
 -(DinnerDay *)insertTextViewDataWith:(UITextView *)textView cachedCheckBox:(NSDictionary *)checkBoxs data:(NSDate *)date{
+    
+    NSLog(@"insertTextViewDataWith");
     NSMutableAttributedString * attrString = [[NSMutableAttributedString alloc]initWithAttributedString:textView.attributedText];
     NSData* stringData = [NSKeyedArchiver archivedDataWithRootObject:attrString];
     
@@ -158,6 +160,10 @@
 
 -(DinnerDay *)removeThisDayEvent:(NSDate *)day{
     
+    if(!day) {
+        return nil;
+    }
+    
     [tDao removeThumbnailWith:day];
     [dao deleteRowWithData:day];
     [cDao deleteRowWithData:day];
@@ -169,11 +175,19 @@
     
     DinnerDay * newCnt = nil;
     
+    newCnt = headerDinner;
+    
+    while (newCnt) {
+        NSLog(@"%@",newCnt.dayStr);
+        newCnt = newCnt.right;
+    }
+    
+    
     for(DinnerDay * dinner in dinnerDataArchive){
         if([targetKey isEqualToString:dinner.dayStr]){
             newCnt = dinner.right;
             [self removeAtList:dinner];
-            [dinnerDataArchive removeObject:dinner];
+            [dinnerDataArchive removeObject:dinner];            
             return newCnt;
         }
     }
@@ -245,28 +259,56 @@
 }
 
 -(void)insertAtAfterSourceDinner:(DinnerDay *)src{
-
-    int fivot = [self intFromDateString:src.dayStr];
-    int cusor = 0;
-    DinnerDay * temp = headerDinner;
+    
+    DinnerDay * isExsist = [self searchAtList:src.dayStr];
+    if(isExsist){
+        [self updateCurruntDinner:isExsist withNew:src];
+        return;
+    }
+    
+//    [self printlistWithKeyword:@"insert before"];
+    
+    double fivot = [src numberFromDateString];
+    double cusor = 0;
+    DinnerDay * temp = headerDinner.right;
     while (temp) {
-        cusor = [self intFromDateString:temp.dayStr];
-        if((fivot-cusor) < 0){
+        cusor = [temp numberFromDateString];
+        if((cusor > fivot) || cusor< 0){
             [self linkSrc:temp endDesc:src];
             break;
         }
         temp = temp.right;
     }
+    
+
+    [self printlistWithKeyword:@"insert after"];
 }
 
 
 //old 앞에 new를 삽입
 -(void)linkSrc:(DinnerDay *)old endDesc:(DinnerDay *)new{
+    NSLog(@"1 %@ , %@" , old.dayStr , new.dayStr);
     DinnerDay * pre = old.left;
     pre.right = new;
     new.left = pre;
     new.right = old;
     old.left = new;
+}
+
+//old 뒤에 new 삽입
+-(void)linkAfterSrc:(DinnerDay *)old endDesc:(DinnerDay *)new{
+    NSLog(@"2 %@ , %@" , old.dayStr , new.dayStr);
+    DinnerDay * next = old.right;
+
+    next.left = new;
+    new.right = next;
+    new.left = old;
+    old.right = new;
+}
+-(void)updateCurruntDinner:(DinnerDay *)cnt withNew:(DinnerDay *)new{
+    cnt.dayStr = new.dayStr;
+    cnt.attrData = new.attrData;
+    cnt.attrText = new.attrText;
 }
 
 -(void)addHeadertDinnerAtList:(DinnerDay *)dinner{
@@ -294,7 +336,14 @@
     hCursor = headerDinner;
     tCursor = tailDinner;
 }
-
+-(void)printlistWithKeyword:(NSString *) key{
+    DinnerDay * temp = headerDinner;
+    while (temp) {
+        NSLog(@"%@ , %@",key , temp.dayStr);
+        temp = temp.right;
+    }
+    
+}
 
 
 

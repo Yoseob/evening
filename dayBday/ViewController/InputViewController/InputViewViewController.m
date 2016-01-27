@@ -161,7 +161,7 @@ typedef enum : NSUInteger {
 
 -(void)addNewLine:(id)sender{
     UIImageView * lineImage = [[UIImageView alloc]initWithFrame:CGRectMake(VIEW_MARGIN, 0, inputTextView.frame.size.width - (VIEW_MARGIN), 1)];
-    lineImage.backgroundColor = [UIColor lightGrayColor]; //[DinnerUtility mainbackgroundColor];
+    lineImage.backgroundColor = [DinnerUtility mainbackgroundColor];
     [self addTextAttachmentWithImage:[self getImageFromView:lineImage] textScale:0.f withType:seperaterLine];
 }
 
@@ -175,8 +175,6 @@ typedef enum : NSUInteger {
         //비동기 디비 insert
     }];
 }
-
-
 
 -(void)insertCheckBoxButton{
     UIImage *image = [UIImage imageNamed:@"checkbox_todo"];
