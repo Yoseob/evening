@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "DinnerDay.h"
+#import "DinnerUtility.h"
 @interface FeedCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *SentaxField;
+@property (weak, nonatomic) IBOutlet UIImageView *thumbNail;
+@property (weak, nonatomic) IBOutlet UILabel *dayLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dayStringLabel;
+
+-(void)bindDiiner:(DinnerDay *)dinner;
 
 @end

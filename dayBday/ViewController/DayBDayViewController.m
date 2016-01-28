@@ -78,6 +78,7 @@
     UIStoryboard * sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
 
     SearchViewController  *vc =(SearchViewController *)[sb instantiateViewControllerWithIdentifier:@"SearchViewController"];
+    [vc setDataBaseManager:nil];
     vc.view.backgroundColor = [UIColor whiteColor];
     [self.navigationController pushViewController:vc animated:YES];
 }

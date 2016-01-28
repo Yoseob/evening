@@ -30,6 +30,7 @@
 
 //thumb
 -(Thumbnail *)thumbNailWith:(NSDate *)day;
+-(Thumbnail *)thumbNailWithString:(NSString *)day;
 -(NSMutableDictionary *)reloadCachedData;
 
 //remove
@@ -38,4 +39,6 @@
 
 
 -(BOOL)isDateDinner:(NSString*)dayStr;
+
+-(NSArray *)feedListUptodateCount:(int)max endDateStr:(NSString *)date;
 @end

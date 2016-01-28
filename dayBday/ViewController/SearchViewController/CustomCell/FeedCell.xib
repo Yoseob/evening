@@ -42,6 +42,12 @@
                     </label>
                 </subviews>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="SentaxField" destination="pYT-Nw-kX7" id="YMa-q5-tpD"/>
+                <outlet property="dayLabel" destination="RWb-4i-pqF" id="5gc-3g-zyI"/>
+                <outlet property="dayStringLabel" destination="mC6-8T-Ox7" id="rdR-qm-kaB"/>
+                <outlet property="thumbNail" destination="CRb-Qj-Z6A" id="SWd-IJ-ZbB"/>
+            </connections>
             <point key="canvasLocation" x="557" y="212.5"/>
         </tableViewCell>
     </objects>

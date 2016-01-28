@@ -8,8 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "FeedCell.h"
-@interface SearchViewController : UIViewController <UITableViewDataSource,UITableViewDelegate , UITextFieldDelegate>
+#import "DataBaseManager.h"
+@interface SearchViewController : UIViewController <UITableViewDataSource,UITableViewDelegate , UITextFieldDelegate, UIScrollViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *searchTableView;
+
+
+-(void)setDataBaseManager:(NSString *)day;
+
 
 @end

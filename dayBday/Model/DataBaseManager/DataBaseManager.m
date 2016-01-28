@@ -59,9 +59,7 @@
 
 -(void)achiveDinnerAtInnderDictionany:(DinnerDay*)dinner{
     [innerdinnerDataArchive setObject:dinner forKey:dinner.dayStr];
-
     [self insertAtAfterSourceDinner:dinner];
-
 }
 
 -(NSMutableAttributedString *)getImageInTheAttributeString:(NSAttributedString *)attrStr cacheArr:(NSMutableDictionary *)checkBoxs Day:(NSDate *)day{
@@ -198,7 +196,8 @@
 
 -(void)prepareAllOfDinnerData{
     NSLog(@"prepareAllOfDinnerData");
-    dinnerDataArchive = [[NSMutableArray alloc]initWithArray:[dao selectAllDataWith:nil]];
+    NSString * query =[NSString stringWithFormat: @"SELECT * from dinnerobj ORDER BY dayStr ASC"];
+    dinnerDataArchive = [[NSMutableArray alloc]initWithArray:[dao selectDataWithQuery:query]];
     [self setheader:nil];
     DinnerDay * temp = nil;
     int length = (int)dinnerDataArchive.count ;
@@ -214,10 +213,23 @@
     return dinnerDataArchive;
 }
 
+//for Search
+-(NSArray *)feedListUptodateCount:(int)max endDateStr:(NSString *)date{
+    NSString  * query =[NSString stringWithFormat: @"SELECT * from dinnerobj WHERE dayStr LIKE \"%@%%\" ORDER BY dayStr DESC" , date];
+    NSMutableArray * arr = [[NSMutableArray alloc]initWithArray:[dao selectDataWithQuery:query]];
+    return arr;
+}
+
+
+
+
 #pragma makr - Thumbnail
 -(Thumbnail *)thumbNailWith:(NSDate *)day{
     NSString * key = [DinnerUtility DateToString:day];
     return [thumbNailDataArchive objectForKey:key];
+}
+-(Thumbnail *)thumbNailWithString:(NSString *)day{
+    return [thumbNailDataArchive objectForKey:day];
 }
 
 -(NSMutableDictionary *)reloadCachedData{

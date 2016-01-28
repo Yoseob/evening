@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "Thumbnail.h"
 @interface DinnerDay : NSObject
 
 @property(assign,nonatomic)NSInteger index;
@@ -15,6 +15,7 @@
 @property(copy,nonatomic)NSString * orignText;
 @property(strong,nonatomic)NSData * attrData;
 @property(strong,nonatomic)NSAttributedString * attrText;
+@property(strong,nonatomic)Thumbnail * thumbnail;
 @property DinnerDay * left,*right;
 
 

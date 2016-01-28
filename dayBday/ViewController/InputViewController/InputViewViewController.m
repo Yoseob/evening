@@ -254,6 +254,7 @@ typedef enum : NSUInteger {
 
 - (void)registerForKeyboardNotifications
 {
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWasShown:)
                                                  name:UIKeyboardDidShowNotification object:nil];

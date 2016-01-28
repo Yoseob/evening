@@ -10,8 +10,9 @@
 #import "DinnerDay.h"
 @interface DinnerObjDao : DataBaseAccessObject
 +(id)getDefaultDinnerObjDao;
--(NSArray *)selectDayWith:(NSDate *)target;
--(NSArray *)selectAllDataWith:(NSDate *)target;
+
+-(NSArray *)selectDataWithQuery:(NSString *)query;
+
 -(BOOL)insertDataWithString:(NSString *)text attribute :(NSData*)textData targetDate:(NSDate *)target;
 
 @end

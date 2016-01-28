@@ -84,6 +84,9 @@
 
 
 #pragma mark - select
+-(NSArray *)selectDataWithQuery:(NSString *)query{
+    return [self selectImpl:query];
+}
 -(NSArray *)selectDayWith:(NSDate *)target{
     NSString  * query =[NSString stringWithFormat: @"SELECT * from dinnerobj WHERE dayStr = \"%@\" ORDER BY dayStr ASC" , [DinnerUtility DateToString:target]];
     return [self selectImpl:query];
@@ -93,6 +96,8 @@
     NSString * query =[NSString stringWithFormat: @"SELECT * from dinnerobj ORDER BY dayStr ASC"];
     return [self selectImpl:query];
 }
+
+
 
 -(NSMutableArray *)selectImpl:(NSString*)query{
     NSMutableArray * result = [NSMutableArray new];
