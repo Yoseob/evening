@@ -143,10 +143,12 @@
     DataBaseManager * dbManager = [DataBaseManager getDefaultDataBaseManager];
     NSAttributedString * attrString = [dbManager getImageInTheAttributeString:dinner.attrText cacheArr: nil Day:[DinnerUtility StringToDate:dinner.dayStr]];
 
+
     
     if(!containerScrollerView){
         containerScrollerView = [[ContainerScollView alloc]initWithFrame:frame];
         UITextView * textView = [[UITextView alloc]initWithFrame:frame];
+        
         textView.translatesAutoresizingMaskIntoConstraints = NO;
         textView.scrollEnabled = YES;
         textView.pagingEnabled = NO;
@@ -165,18 +167,17 @@
     [container addSubview:containerScrollerView];
     return CGRectGetMaxX(containerScrollerView.frame);
 }
+
 //이때 바꿔도 될듯. 버튼들을..
 -(void)changeContainerViewSize:(CGFloat)height{
     for(ContainerScollView *view in dataTable.allValues){
         view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, height);
         view.textView.frame = CGRectMake(0, 0, view.frame.size.width, height);
     }
-
 }
 
 -(void)visibleCurrentTextView:(NSDate*) selectedDay withGesture:(HPTextViewTapGestureRecognizer *)ges{
     NSString * key = [DinnerUtility DateToString:selectedDay];
-    
     ContainerScollView * view = dataTable[key];
     UITextView * selectedView = view.textView;
     [viewController setCurrentDayTextView:selectedView];

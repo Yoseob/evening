@@ -35,7 +35,6 @@
     }
     self.dayStringLabel.text = dayString;
     self.dayLabel.text = [dinner.dayStr substringWithRange:NSMakeRange(8, 2)];
-    
 }
 
 

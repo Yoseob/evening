@@ -18,9 +18,11 @@
 #import "DinnerUtility.h"
 #import "CheckBoxsDao.h"
 #import "CheckBox.h"
-
 #import "DataBaseManager.h"
 #import "ScrollViewManager.h"
+
+#import "dayBday-Swift.h"
+#define CALENDAR_ORIGIN_HEIGHT 40.f
 @interface DayBDayViewController () < UIScrollViewDelegate,  UITextViewDelegate>
 
 @property (strong, nonatomic, readwrite) NSLayoutConstraint *calendarContentViewHeightConstraint;
@@ -40,7 +42,6 @@
 @implementation DayBDayViewController{
     
     MainViewBuilder * viewBuilder;
-    
     HPTextViewTapGestureRecognizer *textViewTapGestureRecognizer;
     BottomContainerView * bottomBar;
     JTCalendarMonthWeekDaysView * weekdaysView;
@@ -56,6 +57,9 @@
     UIScrollView * containerScollView;
     ScrollViewManager * sManager;
 
+    BOOL isScroll;
+    CGFloat moved;
+    
 }
 
 #pragma mark -
@@ -76,10 +80,13 @@
 
 -(void)showSearchViewController{
     UIStoryboard * sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    SearchAndLoadViewController * vc = [[SearchAndLoadViewController alloc]init];
 
-    SearchViewController  *vc =(SearchViewController *)[sb instantiateViewControllerWithIdentifier:@"SearchViewController"];
-    [vc setDataBaseManager:nil];
+
+//    SearchAndLoadViewController  *vc =(SearchAndLoadViewController *)[sb instantiateViewControllerWithIdentifier:@"SearchAndLoadViewController"];
+//    [vc setDataBaseManager:nil];
     vc.view.backgroundColor = [UIColor whiteColor];
+    [vc setDataBasemanager:@""];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -87,16 +94,16 @@
     CGFloat newHeight = 240.f;
     CGFloat textViewHeight =containerScollView.frame.size.height;
     if(self.calendar.calendarAppearance.isWeekMode){
-        newHeight = 40.0f;
+        newHeight = CALENDAR_ORIGIN_HEIGHT;
     }
     [sManager changeContainerViewSize:textViewHeight];
-    [UIView animateWithDuration:.5
+    [UIView animateWithDuration:.4
                      animations:^{
                          self.calendarContentViewHeightConstraint.constant = newHeight;
                          [self.view layoutIfNeeded];
                      }];
     
-    [UIView animateWithDuration:.25
+    [UIView animateWithDuration:.15
                      animations:^{
                          self.calendarContentView.layer.opacity = 0;
                      }
@@ -430,8 +437,10 @@
     
     {
         self.navigationController.navigationBar.translucent = NO;
+//       self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:38/255.f green:38/255.f blue:38/255.f alpha:1.f];
+        self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
         self.view.backgroundColor = [UIColor whiteColor];
-        self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:38/255.f green:38/255.f blue:38/255.f alpha:1.f];
+     
         {
             self.currentDayTextView = [[UITextView alloc] initWithFrame:CGRectZero];
             containerScollView = [[UIScrollView alloc]initWithFrame:CGRectZero];
@@ -451,12 +460,15 @@
         images = [NSMutableDictionary new];
         checkBoxImages = @[[UIImage imageNamed:@"checkbox_todo"] , [UIImage imageNamed:@"checkbox_did"]];
         originTextViewFrame = CGRectZero;
+        isScroll = YES;
     }
 }
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+
     [self setupAndInit];
     [self setUpBottomBarContainer];
     [self setUpCalendar];
@@ -465,11 +477,20 @@
     [self addUpDownGesture];
     [viewBuilder buildContainerScrollerView:containerScollView];
     [self.view bringSubviewToFront:bottomBar];
+    
+//    OLNGradientView * gradientView = [[OLNGradientView alloc]initWithFrame:self.view.frame];
+//    gradientView.topColor = [UIColor colorWithRed:240/255.f green:120/255.f blue:68/255.f alpha:1.f];
+//    gradientView.bottomColor = [UIColor colorWithRed:249/255.f green:209/255.f blue:121/255.f alpha:1.f];
+//    [self.view addSubview:gradientView];
+//    self.navigationController.navigationBar.translucent = YES;
+    
 }
 
 - (void)viewDidLayoutSubviews {
     [self.calendar repositionViews];
     [sManager changeContainerViewSize:containerScollView.frame.size.height];
+    
+    
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -507,6 +528,8 @@
 -(void)persentChangeCurrentDay:(float)percent{
     
 }
+
+
 
 -(void)changeCurruntScrollView:(NSDate *)date{
     [self setUptextViewTapGestureRecognizer];
@@ -552,10 +575,22 @@
 }
 
 -(void)setCurrentDayAttrbutedString:(NSAttributedString *)attrStr{
+    
+    self.currentDayTextView.delegate = self;
     [self.currentDayTextView setFont:[UIFont fontWithName:@"AppleSDGothicNeo-Light" size:14]];
     self.currentDayTextView.attributedText = attrStr;//[DinnerUtility modifyAttributedString:attrStr];
 }
 
+
+#pragma mark - UIScrollViewDelegate
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+
+}
+
+-(void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset{
+    NSLog(@"scrollViewWillEndDragging");
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

@@ -19,7 +19,6 @@
     UITextField * textfield;
     NSLayoutConstraint * bottomContaint;
     DataBaseManager * dbManager;
-    
     NSMutableArray * headerStrings;
     NSMutableArray * tableDatas ;
     
@@ -48,7 +47,6 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated{
-    
 }
 -(void)viewDidLoad{
 
@@ -64,47 +62,15 @@
 
 #pragma mark - SetupView
 -(void)setupAndInit{
-    CGFloat topLoaderWidth = 100.f;
-    topLoader = [[UILabel alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2 - topLoaderWidth/2, -30, topLoaderWidth, 30)];{
-        topLoader.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
-        topLoader.textAlignment = NSTextAlignmentCenter;
-        topLoader.backgroundColor = [UIColor redColor];
-        topLoader.text = @"TOP";
-        
-//        UIView *searchBackgroundView = [[UIView alloc]initWithFrame:self.view.frame];
-//        [searchTableView setBackgroundView:searchBackgroundView];
-//        [searchTableView.backgroundView addSubview:topLoader];
-//        [self.view addSubview:topLoader];
-    }
-    
 }
 
 -(void)topLoaderMover:(CGFloat)offset{
     
-     CGFloat maximumOffset = searchTableView.contentSize.height - searchTableView.frame.size.height;
+    CGFloat maximumOffset = searchTableView.contentSize.height - searchTableView.frame.size.height;
     
-    if(offset < 0){
-        CGFloat ty = (30.f)+(offset * -1);
-//        NSLog(@"%lf , %lf",offset , ty);
-        topLoader.frame = CGRectMake(topLoader.frame.origin.x, ty, topLoader.frame.size.width, 30);
-    }
     if(offset < -50 && !isReload){
-
         [self reloadData:nextIndex++];
-
-        CGFloat contentOffSet = searchTableView.contentOffset.y;
-        UIEdgeInsets inset = searchTableView.contentInset;
-        [searchTableView setContentOffset:CGPointMake(0,offset) animated:NO];
-        offset *= -1;
-        searchTableView.contentInset = UIEdgeInsetsMake(offset, inset.left, inset.bottom, inset.right);
-
-        [UIView animateWithDuration:3.f animations:^{
-
-        } completion:^(BOOL finished) {
-        }];
         isReload = true;
-
-
     }
     
     if(maximumOffset+30 <= offset){

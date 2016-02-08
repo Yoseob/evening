@@ -18,18 +18,19 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-//   [application setStatusBarHidden:YES];
+   [application setStatusBarHidden:YES];
     DataBaseManager * manager = [DataBaseManager getDefaultDataBaseManager];
     [manager reloadCachedData];
     [manager prepareAllOfDinnerData];
     
     JTCalendar* c =[JTCalendar getDefaultJTCalendar];
     [c.dataCache reloadData];
+  
     
     [application setStatusBarStyle:UIStatusBarStyleLightContent];
     [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
-    [[UINavigationBar appearance] setBarTintColor:[DinnerUtility DinnerNaviBarColor]];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor clearColor]];
 
     return YES;
 }

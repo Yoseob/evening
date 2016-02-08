@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="CSA-8a-PRP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="CSA-8a-PRP">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -50,11 +50,10 @@
             </objects>
             <point key="canvasLocation" x="920" y="-173.24000000000001"/>
         </scene>
-        <!--Search View Controller-->
+        <!--Search And Load View Controller-->
         <scene sceneID="D7w-y4-QbF">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="HaC-lY-Cea" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController storyboardIdentifier="SearchViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="H5b-Yp-ABS" customClass="SearchViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchAndLoadViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="H5b-Yp-ABS" customClass="SearchAndLoadViewController" customModule="dayBday" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pUt-qp-iqm">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -69,8 +68,10 @@
                     </view>
                     <connections>
                         <outlet property="searchTableView" destination="fnZ-NW-aTn" id="kUJ-js-esV"/>
+                        <outlet property="tableView" destination="fnZ-NW-aTn" id="b4N-Et-6lL"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HaC-lY-Cea" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="832" y="493"/>
         </scene>
