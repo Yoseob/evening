@@ -121,14 +121,15 @@ static NSArray *cacheDaysOfWeeks;
 
 - (void)reloadAppearance
 {
-    self.backgroundColor = [DinnerUtility DinnerNaviBarColor];
+    self.backgroundColor = [UIColor clearColor];//[DinnerUtility DinnerNaviBarColor];
     for(int i = 0; i < self.subviews.count; ++i){
         UILabel *view = [self.subviews objectAtIndex:i];
         
         view.font = self.calendarManager.calendarAppearance.weekDayTextFont;
-        view.textColor = self.calendarManager.calendarAppearance.weekDayTextColor;
-        
+        view.textColor = [UIColor whiteColor]; //self.calendarManager.calendarAppearance.weekDayTextColor;
         view.text = [[self daysOfWeek] objectAtIndex:i];
+        
+
     }
 }
 

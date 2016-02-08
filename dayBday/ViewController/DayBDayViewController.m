@@ -54,6 +54,9 @@
     NSArray * checkBoxImages;
     
     UIView * keyBoardController;
+    UIView * naviFrameView;
+    OLNGradientView * gradientView;
+    
     UIScrollView * containerScollView;
     ScrollViewManager * sManager;
 
@@ -192,7 +195,7 @@
 - (void)setUpCalendar {
     self.calendar = [JTCalendar getDefaultJTCalendar];
     self.calendar.calendarAppearance.menuMonthTextFont = [UIFont systemFontOfSize:13.0f];
-    self.calendar.calendarAppearance.menuMonthTextColor = [UIColor grayColor];
+    self.calendar.calendarAppearance.menuMonthTextColor = [UIColor whiteColor];
     self.calendar.calendarAppearance.monthBlock = ^NSString *(NSDate *date, JTCalendar *jt_calendar){
         NSCalendar *calendar = jt_calendar.calendarAppearance.calendar;
         NSDateComponents *comps = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:date];
@@ -241,18 +244,22 @@
     
     weekdaysView = [JTCalendarMonthWeekDaysView new];
     [weekdaysView setCalendarManager:self.calendar];
-    [viewBuilder buildWeekDaysView:weekdaysView];
+    
+    [viewBuilder buildWeekDaysView:weekdaysView withToItem:naviFrameView];
     [JTCalendarMonthWeekDaysView beforeReloadAppearance];
     [weekdaysView reloadAppearance];
-
+    
 }
 
 
 - (void)setUpContentView {
     self.calendarContentView = [[JTCalendarContentView alloc] initWithFrame:CGRectZero];
     self.calendarContentView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.calendarContentView.backgroundColor = [UIColor whiteColor];
+    self.calendarContentView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.calendarContentView];
+
+
+
 
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.calendarContentView
                                                           attribute:NSLayoutAttributeTop
@@ -297,6 +304,7 @@
     
     [sManager initialScrollViewWith:[NSDate new]];
     [self setUptextViewTapGestureRecognizer];
+    [viewBuilder buildContainerScrollerView:containerScollView];
 }
 
 
@@ -410,7 +418,7 @@
 -(void)setUpBottomBarContainer{
     CGFloat barHeight =self.navigationController.navigationBar.frame.size.height;
     CGFloat stateHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
-    CGFloat bottomBarY = self.view.frame.size.height - barHeight - (barHeight + stateHeight);
+    CGFloat bottomBarY = self.view.frame.size.height - barHeight;// - (barHeight + stateHeight);
     bottomBar = [[BottomContainerView alloc]initWithFrame:CGRectMake(0,bottomBarY,self.view.frame.size.width,45.f)];
     
     SEL bottomSelecters[] = { @selector(showInputViewController:),@selector(removeThisEvent:),@selector(showInputViewController:)};
@@ -432,12 +440,16 @@
 }
 
 -(void)setupAndInit{
-    dbManager = [DataBaseManager getDefaultDataBaseManager];
-    viewBuilder = [[MainViewBuilder alloc]initWithTarget:self];
     
+    dbManager = [DataBaseManager getDefaultDataBaseManager];
+    
+    viewBuilder = [[MainViewBuilder alloc]initWithTarget:self];
     {
-        self.navigationController.navigationBar.translucent = NO;
-//       self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:38/255.f green:38/255.f blue:38/255.f alpha:1.f];
+        
+        naviFrameView = [[UIView alloc]initWithFrame:self.navigationController.navigationBar.frame];
+        naviFrameView.backgroundColor = [UIColor clearColor];
+        [self.view addSubview:naviFrameView];
+
         self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
         self.view.backgroundColor = [UIColor whiteColor];
      
@@ -467,21 +479,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
 
+    gradientView = [[OLNGradientView alloc]initWithFrame:CGRectZero];
+    gradientView.topColor = [UIColor colorWithRed:249/255.f green:209/255.f blue:121/255.f alpha:1.f];
+    gradientView.bottomColor = [UIColor colorWithRed:240/255.f green:120/255.f blue:68/255.f alpha:1.f];
+    
+    [self.view addSubview:gradientView];
+    
     [self setupAndInit];
-    [self setUpBottomBarContainer];
     [self setUpCalendar];
+    [self setUpBottomBarContainer];
     [self setupContainerScollView];
     [self setUpBarButtonItems];
     [self addUpDownGesture];
-    [viewBuilder buildContainerScrollerView:containerScollView];
-    [self.view bringSubviewToFront:bottomBar];
     
-//    OLNGradientView * gradientView = [[OLNGradientView alloc]initWithFrame:self.view.frame];
-//    gradientView.topColor = [UIColor colorWithRed:240/255.f green:120/255.f blue:68/255.f alpha:1.f];
-//    gradientView.bottomColor = [UIColor colorWithRed:249/255.f green:209/255.f blue:121/255.f alpha:1.f];
-//    [self.view addSubview:gradientView];
+    [viewBuilder buildGradientView:gradientView];
+//    [self.view bringSubviewToFront:bottomBar];
 //    self.navigationController.navigationBar.translucent = YES;
     
 }
@@ -528,8 +541,6 @@
 -(void)persentChangeCurrentDay:(float)percent{
     
 }
-
-
 
 -(void)changeCurruntScrollView:(NSDate *)date{
     [self setUptextViewTapGestureRecognizer];

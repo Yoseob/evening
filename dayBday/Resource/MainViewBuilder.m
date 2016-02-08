@@ -14,6 +14,7 @@
 {
     BottomContainerView * bottomBar;
     JTCalendarMonthWeekDaysView * weekdaysView;
+    ContainerScollView * containerScrollView;
 }
 @synthesize target;
 -(instancetype)initWithTarget:(DayBDayViewController*)targetVC{
@@ -43,9 +44,11 @@
 }
 -(void)createButtomBar:(BottomContainerView *)barView withSelecters:(SEL *)selecters{
     bottomBar = barView;
-    
+
     bottomBar.backgroundColor = [UIColor colorWithRed:242/255.f green:242/255.f blue:242/255.f alpha:1.f];
     [target.view addSubview:bottomBar];
+    
+    
     
     CGFloat buttonSize = bottomBar.frame.size.height - 10;
     
@@ -115,7 +118,7 @@
 
 -(void)buildContainerScrollerView:(UIScrollView *)scrollview{
     [target.view addSubview:scrollview];
-    
+    containerScrollView = scrollview;
     
     [target.view addConstraint:[NSLayoutConstraint constraintWithItem:scrollview
                                                           attribute:NSLayoutAttributeTop
@@ -151,17 +154,17 @@
     
 }
 
--(void)buildWeekDaysView:(JTCalendarMonthWeekDaysView *)view{
+-(void)buildWeekDaysView:(JTCalendarMonthWeekDaysView *)view withToItem:(UIView *)toItem{
     weekdaysView = view;
     [target.view addSubview:weekdaysView];
-    weekdaysView.backgroundColor = [UIColor redColor];
+    weekdaysView.backgroundColor = [UIColor clearColor];
     weekdaysView.translatesAutoresizingMaskIntoConstraints = NO;
     
     [target.view addConstraint:[NSLayoutConstraint constraintWithItem:weekdaysView
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:target.view
-                                                          attribute:NSLayoutAttributeTop
+                                                             toItem:toItem
+                                                          attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0f
                                                            constant:0.0f]];
     [target.view addConstraint:[NSLayoutConstraint constraintWithItem:weekdaysView
@@ -190,5 +193,41 @@
 
 }
 
+-(void)buildGradientView:(UIView *)view{
+    
+    view.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                            attribute:NSLayoutAttributeTop
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:target.view
+                                                            attribute:NSLayoutAttributeTop
+                                                           multiplier:1.0f
+                                                             constant:0.0f]];
+    
+    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                            attribute:NSLayoutAttributeLeft
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:target.view
+                                                            attribute:NSLayoutAttributeLeft
+                                                           multiplier:1.0f
+                                                             constant:0.0f]];
+    
+    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                            attribute:NSLayoutAttributeWidth
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:target.view
+                                                            attribute:NSLayoutAttributeWidth
+                                                           multiplier:1.0f
+                                                             constant:0.0f]];
+    
+    [target.view addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                            attribute:NSLayoutAttributeBottom
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:containerScrollView
+                                                            attribute:NSLayoutAttributeTop
+                                                           multiplier:1.0f
+                                                             constant:0.f]];
+}
 
 @end

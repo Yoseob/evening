@@ -233,7 +233,7 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
 {
 
     if(!self.isOtherMonth){
-        textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColor];
+        textLabel.textColor = [UIColor whiteColor];//[self.calendarManager.calendarAppearance dayTextColor];
     }
     else{
         textLabel.textColor = [self.calendarManager.calendarAppearance dayTextColorOtherMonth];
@@ -248,13 +248,14 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
     thumbnailImage.image = self.thumbnail.image;
 
     if (thumbnailImage.image == nil && self.isHaveData){
-        thumbnailImage.backgroundColor = [UIColor whiteColor];
+        thumbnailImage.backgroundColor = [UIColor colorWithWhite:1.5 alpha:0.5f];
+
     }else if(thumbnailImage.image){
         thumbnailImage.backgroundColor = [UIColor clearColor];
         textLabel.textColor = [UIColor whiteColor];
     }else{
         thumbnailImage.backgroundColor = [UIColor clearColor];
-        self.backgroundColor = [UIColor clearColor];
+        self.layer.borderColor = [UIColor clearColor].CGColor;
     }
     
 //

@@ -52,7 +52,7 @@
         [self addSubview:view];
     }
     
-    self.backgroundColor = [DinnerUtility CalendarBackgroundColor];
+    self.backgroundColor = [UIColor clearColor];//[DinnerUtility CalendarBackgroundColor];
     daysViews = views;
 }
 

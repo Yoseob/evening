@@ -33,19 +33,32 @@ class SearchAndLoadViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
+        let gradientViewforColor = OLNGradientView(frame:CGRectMake(0, 0, view.frame.size.width, self.view.frame.size.height/2))
+        gradientViewforColor.topColor = UIColor.redColor()
+        gradientViewforColor.bottomColor = UIColor.yellowColor()
+
+        let bounceColor = UIColor(patternImage: colorFromView(gradientViewforColor))
+
+        let testView = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, 44))
+        testView.backgroundColor = UIColor.yellowColor()
+        
+        view.addSubview(testView)
+        
         navigationController?.navigationBar.translucent = false
         navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
         navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.barTintColor = UIColor(red: 57/255.0, green: 67/255.0, blue: 89/255.0, alpha: 1.0)
+        navigationController?.navigationBar.barTintColor = UIColor.whiteColor()//UIColor(red: 57/255.0, green: 67/255.0, blue: 89/255.0, alpha: 1.0)
         
-        tableView = UITableView(frame: view.bounds, style: .Plain)
+        tableView = UITableView(frame: CGRectMake(0, 44, view.frame.size.width, view.frame.size.height - 44), style: .Plain)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         tableView.separatorColor = UIColor(red: 230/255.0, green: 230/255.0, blue: 231/255.0, alpha: 1.0)
-        tableView.backgroundColor = UIColor(red: 250/255.0, green: 250/255.0, blue: 251/255.0, alpha: 1.0)
+        tableView.backgroundColor = UIColor.whiteColor()//UIColor(red: 250/255.0, green: 250/255.0, blue: 251/255.0, alpha: 1.0)
+        
         view.addSubview(tableView)
         
+    
         let loadingView = DGElasticPullToRefreshLoadingViewCircle()
         loadingView.tintColor = UIColor(red: 78/255.0, green: 221/255.0, blue: 200/255.0, alpha: 1.0)
         tableView.dg_addPullToRefreshWithActionHandler({ [weak self] () -> Void in
@@ -53,16 +66,18 @@ class SearchAndLoadViewController: UIViewController {
                 self?.tableView.dg_stopLoading()
             })
             }, loadingView: loadingView)
-        tableView.dg_setPullToRefreshFillColor(UIColor(red: 38/255.0, green: 38/255.0, blue: 38/255.0, alpha: 1.0))
+        tableView.dg_setPullToRefreshFillColor(bounceColor)//UIColor(red: 38/255.0, green: 38/255.0, blue: 38/255.0, alpha: 1.0))
         tableView.dg_setPullToRefreshBackgroundColor(tableView.backgroundColor!)
     }
-    
+
     deinit {
         tableView.dg_removePullToRefresh()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+        
         self.setUpNavibar()
         self.registerForKeyboardNotifications()
         self.setUpTableView()
@@ -72,6 +87,15 @@ class SearchAndLoadViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func colorFromView(targetView: UIView) -> UIImage{
+        UIGraphicsBeginImageContext(targetView.frame.size)
+        targetView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
+    
     
     internal func setDataBasemanager(day: String){
         dbManager = DataBaseManager.getDefaultDataBaseManager() as! DataBaseManager!
@@ -146,6 +170,10 @@ class SearchAndLoadViewController: UIViewController {
         textfield.addTarget(self, action: "textFieldDidChange", forControlEvents: .EditingChanged)
     }
 
+    func textFieldDidChange(){
+    
+    }
+    
     func keyboardWasShown(aNotification: NSNotification){
         let info = (aNotification.userInfo ?? [:]) as NSDictionary
         let kbSize: CGSize = (info.objectForKey(UIKeyboardFrameEndUserInfoKey)?.CGRectValue.size)!

@@ -18,8 +18,8 @@
 
 -(void)buildMainContainerTextView:(UITextView *)textview;
 -(void)buildContainerScrollerView:(UIScrollView*)scrollview;
--(void)buildWeekDaysView:(JTCalendarMonthWeekDaysView *)view;
-
+-(void)buildWeekDaysView:(JTCalendarMonthWeekDaysView *)view withToItem:(UIView *)toItem;
+-(void)buildGradientView:(UIView *)view;
 
 -(void)createNaviBarWithSelecters:(SEL *)selecters;
 -(void)createButtomBar:(UIView *)bottomBar withSelecters:(SEL *)selecters;

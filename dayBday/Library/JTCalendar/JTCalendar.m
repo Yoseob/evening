@@ -264,29 +264,33 @@
 -(void)selectedDayViewWithIndex:(NSString *)dayStr{
 //    nextDayView = (JTCalendarDayView*)[self.dataCache getDayViewWtihIndex:dayStr];
 //    nextDayView.backgroundColor = [UIColor whiteColor];
+    
     NSMutableDictionary * dic = [[DataBaseManager getDefaultDataBaseManager]calendarDayViewArchive];
     for (NSString * key in dic.allKeys ){
         JTCalendarDayView * temp = dic[key];
         if([key isEqualToString:dayStr]){
-            temp.backgroundColor = [UIColor colorWithRed:0x33/256. green:0xB3/256. blue:0xEC/256. alpha:1.f];
+            temp.layer.borderWidth = 1.0f;
+            temp.layer.borderColor = [UIColor colorWithRed:255./255. green:255./255. blue:255./255. alpha:1.f].CGColor;
         }else{
-            temp.backgroundColor = [UIColor clearColor];
+            temp.layer.borderColor = [UIColor clearColor].CGColor;
         }
     }
 }
 
 -(void)currentDayViewWithDayString:(NSString *)dayStr{
     currentDayView = (JTCalendarDayView*)[self.dataCache getDayViewWtihIndex:dayStr];
+    currentDayView.layer.borderWidth = 1.f;
 }
 
 -(void)nextDayViewDayWithDayString:(NSString *)dayStr{
     nextDayView = (JTCalendarDayView*)[self.dataCache getDayViewWtihIndex:dayStr];
+    nextDayView.layer.borderWidth = 1.f;
 }
 
 -(void)changingPercent:(float)alhpa{
 
-    currentDayView.backgroundColor = [UIColor colorWithRed:0x33/256. green:0xB3/256. blue:0xEC/256. alpha:1-alhpa];
-    nextDayView.backgroundColor = [UIColor colorWithRed:0x33/256. green:0xB3/256. blue:0xEC/256. alpha:alhpa];
+    currentDayView.layer.borderColor = [UIColor colorWithRed:255./255. green:255./255. blue:255./255. alpha:1-alhpa].CGColor;
+    nextDayView.layer.borderColor = [UIColor colorWithRed:255./255. green:255./255. blue:255./255. alpha:alhpa].CGColor;
 }
 
 @end
