@@ -166,22 +166,22 @@
                                                              toItem:toItem
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0f
-                                                           constant:0.0f]];
+                                                           constant:10.0f]];
     [target.view addConstraint:[NSLayoutConstraint constraintWithItem:weekdaysView
                                                           attribute:NSLayoutAttributeLeft
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:target.view
                                                           attribute:NSLayoutAttributeLeft
                                                          multiplier:1.0f
-                                                           constant:0.0f]];
+                                                           constant:10.0f]];
     
     [target.view addConstraint:[NSLayoutConstraint constraintWithItem:weekdaysView
-                                                          attribute:NSLayoutAttributeWidth
+                                                          attribute:NSLayoutAttributeRight
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:target.view
-                                                          attribute:NSLayoutAttributeWidth
+                                                          attribute:NSLayoutAttributeRight
                                                          multiplier:1.0f
-                                                           constant:0.0f]];
+                                                           constant:-10.0f]];
     
     [target.view addConstraint:[NSLayoutConstraint constraintWithItem:weekdaysView
                                                           attribute:NSLayoutAttributeHeight

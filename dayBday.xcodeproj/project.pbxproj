@@ -30,6 +30,7 @@
 		23961CD31C587E3100F8EF64 /* SearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23961CD21C587E3100F8EF64 /* SearchCell.xib */; };
 		23961CD61C5887BC00F8EF64 /* FeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23961CD51C5887BC00F8EF64 /* FeedCell.m */; };
 		23961CD91C5887C800F8EF64 /* SearchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23961CD81C5887C800F8EF64 /* SearchCell.m */; };
+		23AABD431C6CE9F700C7F06A /* DinnerAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AABD421C6CE9F700C7F06A /* DinnerAppearance.swift */; };
 		23AE9E021BE74B5A00E7E4CB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AE9E011BE74B5A00E7E4CB /* main.m */; };
 		23AE9E051BE74B5A00E7E4CB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AE9E041BE74B5A00E7E4CB /* AppDelegate.m */; };
 		23AE9E0B1BE74B5A00E7E4CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23AE9E091BE74B5A00E7E4CB /* Main.storyboard */; };
@@ -92,7 +93,7 @@
 		232D5ECC1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPTextViewTapGestureRecognizer.m; sourceTree = "<group>"; };
 		23351E081C1FA3EA00BB54FB /* DinnerUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DinnerUtility.h; sourceTree = "<group>"; };
 		23351E091C1FA3EA00BB54FB /* DinnerUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DinnerUtility.m; sourceTree = "<group>"; };
-		2347DD721C6781B5009ECC4C /* SearchAndLoadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchAndLoadViewController.swift; sourceTree = "<group>"; };
+		2347DD721C6781B5009ECC4C /* SearchAndLoadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchAndLoadViewController.swift; path = ../SearchAndLoadViewController.swift; sourceTree = "<group>"; };
 		2347DD741C678202009ECC4C /* dayBday-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "dayBday-Bridging-Header.h"; sourceTree = "<group>"; };
 		2347DD761C6783A7009ECC4C /* DGElasticPullToRefreshConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DGElasticPullToRefreshConstants.swift; sourceTree = "<group>"; };
 		2347DD771C6783A7009ECC4C /* DGElasticPullToRefreshExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DGElasticPullToRefreshExtensions.swift; sourceTree = "<group>"; };
@@ -121,6 +122,7 @@
 		23961CD51C5887BC00F8EF64 /* FeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedCell.m; sourceTree = "<group>"; };
 		23961CD71C5887C800F8EF64 /* SearchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchCell.h; sourceTree = "<group>"; };
 		23961CD81C5887C800F8EF64 /* SearchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchCell.m; sourceTree = "<group>"; };
+		23AABD421C6CE9F700C7F06A /* DinnerAppearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DinnerAppearance.swift; sourceTree = "<group>"; };
 		23AE9DFD1BE74B5A00E7E4CB /* dayBday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dayBday.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23AE9E011BE74B5A00E7E4CB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		23AE9E031BE74B5A00E7E4CB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -313,6 +315,7 @@
 		23961CCB1C58566900F8EF64 /* SearchViewController */ = {
 			isa = PBXGroup;
 			children = (
+				2347DD721C6781B5009ECC4C /* SearchAndLoadViewController.swift */,
 				23961CCF1C587DE000F8EF64 /* CustomCell */,
 				23961CCC1C58568700F8EF64 /* SearchViewController.h */,
 				23961CCD1C58568700F8EF64 /* SearchViewController.m */,
@@ -407,7 +410,6 @@
 				232D5E201BEB33FB0026C62E /* InputViewController */,
 				23AE9E641BE74C6700E7E4CB /* DayBDayViewController.h */,
 				23AE9E651BE74C6700E7E4CB /* DayBDayViewController.m */,
-				2347DD721C6781B5009ECC4C /* SearchAndLoadViewController.swift */,
 				2347DD741C678202009ECC4C /* dayBday-Bridging-Header.h */,
 			);
 			path = ViewController;
@@ -470,6 +472,7 @@
 				239412281C10B408001B9B07 /* ScrollViewManager.m */,
 				2305F9D71C3EBB38009FF083 /* MainViewBuilder.h */,
 				2305F9D81C3EBB38009FF083 /* MainViewBuilder.m */,
+				23AABD421C6CE9F700C7F06A /* DinnerAppearance.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -710,6 +713,7 @@
 				23AE9E6A1BE87A5000E7E4CB /* BottomContainerView.m in Sources */,
 				239412261C10B26D001B9B07 /* ContainerScollView.m in Sources */,
 				2347DD7E1C6783A7009ECC4C /* DGElasticPullToRefreshLoadingViewCircle.swift in Sources */,
+				23AABD431C6CE9F700C7F06A /* DinnerAppearance.swift in Sources */,
 				23AE9E5A1BE74C5200E7E4CB /* JTCalendarContentView.m in Sources */,
 				23F1F9C01BFF779A00479DC5 /* SqlConnection.m in Sources */,
 				23AE9E5F1BE74C5200E7E4CB /* JTCalendarMonthView.m in Sources */,

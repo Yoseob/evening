@@ -109,12 +109,14 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
 {
     textLabel.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     backgroundView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-
-    CGFloat top_Left_Margin = 1;
-    thumbnailImage.frame = CGRectMake(top_Left_Margin,
-                                      top_Left_Margin,
-                                      self.frame.size.width-(top_Left_Margin * 1),
-                                      self.frame.size.height-(top_Left_Margin * 1));
+    
+    NSLog(@"view witdh : %lf, %lf",self.frame.size.width , self.frame.size.height);
+    CGFloat top_Margin = 6.4;
+    CGFloat left_Margin = 7.2;
+    thumbnailImage.frame = CGRectMake(left_Margin,
+                                      top_Margin,
+                                      self.frame.size.width-(left_Margin * 1),
+                                      self.frame.size.height-(top_Margin * 1));
     
     thumbnailImage.center = CGPointMake(self.frame.size.width / 2., self.frame.size.height / 2.);
     CGFloat x = self.frame.size.width/2;
@@ -248,7 +250,7 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
     thumbnailImage.image = self.thumbnail.image;
 
     if (thumbnailImage.image == nil && self.isHaveData){
-        thumbnailImage.backgroundColor = [UIColor colorWithWhite:1.5 alpha:0.5f];
+        thumbnailImage.backgroundColor = [UIColor colorWithWhite:1.5 alpha:0.1f];
 
     }else if(thumbnailImage.image){
         thumbnailImage.backgroundColor = [UIColor clearColor];

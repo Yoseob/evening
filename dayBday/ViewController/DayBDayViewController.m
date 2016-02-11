@@ -21,6 +21,7 @@
 #import "DataBaseManager.h"
 #import "ScrollViewManager.h"
 
+
 #import "dayBday-Swift.h"
 #define CALENDAR_ORIGIN_HEIGHT 40.f
 @interface DayBDayViewController () < UIScrollViewDelegate,  UITextViewDelegate>
@@ -82,9 +83,9 @@
 }
 
 -(void)showSearchViewController{
-    UIStoryboard * sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    UIStoryboard * sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     SearchAndLoadViewController * vc = [[SearchAndLoadViewController alloc]init];
-
+    
 
 //    SearchAndLoadViewController  *vc =(SearchAndLoadViewController *)[sb instantiateViewControllerWithIdentifier:@"SearchAndLoadViewController"];
 //    [vc setDataBaseManager:nil];
@@ -268,21 +269,22 @@
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0f
                                                            constant:0.0f]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.calendarContentView
-                                                          attribute:NSLayoutAttributeLeft
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeLeft
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.calendarContentView
-                                                          attribute:NSLayoutAttributeWidth
+                                                          attribute:NSLayoutAttributeLeft
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:self.view
-                                                          attribute:NSLayoutAttributeWidth
+                                                          attribute:NSLayoutAttributeLeft
                                                          multiplier:1.0f
-                                                           constant:0.0f]];
+                                                           constant:10.0f]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.calendarContentView
+                                                          attribute:NSLayoutAttributeRight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeRight
+                                                         multiplier:1.0f
+                                                           constant:-10.0f]];
     
     self.calendarContentViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.calendarContentView
                                                                             attribute:NSLayoutAttributeHeight
@@ -480,9 +482,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    DinnerAppearance * appearance= [DinnerAppearance defaultAppearance];
+
     gradientView = [[OLNGradientView alloc]initWithFrame:CGRectZero];
-    gradientView.topColor = [UIColor colorWithRed:249/255.f green:209/255.f blue:121/255.f alpha:1.f];
-    gradientView.bottomColor = [UIColor colorWithRed:240/255.f green:120/255.f blue:68/255.f alpha:1.f];
+    gradientView.topColor = [appearance getTopColor];
+    gradientView.bottomColor = [appearance getBottomColor];
     
     [self.view addSubview:gradientView];
     
@@ -494,8 +498,6 @@
     [self addUpDownGesture];
     
     [viewBuilder buildGradientView:gradientView];
-//    [self.view bringSubviewToFront:bottomBar];
-//    self.navigationController.navigationBar.translucent = YES;
     
 }
 

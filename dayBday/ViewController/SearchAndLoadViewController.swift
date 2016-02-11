@@ -33,21 +33,18 @@ class SearchAndLoadViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
+        let apprearance = DinnerAppearance.defaultAppearance
+        
         let gradientViewforColor = OLNGradientView(frame:CGRectMake(0, 0, view.frame.size.width, self.view.frame.size.height/2))
-        gradientViewforColor.topColor = UIColor.redColor()
-        gradientViewforColor.bottomColor = UIColor.yellowColor()
+        gradientViewforColor.topColor = apprearance.getBottomColor()
+        gradientViewforColor.bottomColor = apprearance.getTopColor()
 
         let bounceColor = UIColor(patternImage: colorFromView(gradientViewforColor))
 
         let testView = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, 44))
-        testView.backgroundColor = UIColor.yellowColor()
+        testView.backgroundColor = gradientViewforColor.bottomColor
         
         view.addSubview(testView)
-        
-        navigationController?.navigationBar.translucent = false
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.barTintColor = UIColor.whiteColor()//UIColor(red: 57/255.0, green: 67/255.0, blue: 89/255.0, alpha: 1.0)
         
         tableView = UITableView(frame: CGRectMake(0, 44, view.frame.size.width, view.frame.size.height - 44), style: .Plain)
         tableView.dataSource = self
@@ -76,8 +73,6 @@ class SearchAndLoadViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-    
-        
         self.setUpNavibar()
         self.registerForKeyboardNotifications()
         self.setUpTableView()
@@ -104,10 +99,12 @@ class SearchAndLoadViewController: UIViewController {
         dateComponents = NSDateComponents()
         
         date = "\(currentDate)"
-        print(date)
         let index = date.startIndex.advancedBy(0)..<date.endIndex.advancedBy(-18)
         date = date[index]
+    
         headerStrings.append(date)
+        
+        
         self.reloadTableView()
 
     }
@@ -117,7 +114,6 @@ class SearchAndLoadViewController: UIViewController {
         var result = [DinnerDay]()
         for day in headerStrings {
             result =  (dbManager.feedListUptodateCount(31, endDateStr: day) as! [DinnerDay])
-            print("\(result.count) , \(day)")
             if result.count > 0 {
                 tableDatas.append(result)
             }
@@ -142,8 +138,9 @@ class SearchAndLoadViewController: UIViewController {
     func setUpNavibar(){
         
         let settingButton: UIButton = UIButton(type: .Custom)
-        settingButton.setImage(UIImage(named: "navi_back"), forState:.Normal)
+        settingButton.setImage(UIImage(named: "navi_back.png"), forState:.Normal)
         settingButton.frame = CGRectMake(0, 0, 30, 30)
+        settingButton.tintColor = UIColor.whiteColor()
         settingButton.addTarget(self, action: "backViewController", forControlEvents: .TouchUpInside)
         
         let barbuttonItem: UIBarButtonItem = UIBarButtonItem(customView: settingButton)
@@ -163,14 +160,14 @@ class SearchAndLoadViewController: UIViewController {
         
     }
     func registerForKeyboardNotifications(){
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown", name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden", name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
     }
     func registerForTextFieldNotification(){
-        textfield.addTarget(self, action: "textFieldDidChange", forControlEvents: .EditingChanged)
+        textfield.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
     }
 
-    func textFieldDidChange(){
+    func textFieldDidChange(sender: AnyObject){
     
     }
     
@@ -233,10 +230,9 @@ extension SearchAndLoadViewController: UITableViewDataSource {
         if cell == nil {
             let nibArr =  NSBundle.mainBundle().loadNibNamed("FeedCell", owner: self, options: nil)
             cell = nibArr.first as! FeedCell
-//            cell!.contentView.backgroundColor = UIColor(red: 250/255.0, green: 250/255.0, blue: 251/255.0, alpha: 1.0)
         }
         let currentArray = tableDatas[indexPath.section]
-        var dinner = currentArray.objectAtIndex(indexPath.row)
+        let dinner = currentArray.objectAtIndex(indexPath.row)
         
         if let cell = cell {
             (cell as! FeedCell).bindDiiner(dinner as! DinnerDay)
@@ -247,9 +243,27 @@ extension SearchAndLoadViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 87
+        return 72
     }
     
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerLabel = UILabel(frame:CGRectMake(0, 0, self.view.frame.size.width, 50))
+        headerLabel.backgroundColor = DinnerUtility.mainbackgroundColor()
+        headerLabel.textColor = UIColor.lightGrayColor()
+        headerLabel.baselineAdjustment = UIBaselineAdjustment.AlignCenters
+        headerLabel.font = UIFont(name: "AppleSDGothicNeo-Light", size: 11)
+        let temp = tableDatas[section];
+        let firstDinner = temp.firstObject as! DinnerDay
+        
+        var dayString = firstDinner.dayStr
+        let index = dayString.startIndex.advancedBy(0)..<dayString.endIndex.advancedBy(-18)
+        dayString = dayString[index]
+
+        headerLabel.text = "    \(123123123)"
+        
+        return headerLabel
+    }
+
 }
 // MARK: -
 // MARK: UITextField Delegate
