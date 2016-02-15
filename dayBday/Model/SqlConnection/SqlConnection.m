@@ -26,7 +26,7 @@
     NSString * docsPath= NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES)[0];
     
  
-    return  _dbPath =[docsPath stringByAppendingPathComponent:@"v5.4.db.dinner.sqlite"];
+    return  _dbPath =[docsPath stringByAppendingPathComponent:@"v5.4.1.db.dinner.sqlite"];
 }
 
 -(int) createTable:(NSString*) filePath andCreateQuery:(NSString *)queryString

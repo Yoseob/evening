@@ -213,12 +213,27 @@
     return dinnerDataArchive;
 }
 
-//for Search
+//for Search based on date
 -(NSArray *)feedListUptodateCount:(int)max endDateStr:(NSString *)date{
     NSString  * query =[NSString stringWithFormat: @"SELECT * from dinnerobj WHERE dayStr LIKE \"%@%%\" ORDER BY dayStr DESC" , date];
     NSMutableArray * arr = [[NSMutableArray alloc]initWithArray:[dao selectDataWithQuery:query]];
     return arr;
 }
+
+//Search based on Text
+-(NSArray *)findDinnerIncludeThatString:(NSString *)str{
+
+    NSArray* querys = @[[NSString stringWithFormat: @"SELECT * from dinnerobj WHERE dayText LIKE \"%@%%\" ORDER BY dayStr DESC" , str],
+                       [NSString stringWithFormat: @"SELECT * from dinnerobj WHERE dayText LIKE \"%%%@%%\" ORDER BY dayStr DESC" , str],
+                       [NSString stringWithFormat: @"SELECT * from dinnerobj WHERE dayText LIKE \"%%%@\" ORDER BY dayStr DESC" , str]];
+
+    NSMutableArray * arr = [NSMutableArray new];
+    for(NSString * query in querys){
+        [arr addObjectsFromArray:[dao selectDataWithQuery:query]];
+    }
+    return arr;
+}
+
 
 
 

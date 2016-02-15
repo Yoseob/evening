@@ -14,10 +14,10 @@
 
 @property (weak, nonatomic) JTCalendar *calendarManager;
 
-@property (strong, nonatomic) NSDate *date;
-@property (assign ,nonatomic) BOOL isHaveData;
+@property (strong,nonatomic) NSDate *date;
+@property (assign,nonatomic) BOOL isHaveData;
 @property (strong,nonatomic) Thumbnail * thumbnail;
-@property (assign, nonatomic) BOOL isOtherMonth;
+@property (assign,nonatomic) BOOL isOtherMonth;
 @property (strong,nonatomic) UIImageView * thumbnailImage;
 - (void)reloadData;
 - (void)reloadAppearance;

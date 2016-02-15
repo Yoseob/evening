@@ -56,7 +56,11 @@
     
     UIView * keyBoardController;
     UIView * naviFrameView;
+    
     OLNGradientView * gradientView;
+    UIView * gradientContainerView;
+    
+    DinnerAppearance * appearance;
     
     UIScrollView * containerScollView;
     ScrollViewManager * sManager;
@@ -64,6 +68,31 @@
     BOOL isScroll;
     CGFloat moved;
     
+}
+
+
+- (void)viewDidLoad {
+    
+    [super viewDidLoad];
+    [self setupAndInit];
+    [self setUpCalendar];
+    [self setUpBottomBarContainer];
+    [self setupContainerScollView];
+    [self setUpBarButtonItems];
+    [self addUpDownGesture];
+    
+    [self setupGradientView:[NSDate new]];
+    
+    [viewBuilder buildGradientView:gradientContainerView];
+    
+}
+
+- (void)viewDidLayoutSubviews {
+    [self.calendar repositionViews];
+    [sManager changeContainerViewSize:containerScollView.frame.size.height];
+}
+
+-(void)viewDidAppear:(BOOL)animated{
 }
 
 #pragma mark -
@@ -83,12 +112,7 @@
 }
 
 -(void)showSearchViewController{
-//    UIStoryboard * sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     SearchAndLoadViewController * vc = [[SearchAndLoadViewController alloc]init];
-    
-
-//    SearchAndLoadViewController  *vc =(SearchAndLoadViewController *)[sb instantiateViewControllerWithIdentifier:@"SearchAndLoadViewController"];
-//    [vc setDataBaseManager:nil];
     vc.view.backgroundColor = [UIColor whiteColor];
     [vc setDataBasemanager:@""];
     [self.navigationController pushViewController:vc animated:YES];
@@ -215,11 +239,11 @@
         
         return [NSString stringWithFormat:@"%ld %@", comps.year, monthText];
     };
-    
+    self.calendar.delegate = self;
     [self setUpMenuView];
     [self setUpweekdaysView];
     [self setUpContentView];
-
+    
     [self.calendar setMenuMonthsView:self.calendarMenuView];
     [self.calendar setContentView:self.calendarContentView];
     [self.calendar setDataSource:self];
@@ -325,7 +349,6 @@
     self.currentDayTextView.editable = YES;
     [self presentViewController:modalViewController animated:YES completion:^{
         textViewTapGestureRecognizer.delegate =  nil;
-
     }];
     
 }
@@ -409,9 +432,12 @@
 -(void)insertCheckBtn:(NSTextAttachment *)textAtmt{
 }
 
+-(void)setUpTableView{
+    
+}
+
 #pragma mark
 - (void)setUpBarButtonItems {
-    
     //first search , second setting
     SEL naviSelecters[] = { @selector(showSearchViewController),@selector(pushChangeModeButton:)};
     [viewBuilder createNaviBarWithSelecters:naviSelecters];
@@ -419,7 +445,7 @@
 
 -(void)setUpBottomBarContainer{
     CGFloat barHeight =self.navigationController.navigationBar.frame.size.height;
-    CGFloat stateHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+//    CGFloat stateHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
     CGFloat bottomBarY = self.view.frame.size.height - barHeight;// - (barHeight + stateHeight);
     bottomBar = [[BottomContainerView alloc]initWithFrame:CGRectMake(0,bottomBarY,self.view.frame.size.width,45.f)];
     
@@ -476,40 +502,26 @@
         originTextViewFrame = CGRectZero;
         isScroll = YES;
     }
+    
+    {
+        appearance= [DinnerAppearance defaultAppearance];
+        gradientContainerView = [UIView new];
+        [self.view addSubview:gradientContainerView];
+    }
 }
 
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-
-    DinnerAppearance * appearance= [DinnerAppearance defaultAppearance];
-
+-(void)setupGradientView:(NSDate*)day{
+    NSLog(@"day : %@" , day);
+    appearance.currentMonth = day;
+    gradientView = nil;
+    
     gradientView = [[OLNGradientView alloc]initWithFrame:CGRectZero];
     gradientView.topColor = [appearance getTopColor];
     gradientView.bottomColor = [appearance getBottomColor];
-    
-    [self.view addSubview:gradientView];
-    
-    [self setupAndInit];
-    [self setUpCalendar];
-    [self setUpBottomBarContainer];
-    [self setupContainerScollView];
-    [self setUpBarButtonItems];
-    [self addUpDownGesture];
-    
-    [viewBuilder buildGradientView:gradientView];
-    
+    [gradientContainerView addSubview:gradientView];
+    [viewBuilder copyConstraint:gradientView andTargetView:gradientContainerView];
 }
 
-- (void)viewDidLayoutSubviews {
-    [self.calendar repositionViews];
-    [sManager changeContainerViewSize:containerScollView.frame.size.height];
-    
-    
-}
-
--(void)viewDidAppear:(BOOL)animated{
-}
 
 - (BOOL)calendarHaveEvent:(JTCalendar *)calendar date:(NSDate *)date{
     return [dbManager isDateDinner:[DinnerUtility DateToString:date]];
@@ -598,14 +610,23 @@
 #pragma mark - UIScrollViewDelegate
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-
+    NSLog(@"%lf",scrollView.contentOffset.x);
 }
 
 -(void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset{
     NSLog(@"scrollViewWillEndDragging");
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - UIScrollViewDelegate
+-(void)currentMonth:(NSDate *)currentMonth{
+    NSLog(@"%@", currentMonth);
+
+    [self setupGradientView:currentMonth];
+}
+
 @end

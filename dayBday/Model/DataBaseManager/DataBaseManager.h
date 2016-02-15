@@ -41,4 +41,6 @@
 -(BOOL)isDateDinner:(NSString*)dayStr;
 
 -(NSArray *)feedListUptodateCount:(int)max endDateStr:(NSString *)date;
+
+-(NSArray *)findDinnerIncludeThatString:(NSString *)str;
 @end

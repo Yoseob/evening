@@ -254,7 +254,7 @@
     }
     DinnerDay * temp = [current objectAtIndex:indexPath.row];
     temp.thumbnail = [dbManager thumbNailWithString:temp.dayStr];
-    [cell bindDiiner:temp];
+//    [cell bindDiiner:temp];
     
     return cell;
     

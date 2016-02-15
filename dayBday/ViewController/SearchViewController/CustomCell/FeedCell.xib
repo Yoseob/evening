@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -14,28 +15,50 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="71"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CRb-Qj-Z6A">
-                        <rect key="frame" x="252" y="10" width="51" height="51"/>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="내용을 쓰면 됩니다. 하지만 여기는 2줄이 되겠네요.내용을 쓰면 됩니다. 하지만 여기는 2줄이 되겠네요." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pYT-Nw-kX7">
-                        <rect key="frame" x="17" y="12" width="226" height="36"/>
-                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Thin" family="Apple SD Gothic Neo" pointSize="12"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Tuesday" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mC6-8T-Ox7">
+                        <rect key="frame" x="17" y="49" width="226" height="14"/>
+                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Thin" family="Apple SD Gothic Neo" pointSize="13"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tuesday" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mC6-8T-Ox7">
-                        <rect key="frame" x="17" y="49" width="226" height="14"/>
-                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Thin" family="Apple SD Gothic Neo" pointSize="11"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CRb-Qj-Z6A">
+                        <rect key="frame" x="251" y="10" width="51" height="51"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="51" id="EWF-qI-eOd"/>
+                            <constraint firstAttribute="height" constant="51" id="f0a-sb-WeB"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="내용을 쓰면 됩니다. 하지만 여기는 2줄이 되겠네요.내용을 쓰면 됩니다. 하지만 여기는 2줄이 되겠네요." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pYT-Nw-kX7">
+                        <rect key="frame" x="17" y="10" width="226" height="36"/>
+                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Thin" family="Apple SD Gothic Neo" pointSize="14"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="내용을 쓰면 됩니다. 하지만 여기는 2줄이 되겠네요.내용을 쓰면 됩니다. 하지만 여기는 2줄이 되겠네요." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f09-qG-W0b">
+                        <rect key="frame" x="17" y="10" width="286" height="36"/>
+                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Thin" family="Apple SD Gothic Neo" pointSize="14"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="mC6-8T-Ox7" firstAttribute="top" secondItem="pYT-Nw-kX7" secondAttribute="bottom" constant="3" id="885-lg-yjC"/>
+                    <constraint firstItem="mC6-8T-Ox7" firstAttribute="leading" secondItem="AAx-IA-3KL" secondAttribute="leadingMargin" constant="9" id="DoD-NM-X69"/>
+                    <constraint firstItem="mC6-8T-Ox7" firstAttribute="bottom" secondItem="AAx-IA-3KL" secondAttribute="bottomMargin" id="Y7S-pb-jpG"/>
+                    <constraint firstItem="pYT-Nw-kX7" firstAttribute="leading" secondItem="AAx-IA-3KL" secondAttribute="leadingMargin" constant="9" id="YLt-lz-tTv"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="CRb-Qj-Z6A" secondAttribute="trailing" constant="9" id="aSO-yF-fiY"/>
+                    <constraint firstItem="pYT-Nw-kX7" firstAttribute="leading" secondItem="AAx-IA-3KL" secondAttribute="leadingMargin" constant="9" id="f0Q-7B-IZl"/>
+                    <constraint firstItem="CRb-Qj-Z6A" firstAttribute="leading" secondItem="pYT-Nw-kX7" secondAttribute="trailing" constant="8" id="fbI-GB-gAh"/>
+                    <constraint firstItem="pYT-Nw-kX7" firstAttribute="top" secondItem="AAx-IA-3KL" secondAttribute="topMargin" constant="2" id="wLt-wf-fHm"/>
+                    <constraint firstItem="CRb-Qj-Z6A" firstAttribute="leading" secondItem="pYT-Nw-kX7" secondAttribute="trailing" constant="8" id="yHd-Js-Zjk"/>
+                </constraints>
             </tableViewCellContentView>
             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="SentaxField" destination="pYT-Nw-kX7" id="YMa-q5-tpD"/>
                 <outlet property="dayStringLabel" destination="mC6-8T-Ox7" id="rdR-qm-kaB"/>
+                <outlet property="onlyTextLabel" destination="f09-qG-W0b" id="jKD-Mu-gQ5"/>
                 <outlet property="thumbNail" destination="CRb-Qj-Z6A" id="SWd-IJ-ZbB"/>
             </connections>
             <point key="canvasLocation" x="557" y="212"/>

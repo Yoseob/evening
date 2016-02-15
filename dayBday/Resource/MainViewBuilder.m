@@ -193,6 +193,44 @@
 
 }
 
+-(void)copyConstraint:(UIView *)view andTargetView:(UIView *)targetView{
+    
+    view.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [targetView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                            attribute:NSLayoutAttributeTop
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:targetView
+                                                            attribute:NSLayoutAttributeTop
+                                                           multiplier:1.0f
+                                                             constant:0.0f]];
+    
+    [targetView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                            attribute:NSLayoutAttributeLeft
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:targetView
+                                                            attribute:NSLayoutAttributeLeft
+                                                           multiplier:1.0f
+                                                             constant:0.0f]];
+    
+    [targetView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                            attribute:NSLayoutAttributeWidth
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:targetView
+                                                            attribute:NSLayoutAttributeWidth
+                                                           multiplier:1.0f
+                                                             constant:0.0f]];
+    
+    [targetView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                            attribute:NSLayoutAttributeBottom
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:targetView
+                                                            attribute:NSLayoutAttributeBottom
+                                                           multiplier:1.0f
+                                                             constant:0.f]];
+}
+
+
 -(void)buildGradientView:(UIView *)view{
     
     view.translatesAutoresizingMaskIntoConstraints = NO;

@@ -9,10 +9,17 @@
 import UIKit
 @IBDesignable
 class OLNGradientView: UIView {
-    @IBInspectable var topColor: UIColor = UIColor.blackColor()
+    @IBInspectable var topColor: UIColor = UIColor.clearColor()
     @IBInspectable var bottomColor: UIColor = UIColor.clearColor()
     
+
+    internal func reDrawRect(rect: CGRect){
+        self.drawRect(rect)
+    }
+    
+    
     override func drawRect(rect: CGRect) {
+
         let ctx = UIGraphicsGetCurrentContext()
         let colors = [topColor.CGColor, bottomColor.CGColor]
         let locations: [CGFloat] = [0.0, 1.0]

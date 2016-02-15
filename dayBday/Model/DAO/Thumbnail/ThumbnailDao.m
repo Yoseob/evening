@@ -27,7 +27,7 @@
 }
 -(void)createDataBase{
 
-    [connection createTable:[connection getdbPath] andCreateQuery:@"CREATE TABLE IF NOT EXISTS thumbnail (id INTEGER PRIMARY KEY AUTOINCREMENT , day INTEGER , dayText TEXT , thumbimage BLOB)"];
+    [connection createTable:[connection getdbPath] andCreateQuery:@"CREATE TABLE IF NOT EXISTS thumbnail (dayText TEXT  PRIMARY KEY , day INTEGER , thumbimage BLOB)"];
 }
 
 
@@ -86,15 +86,14 @@
     return  arr;
 }
 -(NSMutableDictionary *)selectThumbnails{
-
+//dayText TEXT  PRIMARY KEY , day INTEGER , thumbimage BLOB
     NSMutableDictionary * dic = [NSMutableDictionary new];
     NSString  * query =[NSString stringWithFormat: @"SELECT * from thumbnail"];
     [self selectImplimentWithQeury:query withCallback:^(sqlite3_stmt *stmt) {
-        
+        NSString * dayText =[NSString stringWithUTF8String:(const char *)sqlite3_column_text(stmt, 0)];
         int day = sqlite3_column_int(stmt,1);
-        NSString * dayText =[NSString stringWithUTF8String:(const char *)sqlite3_column_text(stmt, 2)];
-        int length = sqlite3_column_bytes(stmt, 3);
-        NSData * data = [NSData dataWithBytes:sqlite3_column_blob(stmt, 3) length:length];
+        int length = sqlite3_column_bytes(stmt, 2);
+        NSData * data = [NSData dataWithBytes:sqlite3_column_blob(stmt, 2) length:length];
         Thumbnail * thumbnal = [Thumbnail initWithInterval:day imageDate:data dayStr:dayText];
         dic[dayText] =thumbnal;
     }];

@@ -14,9 +14,12 @@
 - (BOOL)calendarHaveEvent:(JTCalendar *)calendar date:(NSDate *)date;
 - (void)calendarDidDateSelected:(JTCalendar *)calendar date:(NSDate *)date;
 
-//-(void)calendardid
 @optional
 - (void)calendarDidLoadPreviousPage;
 - (void)calendarDidLoadNextPage;
 
+@end
+
+@protocol CalenderDelegate
+-(void)currentMonth:(NSDate *)currentMonth;
 @end

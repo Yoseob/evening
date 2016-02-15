@@ -20,7 +20,7 @@
 -(void)buildContainerScrollerView:(UIScrollView*)scrollview;
 -(void)buildWeekDaysView:(JTCalendarMonthWeekDaysView *)view withToItem:(UIView *)toItem;
 -(void)buildGradientView:(UIView *)view;
-
+-(void)copyConstraint:(UIView *)view andTargetView:(UIView *)targetView;
 -(void)createNaviBarWithSelecters:(SEL *)selecters;
 -(void)createButtomBar:(UIView *)bottomBar withSelecters:(SEL *)selecters;
 @end

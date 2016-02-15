@@ -20,6 +20,7 @@
 @property (weak, nonatomic) JTCalendarContentView *contentView;
 
 @property (weak, nonatomic) id<JTCalendarDataSource> dataSource;
+@property (weak, nonatomic) id<CalenderDelegate> delegate;
 
 @property (strong, nonatomic) NSDate *currentDate;
 @property (strong, nonatomic) NSDate *currentDateSelected;

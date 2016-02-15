@@ -110,7 +110,6 @@ static NSString *const kJTCalendarDaySelected = @"kJTCalendarDaySelected";
     textLabel.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     backgroundView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     
-    NSLog(@"view witdh : %lf, %lf",self.frame.size.width , self.frame.size.height);
     CGFloat top_Margin = 6.4;
     CGFloat left_Margin = 7.2;
     thumbnailImage.frame = CGRectMake(left_Margin,

@@ -13,7 +13,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *SentaxField;
 @property (weak, nonatomic) IBOutlet UIImageView *thumbNail;
 @property (weak, nonatomic) IBOutlet UILabel *dayStringLabel;
+@property (weak, nonatomic) IBOutlet UILabel *onlyTextLabel;
 
--(void)bindDiiner:(DinnerDay *)dinner;
+-(void)bindDinner:(DinnerDay *)dinner andThumbnail:(Thumbnail * )image;
 
 @end

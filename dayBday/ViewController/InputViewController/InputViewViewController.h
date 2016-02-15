@@ -19,6 +19,7 @@
 //-(void)insertCheckBtnWithString:(NSAttributedString *)attrText;
 -(NSMutableAttributedString *)insertCheckBtnWithString:(NSAttributedString *)attrText;
 @end
+
 @interface InputViewViewController : UIViewController <UIImagePickerControllerDelegate , UITextViewDelegate>
 
 @property (nonatomic , weak) id<InputViewDelegate> delegate;

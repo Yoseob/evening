@@ -75,6 +75,7 @@ class SearchAndLoadViewController: UIViewController {
         super.viewDidLoad()
         self.setUpNavibar()
         self.registerForKeyboardNotifications()
+        self.registerForTextFieldNotification()
         self.setUpTableView()
     }
 
@@ -123,13 +124,16 @@ class SearchAndLoadViewController: UIViewController {
     
     func setUpTableView(){
         
-        self.view.addConstraint(NSLayoutConstraint.init(item: tableView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
         
-        self.view.addConstraint(NSLayoutConstraint.init(item: tableView, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Left, multiplier: 1.0, constant: 0.0))
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+    
+        self.view.addConstraint(NSLayoutConstraint(item: tableView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 44.0))
         
-        self.view.addConstraint(NSLayoutConstraint.init(item: tableView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Width, multiplier: 1.0, constant: 0.0))
+        self.view.addConstraint(NSLayoutConstraint(item: tableView, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Left, multiplier: 1.0, constant: 0.0))
         
-        bottomContaint = NSLayoutConstraint.init(item: tableView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0)
+        self.view.addConstraint(NSLayoutConstraint(item: tableView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Width, multiplier: 1.0, constant: 0.0))
+        
+        bottomContaint = NSLayoutConstraint(item: tableView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0)
         
         self.view.addConstraint(bottomContaint)
 
@@ -163,12 +167,18 @@ class SearchAndLoadViewController: UIViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardDidShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
     }
+    
     func registerForTextFieldNotification(){
         textfield.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
     }
 
     func textFieldDidChange(sender: AnyObject){
-    
+        
+        let textField = sender as! UITextField
+        for dinner in dbManager.findDinnerIncludeThatString(textField.text){
+            print(dinner.orignText)
+        }
+
     }
     
     func keyboardWasShown(aNotification: NSNotification){
@@ -235,7 +245,7 @@ extension SearchAndLoadViewController: UITableViewDataSource {
         let dinner = currentArray.objectAtIndex(indexPath.row)
         
         if let cell = cell {
-            (cell as! FeedCell).bindDiiner(dinner as! DinnerDay)
+            (cell as! FeedCell).bindDinner((dinner as! DinnerDay), andThumbnail: dbManager.thumbNailWithString(dinner.dayStr))
             return cell
         }
         
@@ -246,37 +256,23 @@ extension SearchAndLoadViewController: UITableViewDataSource {
         return 72
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerLabel = UILabel(frame:CGRectMake(0, 0, self.view.frame.size.width, 50))
-        headerLabel.backgroundColor = DinnerUtility.mainbackgroundColor()
-        headerLabel.textColor = UIColor.lightGrayColor()
-        headerLabel.baselineAdjustment = UIBaselineAdjustment.AlignCenters
-        headerLabel.font = UIFont(name: "AppleSDGothicNeo-Light", size: 11)
-        let temp = tableDatas[section];
-        let firstDinner = temp.firstObject as! DinnerDay
-        
-        var dayString = firstDinner.dayStr
-        let index = dayString.startIndex.advancedBy(0)..<dayString.endIndex.advancedBy(-18)
-        dayString = dayString[index]
-
-        headerLabel.text = "    \(123123123)"
-        
-        return headerLabel
-    }
-
+   
 }
 // MARK: -
 // MARK: UITextField Delegate
 extension SearchAndLoadViewController: UITextFieldDelegate{
-    
+
+    func textFieldDidBeginEditing(textField: UITextField) {
+        textField.text = ""
+    }
 }
 
-
-// MARK: -
-// MARK: UIScrollViewDelegate
-extension SearchAndLoadViewController: UIScrollViewDelegate{
-    
-}
+//
+//// MARK: -
+//// MARK: UIScrollViewDelegate
+//extension SearchAndLoadViewController: UIScrollViewDelegate{
+//    
+//}
 // MARK: -
 // MARK: UITableView Delegate
 
@@ -285,5 +281,29 @@ extension SearchAndLoadViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat{
+        return 30;
+    }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        print("viewForHeaderInSection")
+        
+        let headerLabel = UILabel(frame:CGRectMake(0, 0, self.view.frame.size.width, 30))
+        headerLabel.backgroundColor = DinnerUtility.mainbackgroundColor()
+        headerLabel.textColor = UIColor.lightGrayColor()
+        headerLabel.baselineAdjustment = UIBaselineAdjustment.AlignCenters
+        headerLabel.font = UIFont(name: "AppleSDGothicNeo-Light", size: 11)
+        
+
+        let headerString = headerStrings[section];
+        headerLabel.text = "    \(headerString)"
+        
+        return headerLabel
+    }
+    
+
+
     
 }

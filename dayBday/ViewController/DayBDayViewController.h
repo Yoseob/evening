@@ -12,7 +12,7 @@
 #import "HPTextViewTapGestureRecognizer.h"
 #import "ContainerScollView.h"
 
-@interface DayBDayViewController : UIViewController <JTCalendarDataSource , InputViewDelegate,HPTextViewTapGestureRecognizerDelegate ,UIScrollViewDelegate>
+@interface DayBDayViewController : UIViewController <JTCalendarDataSource , InputViewDelegate,HPTextViewTapGestureRecognizerDelegate ,UIScrollViewDelegate, CalenderDelegate>
 {
     NSDate *selectedDate;
     NSMutableDictionary *savedDates;
