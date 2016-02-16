@@ -235,7 +235,18 @@
 }
 
 
+-(void)findStringQuery:(NSString *)str Block:(DinnerCallback)complete{
+    NSArray* querys = @[[NSString stringWithFormat: @"SELECT * from dinnerobj WHERE dayText LIKE \"%@%%\" ORDER BY dayStr DESC" , str],
+                        [NSString stringWithFormat: @"SELECT * from dinnerobj WHERE dayText LIKE \"%%%@%%\" ORDER BY dayStr DESC" , str],
+                        [NSString stringWithFormat: @"SELECT * from dinnerobj WHERE dayText LIKE \"%%%@\" ORDER BY dayStr DESC" , str]];
 
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        [dao selectWithQuery:querys[0] originQueryParams:str withBlock:complete];
+        [dao selectWithQuery:querys[1] originQueryParams:str withBlock:complete];
+        [dao selectWithQuery:querys[2] originQueryParams:str withBlock:complete];
+        //Background Thread
+    });
+}
 
 
 #pragma makr - Thumbnail

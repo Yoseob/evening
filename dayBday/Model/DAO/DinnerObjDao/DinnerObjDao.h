@@ -15,4 +15,7 @@
 
 -(BOOL)insertDataWithString:(NSString *)text attribute :(NSData*)textData targetDate:(NSDate *)target;
 
+
+-(void)selectWithQuery:(NSString *)query originQueryParams:(NSString *)params withBlock:(DinnerCallback)callback;
+
 @end

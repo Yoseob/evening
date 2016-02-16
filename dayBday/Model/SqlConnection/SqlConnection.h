@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
-
+@class DinnerDay;
 typedef void(^Callback)(sqlite3_stmt * stmt);
+typedef void(^DinnerCallback)(DinnerDay * dinner , NSString* originQuery);
 @interface SqlConnection : NSObject
 @property (copy, nonatomic) NSString *givenFilename;
 @property (copy, nonatomic) NSString *dbPath;

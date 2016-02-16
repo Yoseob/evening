@@ -21,14 +21,16 @@ class SearchAndLoadViewController: UIViewController {
     var dbManager: DataBaseManager!
     var headerStrings = [String]()
     var tableDatas = [AnyObject]()
+    var storeSearhedData = [String:String]()
     
     var currentDate: NSDate!
     var dateComponents: NSDateComponents!
     
     var preIndex: Int = 0
     var nextIndex: Int = 0
-    
     var isReload: Bool = false
+    
+    var preKeywork: String!
 
     override func loadView() {
         super.loadView()
@@ -92,7 +94,6 @@ class SearchAndLoadViewController: UIViewController {
         return image
     }
     
-    
     internal func setDataBasemanager(day: String){
         dbManager = DataBaseManager.getDefaultDataBaseManager() as! DataBaseManager!
         var date: String! = nil
@@ -104,10 +105,7 @@ class SearchAndLoadViewController: UIViewController {
         date = date[index]
     
         headerStrings.append(date)
-        
-        
         self.reloadTableView()
-
     }
     
     func reloadTableView(){
@@ -116,17 +114,14 @@ class SearchAndLoadViewController: UIViewController {
         for day in headerStrings {
             result =  (dbManager.feedListUptodateCount(31, endDateStr: day) as! [DinnerDay])
             if result.count > 0 {
-                tableDatas.append(result)
+                tableDatas = result
             }
         }
         tableView.reloadData()
     }
     
     func setUpTableView(){
-        
-        
         tableView.translatesAutoresizingMaskIntoConstraints = false
-    
         self.view.addConstraint(NSLayoutConstraint(item: tableView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 44.0))
         
         self.view.addConstraint(NSLayoutConstraint(item: tableView, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Left, multiplier: 1.0, constant: 0.0))
@@ -172,11 +167,35 @@ class SearchAndLoadViewController: UIViewController {
         textfield.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
     }
 
-    func textFieldDidChange(sender: AnyObject){
+    func textFieldDidChange(textField: UITextField){
         
-        let textField = sender as! UITextField
-        for dinner in dbManager.findDinnerIncludeThatString(textField.text){
-            print(dinner.orignText)
+        tableDatas.removeAll()
+        tableView.reloadData()
+        storeSearhedData.removeAll()
+        
+        guard let text = textField.text where text != "" else{
+            return
+        }
+        
+        preKeywork = text
+        dbManager.findStringQuery(text) { dinner , originQuery in
+            
+            guard self.storeSearhedData[dinner.dayStr] == nil else{
+                return
+            }
+            
+            guard self.preKeywork == originQuery else{
+                return
+            }
+            
+            self.storeSearhedData[dinner.dayStr] = dinner.dayStr
+            
+            self.tableDatas.append(dinner)
+            self.headerStrings.append(dinner.dayStr)
+            dispatch_async(dispatch_get_main_queue(),{
+                self.tableView.reloadData()
+            });
+
         }
 
     }
@@ -207,30 +226,16 @@ class SearchAndLoadViewController: UIViewController {
     func backViewController(){
         self.navigationController?.popViewControllerAnimated(true)
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 
 // MARK: - UITableView Data Source
 
 extension SearchAndLoadViewController: UITableViewDataSource {
-    
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return tableDatas.count
-    }
+
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let currentArray = tableDatas[section]
-        return currentArray.count
+        return tableDatas.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -241,8 +246,8 @@ extension SearchAndLoadViewController: UITableViewDataSource {
             let nibArr =  NSBundle.mainBundle().loadNibNamed("FeedCell", owner: self, options: nil)
             cell = nibArr.first as! FeedCell
         }
-        let currentArray = tableDatas[indexPath.section]
-        let dinner = currentArray.objectAtIndex(indexPath.row)
+
+        let dinner = tableDatas[indexPath.row]
         
         if let cell = cell {
             (cell as! FeedCell).bindDinner((dinner as! DinnerDay), andThumbnail: dbManager.thumbNailWithString(dinner.dayStr))
@@ -261,8 +266,11 @@ extension SearchAndLoadViewController: UITableViewDataSource {
 // MARK: -
 // MARK: UITextField Delegate
 extension SearchAndLoadViewController: UITextFieldDelegate{
-
     func textFieldDidBeginEditing(textField: UITextField) {
+        
+        tableDatas.removeAll()
+        headerStrings.removeAll()
+        tableView.reloadData()
         textField.text = ""
     }
 }
@@ -281,29 +289,5 @@ extension SearchAndLoadViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
-    
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat{
-        return 30;
-    }
-    
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        print("viewForHeaderInSection")
-        
-        let headerLabel = UILabel(frame:CGRectMake(0, 0, self.view.frame.size.width, 30))
-        headerLabel.backgroundColor = DinnerUtility.mainbackgroundColor()
-        headerLabel.textColor = UIColor.lightGrayColor()
-        headerLabel.baselineAdjustment = UIBaselineAdjustment.AlignCenters
-        headerLabel.font = UIFont(name: "AppleSDGothicNeo-Light", size: 11)
-        
 
-        let headerString = headerStrings[section];
-        headerLabel.text = "    \(headerString)"
-        
-        return headerLabel
-    }
-    
-
-
-    
 }

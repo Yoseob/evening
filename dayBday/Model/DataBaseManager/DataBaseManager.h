@@ -43,4 +43,6 @@
 -(NSArray *)feedListUptodateCount:(int)max endDateStr:(NSString *)date;
 
 -(NSArray *)findDinnerIncludeThatString:(NSString *)str;
+
+-(void)findStringQuery:(NSString *)str Block:(DinnerCallback)complete;
 @end

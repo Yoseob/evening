@@ -97,7 +97,19 @@
     return [self selectImpl:query];
 }
 
+-(void)selectWithQuery:(NSString *)query originQueryParams:(NSString *)params withBlock:(DinnerCallback)callback{
+    [self selectQueryImpliment:query withCompliteCallback:^(sqlite3_stmt *stmt) {
+        DinnerDay * dinner = [[DinnerDay alloc]init];
+        dinner.index = sqlite3_column_int(stmt, 0);
+        dinner.dayStr =[NSString stringWithUTF8String:(const char *)sqlite3_column_text(stmt, 1)];
+        dinner.orignText =[NSString stringWithUTF8String:(const char *)sqlite3_column_text(stmt, 2)];
+        int length = sqlite3_column_bytes(stmt, 3);
+        NSData * data = [NSData dataWithBytes:sqlite3_column_blob(stmt, 3) length:length];
+        [dinner setAttrData:data];
+        callback(dinner , params);
+    }];
 
+}
 
 -(NSMutableArray *)selectImpl:(NSString*)query{
     NSMutableArray * result = [NSMutableArray new];
