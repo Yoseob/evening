@@ -75,5 +75,30 @@
             </objects>
             <point key="canvasLocation" x="887" y="446"/>
         </scene>
+        <!--Setting Info View Controller-->
+        <scene sceneID="Bgs-II-xDh">
+            <objects>
+                <viewController storyboardIdentifier="SettingInfoViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="QHu-Z2-kR3" customClass="SettingInfoViewController" customModule="dayBday" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="W1r-9T-NAc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="kg7-uQ-0tQ">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <connections>
+                        <outlet property="settingTable" destination="kg7-uQ-0tQ" id="z0R-GG-rpW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6hI-5y-83f" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1337" y="469"/>
+        </scene>
     </scenes>
 </document>

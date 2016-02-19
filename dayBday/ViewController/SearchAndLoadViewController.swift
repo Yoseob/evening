@@ -43,10 +43,10 @@ class SearchAndLoadViewController: UIViewController {
 
         let bounceColor = UIColor(patternImage: colorFromView(gradientViewforColor))
 
-        let testView = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, 44))
-        testView.backgroundColor = gradientViewforColor.bottomColor
+        let naviBarView = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, 44))
+        naviBarView.backgroundColor = gradientViewforColor.bottomColor
         
-        view.addSubview(testView)
+        view.addSubview(naviBarView)
         
         tableView = UITableView(frame: CGRectMake(0, 44, view.frame.size.width, view.frame.size.height - 44), style: .Plain)
         tableView.dataSource = self
@@ -63,9 +63,10 @@ class SearchAndLoadViewController: UIViewController {
         tableView.dg_addPullToRefreshWithActionHandler({ [weak self] () -> Void in
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
                 self?.tableView.dg_stopLoading()
+                print("tableView.dg_stopLoading")
             })
             }, loadingView: loadingView)
-        tableView.dg_setPullToRefreshFillColor(bounceColor)//UIColor(red: 38/255.0, green: 38/255.0, blue: 38/255.0, alpha: 1.0))
+        tableView.dg_setPullToRefreshFillColor(bounceColor)
         tableView.dg_setPullToRefreshBackgroundColor(tableView.backgroundColor!)
     }
 
@@ -152,7 +153,7 @@ class SearchAndLoadViewController: UIViewController {
         textfield.backgroundColor = UIColor.clearColor()
         textfield.layer.cornerRadius = 2.0
         textfield.clearButtonMode = .Always
-        textfield.textColor = UIColor.grayColor()
+        textfield.textColor = UIColor.whiteColor()
         textfield.text = PLACE_HOLDER
         textfield.delegate = self
         self.navigationItem.titleView = textfield
@@ -260,17 +261,11 @@ extension SearchAndLoadViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 72
     }
-    
-   
 }
 // MARK: -
 // MARK: UITextField Delegate
 extension SearchAndLoadViewController: UITextFieldDelegate{
     func textFieldDidBeginEditing(textField: UITextField) {
-        
-        tableDatas.removeAll()
-        headerStrings.removeAll()
-        tableView.reloadData()
         textField.text = ""
     }
 }

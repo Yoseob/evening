@@ -19,17 +19,17 @@
 		2347DD7F1C6783A7009ECC4C /* DGElasticPullToRefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2347DD7A1C6783A7009ECC4C /* DGElasticPullToRefreshView.swift */; };
 		2347DD811C6899A1009ECC4C /* OLNGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2347DD801C6899A1009ECC4C /* OLNGradientView.swift */; };
 		235BB65D1C0B302A00398B81 /* DataBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 235BB65C1C0B302A00398B81 /* DataBaseManager.m */; };
+		236FC9C11C72FF9600F9E191 /* SettingInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236FC9C01C72FF9600F9E191 /* SettingInfoViewController.swift */; };
 		237035741C47AF0E008CC6EE /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 237035731C47AF0E008CC6EE /* CoreText.framework */; };
+		237821BF1C76D676007A2A69 /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237821BD1C76D676007A2A69 /* SettingCell.swift */; };
+		237821C01C76D676007A2A69 /* SettingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 237821BE1C76D676007A2A69 /* SettingCell.xib */; };
 		2394121A1C0F4930001B9B07 /* DinnerDay.m in Sources */ = {isa = PBXBuildFile; fileRef = 239412191C0F4930001B9B07 /* DinnerDay.m */; };
 		2394121E1C0F4A83001B9B07 /* ThumbnailDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 2394121D1C0F4A83001B9B07 /* ThumbnailDao.m */; };
 		239412221C0F52EF001B9B07 /* Thumbnail.m in Sources */ = {isa = PBXBuildFile; fileRef = 239412211C0F52EF001B9B07 /* Thumbnail.m */; };
 		239412261C10B26D001B9B07 /* ContainerScollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 239412251C10B26D001B9B07 /* ContainerScollView.m */; };
 		239412291C10B408001B9B07 /* ScrollViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 239412281C10B408001B9B07 /* ScrollViewManager.m */; };
-		23961CCE1C58568700F8EF64 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23961CCD1C58568700F8EF64 /* SearchViewController.m */; };
 		23961CD11C587E1300F8EF64 /* FeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23961CD01C587E1300F8EF64 /* FeedCell.xib */; };
-		23961CD31C587E3100F8EF64 /* SearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23961CD21C587E3100F8EF64 /* SearchCell.xib */; };
 		23961CD61C5887BC00F8EF64 /* FeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23961CD51C5887BC00F8EF64 /* FeedCell.m */; };
-		23961CD91C5887C800F8EF64 /* SearchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23961CD81C5887C800F8EF64 /* SearchCell.m */; };
 		23AABD431C6CE9F700C7F06A /* DinnerAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AABD421C6CE9F700C7F06A /* DinnerAppearance.swift */; };
 		23AE9E021BE74B5A00E7E4CB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AE9E011BE74B5A00E7E4CB /* main.m */; };
 		23AE9E051BE74B5A00E7E4CB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AE9E041BE74B5A00E7E4CB /* AppDelegate.m */; };
@@ -103,7 +103,10 @@
 		2347DD801C6899A1009ECC4C /* OLNGradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OLNGradientView.swift; sourceTree = "<group>"; };
 		235BB65B1C0B302A00398B81 /* DataBaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBaseManager.h; sourceTree = "<group>"; };
 		235BB65C1C0B302A00398B81 /* DataBaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataBaseManager.m; sourceTree = "<group>"; };
+		236FC9C01C72FF9600F9E191 /* SettingInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingInfoViewController.swift; sourceTree = "<group>"; };
 		237035731C47AF0E008CC6EE /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		237821BD1C76D676007A2A69 /* SettingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingCell.swift; sourceTree = "<group>"; };
+		237821BE1C76D676007A2A69 /* SettingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingCell.xib; sourceTree = "<group>"; };
 		239412181C0F4930001B9B07 /* DinnerDay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DinnerDay.h; sourceTree = "<group>"; };
 		239412191C0F4930001B9B07 /* DinnerDay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DinnerDay.m; sourceTree = "<group>"; };
 		2394121C1C0F4A83001B9B07 /* ThumbnailDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailDao.h; sourceTree = "<group>"; };
@@ -114,14 +117,9 @@
 		239412251C10B26D001B9B07 /* ContainerScollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContainerScollView.m; sourceTree = "<group>"; };
 		239412271C10B408001B9B07 /* ScrollViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewManager.h; sourceTree = "<group>"; };
 		239412281C10B408001B9B07 /* ScrollViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewManager.m; sourceTree = "<group>"; };
-		23961CCC1C58568700F8EF64 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
-		23961CCD1C58568700F8EF64 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		23961CD01C587E1300F8EF64 /* FeedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeedCell.xib; sourceTree = "<group>"; };
-		23961CD21C587E3100F8EF64 /* SearchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchCell.xib; sourceTree = "<group>"; };
 		23961CD41C5887BC00F8EF64 /* FeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedCell.h; sourceTree = "<group>"; };
 		23961CD51C5887BC00F8EF64 /* FeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedCell.m; sourceTree = "<group>"; };
-		23961CD71C5887C800F8EF64 /* SearchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchCell.h; sourceTree = "<group>"; };
-		23961CD81C5887C800F8EF64 /* SearchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchCell.m; sourceTree = "<group>"; };
 		23AABD421C6CE9F700C7F06A /* DinnerAppearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DinnerAppearance.swift; sourceTree = "<group>"; };
 		23AE9DFD1BE74B5A00E7E4CB /* dayBday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dayBday.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23AE9E011BE74B5A00E7E4CB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -275,6 +273,16 @@
 			path = DataBaseManager;
 			sourceTree = "<group>";
 		};
+		236FC9BB1C72F65B00F9E191 /* SettingViewController */ = {
+			isa = PBXGroup;
+			children = (
+				236FC9C01C72FF9600F9E191 /* SettingInfoViewController.swift */,
+				237821BD1C76D676007A2A69 /* SettingCell.swift */,
+				237821BE1C76D676007A2A69 /* SettingCell.xib */,
+			);
+			path = SettingViewController;
+			sourceTree = "<group>";
+		};
 		239412171C0F4917001B9B07 /* DinnerDay */ = {
 			isa = PBXGroup;
 			children = (
@@ -317,8 +325,6 @@
 			children = (
 				2347DD721C6781B5009ECC4C /* SearchAndLoadViewController.swift */,
 				23961CCF1C587DE000F8EF64 /* CustomCell */,
-				23961CCC1C58568700F8EF64 /* SearchViewController.h */,
-				23961CCD1C58568700F8EF64 /* SearchViewController.m */,
 			);
 			path = SearchViewController;
 			sourceTree = "<group>";
@@ -327,11 +333,8 @@
 			isa = PBXGroup;
 			children = (
 				23961CD01C587E1300F8EF64 /* FeedCell.xib */,
-				23961CD21C587E3100F8EF64 /* SearchCell.xib */,
 				23961CD41C5887BC00F8EF64 /* FeedCell.h */,
 				23961CD51C5887BC00F8EF64 /* FeedCell.m */,
-				23961CD71C5887C800F8EF64 /* SearchCell.h */,
-				23961CD81C5887C800F8EF64 /* SearchCell.m */,
 			);
 			path = CustomCell;
 			sourceTree = "<group>";
@@ -406,6 +409,7 @@
 		23AE9E361BE74C4D00E7E4CB /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				236FC9BB1C72F65B00F9E191 /* SettingViewController */,
 				23961CCB1C58566900F8EF64 /* SearchViewController */,
 				232D5E201BEB33FB0026C62E /* InputViewController */,
 				23AE9E641BE74C6700E7E4CB /* DayBDayViewController.h */,
@@ -683,8 +687,8 @@
 				23AE9E561BE74C5200E7E4CB /* eventlist.ics in Resources */,
 				23AE9E101BE74B5A00E7E4CB /* Assets.xcassets in Resources */,
 				23AE9E571BE74C5200E7E4CB /* gazette.ics in Resources */,
-				23961CD31C587E3100F8EF64 /* SearchCell.xib in Resources */,
 				23AE9E0B1BE74B5A00E7E4CB /* Main.storyboard in Resources */,
+				237821C01C76D676007A2A69 /* SettingCell.xib in Resources */,
 				23961CD11C587E1300F8EF64 /* FeedCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -729,6 +733,7 @@
 				23AE9E5B1BE74C5200E7E4CB /* JTCalendarDataCache.m in Sources */,
 				23AE9E611BE74C5200E7E4CB /* JTCalendarWeekView.m in Sources */,
 				239412291C10B408001B9B07 /* ScrollViewManager.m in Sources */,
+				236FC9C11C72FF9600F9E191 /* SettingInfoViewController.swift in Sources */,
 				239412221C0F52EF001B9B07 /* Thumbnail.m in Sources */,
 				23AE9E051BE74B5A00E7E4CB /* AppDelegate.m in Sources */,
 				23F711D71C05FAEB00B202B1 /* CheckBox.m in Sources */,
@@ -738,7 +743,6 @@
 				23AE9E601BE74C5200E7E4CB /* JTCalendarMonthWeekDaysView.m in Sources */,
 				23F711DA1C05FB0300B202B1 /* TransferAble.m in Sources */,
 				23AE9E5E1BE74C5200E7E4CB /* JTCalendarMenuView.m in Sources */,
-				23961CCE1C58568700F8EF64 /* SearchViewController.m in Sources */,
 				23C01E6A1C0203B40002ACCA /* ImagesDao.m in Sources */,
 				23AE9E591BE74C5200E7E4CB /* JTCalendarAppearance.m in Sources */,
 				23C01E611C0201E30002ACCA /* DinnerDao.m in Sources */,
@@ -746,8 +750,8 @@
 				2347DD7B1C6783A7009ECC4C /* DGElasticPullToRefreshConstants.swift in Sources */,
 				23351E0A1C1FA3EA00BB54FB /* DinnerUtility.m in Sources */,
 				23AE9E021BE74B5A00E7E4CB /* main.m in Sources */,
+				237821BF1C76D676007A2A69 /* SettingCell.swift in Sources */,
 				23AE9E581BE74C5200E7E4CB /* JTCalendar.m in Sources */,
-				23961CD91C5887C800F8EF64 /* SearchCell.m in Sources */,
 				23AE9E621BE74C5200E7E4CB /* JTCircleView.m in Sources */,
 				23AE9E5C1BE74C5200E7E4CB /* JTCalendarDayView.m in Sources */,
 				23F711C71C0571B300B202B1 /* DinnerObjDao.m in Sources */,

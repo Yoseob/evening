@@ -6,5 +6,4 @@
 #import "DayBDayViewController.h"
 #import "FeedCell.h"
 #import "DataBaseManager.h"
-#import "SearchViewController.h"
 #import "DinnerUtility.h"

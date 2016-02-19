@@ -30,6 +30,8 @@ class DinnerAppearance: NSObject {
         }
     }
     
+    
+    
     override init() {
 
         topColor = [
@@ -72,6 +74,15 @@ class DinnerAppearance: NSObject {
         print(mainColor().top)
         return mainColor().top
     }
+    
+    internal func colorFromView(targetView: UIView) -> UIImage{
+        UIGraphicsBeginImageContext(targetView.frame.size)
+        targetView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
+
     
     func mainColor() -> (top: UIColor, bottom: UIColor) {
         

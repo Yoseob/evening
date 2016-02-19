@@ -12,7 +12,7 @@
 #import "BottomContainerView.h"
 #import "DinnerUtility.h"
 #import "MainViewBuilder.h"
-#import "SearchViewController.h"
+
 
 //will remove after DAO test
 #import "DinnerUtility.h"
@@ -108,8 +108,17 @@
 - (void)pushChangeModeButton:(id)sender {
     self.calendar.calendarAppearance.isWeekMode = !self.calendar.calendarAppearance.isWeekMode;
     [self transitionCalendarMode];
-
 }
+
+-(void)showSetting:(id)serder{
+    
+    UIStoryboard * mainStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    SettingInfoViewController * vc = (SettingInfoViewController *)[mainStoryBoard instantiateViewControllerWithIdentifier:@"SettingInfoViewController"];
+    UINavigationController * naviVc = [[UINavigationController alloc]initWithRootViewController:vc];
+    [self presentViewController:naviVc animated:YES completion:nil];
+}
+
 
 -(void)showSearchViewController{
     SearchAndLoadViewController * vc = [[SearchAndLoadViewController alloc]init];
@@ -439,7 +448,7 @@
 #pragma mark
 - (void)setUpBarButtonItems {
     //first search , second setting
-    SEL naviSelecters[] = { @selector(showSearchViewController),@selector(pushChangeModeButton:)};
+    SEL naviSelecters[] = { @selector(showSearchViewController),@selector(showSetting:)};
     [viewBuilder createNaviBarWithSelecters:naviSelecters];
 }
 
@@ -594,7 +603,7 @@
                 [myAttrString replaceCharactersInRange:range withAttributedString:[NSAttributedString attributedStringWithAttachment:newAttrText]];
             }
         }
-    }];
+    }]; 
      */
     [self setCurrentDayAttrbutedString:myAttrString];
 }
