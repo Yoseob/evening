@@ -9,12 +9,17 @@
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
 @class DinnerDay;
+
+static NSString *dbName = @"v5.4.1.db.dinner.sqlite";
 typedef void(^Callback)(sqlite3_stmt * stmt);
 typedef void(^DinnerCallback)(DinnerDay * dinner , NSString* originQuery);
 @interface SqlConnection : NSObject
 @property (copy, nonatomic) NSString *givenFilename;
 @property (copy, nonatomic) NSString *dbPath;
+
+
 -(NSString *)getdbPath;
++(NSString *)staticDbPath;
 -(id)initWithDataBaseFilename:(NSString*)databaseFilename;
 -(int) createTable:(NSString*) filePath andCreateQuery:(NSString *)queryString;
 -(int)insert:(NSString *)filePath andWithInsert:(int(^)(sqlite3 * sqlDb , char * err , sqlite3_stmt* stmt))block;

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2305F9D91C3EBB38009FF083 /* MainViewBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 2305F9D81C3EBB38009FF083 /* MainViewBuilder.m */; };
+		2308A6561CA6583A00EB4BDB /* SyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2308A6551CA6583A00EB4BDB /* SyncManager.swift */; };
 		232D5E231BEB34060026C62E /* InputViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 232D5E221BEB34060026C62E /* InputViewViewController.m */; };
 		232D5ECD1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 232D5ECC1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.m */; };
 		23351E0A1C1FA3EA00BB54FB /* DinnerUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 23351E091C1FA3EA00BB54FB /* DinnerUtility.m */; };
@@ -65,6 +66,9 @@
 		23F711C71C0571B300B202B1 /* DinnerObjDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F711C61C0571B300B202B1 /* DinnerObjDao.m */; };
 		23F711D71C05FAEB00B202B1 /* CheckBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F711D51C05FAEB00B202B1 /* CheckBox.m */; };
 		23F711DA1C05FB0300B202B1 /* TransferAble.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F711D91C05FB0300B202B1 /* TransferAble.m */; };
+		638E20C33949B21967824AB8 /* libPods-dayBdayUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C23B9EA78C0821F8FE6E928C /* libPods-dayBdayUITests.a */; };
+		6EB5372B88C579656DD0357B /* Pods_dayBday.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD48C03D4FE932042BA4A64C /* Pods_dayBday.framework */; };
+		B418B087BF77547243CD876D /* libPods-dayBdayTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B75E8A2D81A430D25F81CC8D /* libPods-dayBdayTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,8 +89,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		07F952BBD4DB61B252CE15C4 /* Pods-dayBday.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dayBday.debug.xcconfig"; path = "Pods/Target Support Files/Pods-dayBday/Pods-dayBday.debug.xcconfig"; sourceTree = "<group>"; };
+		184335088C2C197D4DE97D81 /* Pods-dayBdayUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dayBdayUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-dayBdayUITests/Pods-dayBdayUITests.release.xcconfig"; sourceTree = "<group>"; };
 		2305F9D71C3EBB38009FF083 /* MainViewBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewBuilder.h; sourceTree = "<group>"; };
 		2305F9D81C3EBB38009FF083 /* MainViewBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewBuilder.m; sourceTree = "<group>"; };
+		2308A6501CA6352700EB4BDB /* dayBday.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = dayBday.entitlements; sourceTree = "<group>"; };
+		2308A6551CA6583A00EB4BDB /* SyncManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncManager.swift; sourceTree = "<group>"; };
 		232D5E211BEB34060026C62E /* InputViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputViewViewController.h; sourceTree = "<group>"; };
 		232D5E221BEB34060026C62E /* InputViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputViewViewController.m; sourceTree = "<group>"; };
 		232D5ECB1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewTapGestureRecognizer.h; sourceTree = "<group>"; };
@@ -185,6 +193,13 @@
 		23F711D51C05FAEB00B202B1 /* CheckBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckBox.m; sourceTree = "<group>"; };
 		23F711D81C05FB0300B202B1 /* TransferAble.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferAble.h; sourceTree = "<group>"; };
 		23F711D91C05FB0300B202B1 /* TransferAble.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferAble.m; sourceTree = "<group>"; };
+		806C473300143DDB2448A952 /* Pods-dayBdayTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dayBdayTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-dayBdayTests/Pods-dayBdayTests.release.xcconfig"; sourceTree = "<group>"; };
+		917C7D22C9154A8E397DA11C /* Pods-dayBday.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dayBday.release.xcconfig"; path = "Pods/Target Support Files/Pods-dayBday/Pods-dayBday.release.xcconfig"; sourceTree = "<group>"; };
+		A24BC922D7254FE5AFC2B937 /* Pods-dayBdayTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dayBdayTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-dayBdayTests/Pods-dayBdayTests.debug.xcconfig"; sourceTree = "<group>"; };
+		B75E8A2D81A430D25F81CC8D /* libPods-dayBdayTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-dayBdayTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD48C03D4FE932042BA4A64C /* Pods_dayBday.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_dayBday.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C23B9EA78C0821F8FE6E928C /* libPods-dayBdayUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-dayBdayUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E55CAD783D34159CF6A05C4F /* Pods-dayBdayUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dayBdayUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-dayBdayUITests/Pods-dayBdayUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,6 +209,7 @@
 			files = (
 				237035741C47AF0E008CC6EE /* CoreText.framework in Frameworks */,
 				23F1F9C21BFF7BA300479DC5 /* libsqlite3.0.tbd in Frameworks */,
+				6EB5372B88C579656DD0357B /* Pods_dayBday.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,6 +217,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B418B087BF77547243CD876D /* libPods-dayBdayTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -208,6 +225,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				638E20C33949B21967824AB8 /* libPods-dayBdayUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +248,7 @@
 				23F711CF1C05FA9200B202B1 /* DTO */,
 				23F1F9C31C0045CF00479DC5 /* DAO */,
 				23F1F9BD1BFF73F100479DC5 /* SqlConnection */,
+				2308A6551CA6583A00EB4BDB /* SyncManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -348,6 +367,8 @@
 				23AE9E271BE74B5B00E7E4CB /* dayBdayUITests */,
 				23AE9DFE1BE74B5A00E7E4CB /* Products */,
 				23F1F9C11BFF7BA300479DC5 /* libsqlite3.0.tbd */,
+				E37EBCA49D70FB8D52E34DFA /* Pods */,
+				CBA0468C18507A05C98870EA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -364,6 +385,7 @@
 		23AE9DFF1BE74B5A00E7E4CB /* dayBday */ = {
 			isa = PBXGroup;
 			children = (
+				2308A6501CA6352700EB4BDB /* dayBday.entitlements */,
 				232D5E9E1BF74F3F0026C62E /* Model */,
 				23AE9E671BE87A3A00E7E4CB /* Resource */,
 				23AE9E371BE74C5200E7E4CB /* Library */,
@@ -577,6 +599,29 @@
 			path = TransferAble;
 			sourceTree = "<group>";
 		};
+		CBA0468C18507A05C98870EA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BD48C03D4FE932042BA4A64C /* Pods_dayBday.framework */,
+				B75E8A2D81A430D25F81CC8D /* libPods-dayBdayTests.a */,
+				C23B9EA78C0821F8FE6E928C /* libPods-dayBdayUITests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E37EBCA49D70FB8D52E34DFA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				07F952BBD4DB61B252CE15C4 /* Pods-dayBday.debug.xcconfig */,
+				917C7D22C9154A8E397DA11C /* Pods-dayBday.release.xcconfig */,
+				A24BC922D7254FE5AFC2B937 /* Pods-dayBdayTests.debug.xcconfig */,
+				806C473300143DDB2448A952 /* Pods-dayBdayTests.release.xcconfig */,
+				E55CAD783D34159CF6A05C4F /* Pods-dayBdayUITests.debug.xcconfig */,
+				184335088C2C197D4DE97D81 /* Pods-dayBdayUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -584,9 +629,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 23AE9E2D1BE74B5B00E7E4CB /* Build configuration list for PBXNativeTarget "dayBday" */;
 			buildPhases = (
+				DC7CDE98C25A6DCBECA180FC /* 📦 Check Pods Manifest.lock */,
 				23AE9DF91BE74B5A00E7E4CB /* Sources */,
 				23AE9DFA1BE74B5A00E7E4CB /* Frameworks */,
 				23AE9DFB1BE74B5A00E7E4CB /* Resources */,
+				EA0DC174DA475B08D85CDF3F /* 📦 Embed Pods Frameworks */,
+				BC616E2C3809BC32E0C545E1 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -601,9 +649,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 23AE9E301BE74B5B00E7E4CB /* Build configuration list for PBXNativeTarget "dayBdayTests" */;
 			buildPhases = (
+				BCDA23920874D8987386EA71 /* 📦 Check Pods Manifest.lock */,
 				23AE9E151BE74B5A00E7E4CB /* Sources */,
 				23AE9E161BE74B5A00E7E4CB /* Frameworks */,
 				23AE9E171BE74B5A00E7E4CB /* Resources */,
+				DE796393AABF3B5BF4C5EF20 /* 📦 Embed Pods Frameworks */,
+				6680AD913195E0C4356B81DB /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -619,9 +670,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 23AE9E331BE74B5B00E7E4CB /* Build configuration list for PBXNativeTarget "dayBdayUITests" */;
 			buildPhases = (
+				7F5DC699FD4B562549877729 /* 📦 Check Pods Manifest.lock */,
 				23AE9E201BE74B5B00E7E4CB /* Sources */,
 				23AE9E211BE74B5B00E7E4CB /* Frameworks */,
 				23AE9E221BE74B5B00E7E4CB /* Resources */,
+				0785C043DAB6ACA06D2C8831 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -646,6 +699,11 @@
 					23AE9DFC1BE74B5A00E7E4CB = {
 						CreatedOnToolsVersion = 7.1;
 						DevelopmentTeam = 725A3BQPW9;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					23AE9E181BE74B5A00E7E4CB = {
 						CreatedOnToolsVersion = 7.1;
@@ -709,6 +767,129 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0785C043DAB6ACA06D2C8831 /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-dayBdayUITests/Pods-dayBdayUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6680AD913195E0C4356B81DB /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-dayBdayTests/Pods-dayBdayTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7F5DC699FD4B562549877729 /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		BC616E2C3809BC32E0C545E1 /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-dayBday/Pods-dayBday-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BCDA23920874D8987386EA71 /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		DC7CDE98C25A6DCBECA180FC /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		DE796393AABF3B5BF4C5EF20 /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-dayBdayTests/Pods-dayBdayTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EA0DC174DA475B08D85CDF3F /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-dayBday/Pods-dayBday-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		23AE9DF91BE74B5A00E7E4CB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -729,6 +910,7 @@
 				23C01E641C02020E0002ACCA /* DataBaseAccessObject.m in Sources */,
 				2347DD7C1C6783A7009ECC4C /* DGElasticPullToRefreshExtensions.swift in Sources */,
 				23961CD61C5887BC00F8EF64 /* FeedCell.m in Sources */,
+				2308A6561CA6583A00EB4BDB /* SyncManager.swift in Sources */,
 				232D5ECD1BF8D1560026C62E /* HPTextViewTapGestureRecognizer.m in Sources */,
 				23AE9E5B1BE74C5200E7E4CB /* JTCalendarDataCache.m in Sources */,
 				23AE9E611BE74C5200E7E4CB /* JTCalendarWeekView.m in Sources */,
@@ -896,9 +1078,11 @@
 		};
 		23AE9E2E1BE74B5B00E7E4CB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 07F952BBD4DB61B252CE15C4 /* Pods-dayBday.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = dayBday/dayBday.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = dayBday/Info.plist;
@@ -914,9 +1098,11 @@
 		};
 		23AE9E2F1BE74B5B00E7E4CB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 917C7D22C9154A8E397DA11C /* Pods-dayBday.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = dayBday/dayBday.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = dayBday/Info.plist;
@@ -931,6 +1117,7 @@
 		};
 		23AE9E311BE74B5B00E7E4CB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A24BC922D7254FE5AFC2B937 /* Pods-dayBdayTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = dayBdayTests/Info.plist;
@@ -943,6 +1130,7 @@
 		};
 		23AE9E321BE74B5B00E7E4CB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 806C473300143DDB2448A952 /* Pods-dayBdayTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = dayBdayTests/Info.plist;
@@ -955,6 +1143,7 @@
 		};
 		23AE9E341BE74B5B00E7E4CB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E55CAD783D34159CF6A05C4F /* Pods-dayBdayUITests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = dayBdayUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -967,6 +1156,7 @@
 		};
 		23AE9E351BE74B5B00E7E4CB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 184335088C2C197D4DE97D81 /* Pods-dayBdayUITests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = dayBdayUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

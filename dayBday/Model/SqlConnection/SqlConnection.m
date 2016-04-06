@@ -11,6 +11,7 @@
 @implementation SqlConnection
 @synthesize dbPath=_dbPath;
 
+
 -(id)initWithDataBaseFilename:(NSString*)databaseFilename
 {
     self = [super init];
@@ -24,9 +25,14 @@
 
 {
     NSString * docsPath= NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    return  _dbPath =[docsPath stringByAppendingPathComponent:dbName];
+}
+
+
++(NSString *)staticDbPath{
+    NSString * docsPath= NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    return [docsPath stringByAppendingPathComponent:dbName];
     
- 
-    return  _dbPath =[docsPath stringByAppendingPathComponent:@"v5.4.1.db.dinner.sqlite"];
 }
 
 -(int) createTable:(NSString*) filePath andCreateQuery:(NSString *)queryString

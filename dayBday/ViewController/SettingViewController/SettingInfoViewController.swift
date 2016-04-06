@@ -25,36 +25,34 @@ enum ElementName: String{
     
 }
 
-class Element{
+typealias Callback = ()->()
+public class Element{
     
-    var name: ElementName
+    var name: ElementName = .Undefined
     var checkBox = false
     var label = false
-
-    convenience init(name: ElementName, _ hasCheckBox: Bool, _ hasLabel: Bool ){
+    var allow = false
+    
+    convenience init(name: ElementName, _ hasCheckBox: Bool, _ hasLabel: Bool, _ hasAllow: Bool ){
         self.init()
         self.name = name
         self.checkBox = hasCheckBox
         self.label = hasLabel
+        self.allow = hasAllow
     }
     
     init(){
         name = .Undefined
+        allow = false
+        checkBox = false
     }
     
     
 }
 
 func bindCellWithElement(cell: SettingCell, element: Element){
-    cell.nameLabel.text = element.name.rawValue
-    if element.label {
-        cell.noticeLabel.hidden = false
-        cell.noticeLabel.text = "some things"
-        cell.ableSwitch.hidden = true
-    }else if element.checkBox {
-        cell.noticeLabel.hidden = true
-        cell.ableSwitch.hidden = false
-    }
+    print(element.name)
+    cell.element = element
 }
 
 class SettingInfoViewController: UIViewController {
@@ -63,8 +61,10 @@ class SettingInfoViewController: UIViewController {
     @IBOutlet var settingTable: UITableView!
     
     let apprearance = DinnerAppearance.defaultAppearance
-    var settingsList = [AnyObject]()
+    var settingsList = [[Element]]()
     var sessionHeaders = [String]()
+    
+    var callbackTable = [ElementName: Callback?]()
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -93,7 +93,7 @@ class SettingInfoViewController: UIViewController {
         
         let rightBarbuttonCustomView = UIButton(type: .Custom)
         rightBarbuttonCustomView.frame = CGRectMake(0, 0, 30, 30)
-        rightBarbuttonCustomView.addTarget(self, action: "popViewController:", forControlEvents: .TouchUpInside)
+        rightBarbuttonCustomView.addTarget(self, action: #selector(SettingInfoViewController.popViewController(_:)), forControlEvents: .TouchUpInside)
         rightBarbuttonCustomView.setImage(UIImage(named: "btnDone"), forState: .Normal)
         
         let rightBarbuttonItem = UIBarButtonItem(customView: rightBarbuttonCustomView)
@@ -109,21 +109,52 @@ class SettingInfoViewController: UIViewController {
     }
     
     func setSettingElements(){
-        let firstSection = [Element(name: .ICloud, true, false),Element(name: .DropBox, false, false)]
+        
+        let firstSection = [Element(name: .ICloud, true, false, false),
+                            Element(name: .DropBox, false, false, true)]
         settingsList.append(firstSection)
         sessionHeaders.append("SYNC OPTIONS")
-        let secondSection = [Element(name: .Calender, false, false)]
+        
+        let secondSection = [Element(name: .Calender, false, false, false)]
         settingsList.append(secondSection)
         sessionHeaders.append("WIDGET")
-        let thirdSection = [Element(name: .Passcode, true, false),Element(name: .ChangePassCode, false, false),Element(name: .TouchId, false, false)]
+        
+        let thirdSection = [Element(name: .Passcode, true, false, false),
+                            Element(name: .ChangePassCode, false, false, false),
+                            Element(name: .TouchId, false, false, false)]
+        
         settingsList.append(thirdSection)
         sessionHeaders.append("PASSCODE / TOUCH ID")
-        let fourSection = [Element(name: .FontSize, true, true),Element(name: .hourTime, true, false)]
+        
+        let fourSection = [Element(name: .FontSize, false, true, true),
+                           Element(name: .hourTime, true, false, false)]
         settingsList.append(fourSection)
         sessionHeaders.append("WRITE")
-        let lastSection = [Element(name: .Email, false, true), Element(name: .RateThisApp, false, false), Element(name: .Licence, false, true)]
+        
+        let lastSection = [Element(name: .Email, false, false, true),
+                           Element(name: .RateThisApp, false, false, true),
+                           Element(name: .Licence, false, false, true)]
         settingsList.append(lastSection)
         sessionHeaders.append("SERVICE")
+        
+        callbackTable[.DropBox] = {
+            let actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: "Backup", otherButtonTitles: "Restore","Unlink")
+            actionSheet.destructiveButtonIndex = 3
+            actionSheet.showInView(self.view)
+        }
+        
+        callbackTable[.ChangePassCode] = {}
+        
+        callbackTable[.FontSize] = {}
+        
+        callbackTable[.Email] = {}
+        
+        callbackTable[.RateThisApp] = {}
+        
+        callbackTable[.Licence] = {}
+        
+        
+        
     }
     
     func popViewController(sender: UIButton){
@@ -175,6 +206,12 @@ extension SettingInfoViewController: UITableViewDelegate{
     
 }
 
+extension SettingInfoViewController: UIActionSheetDelegate{
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        print(buttonIndex)
+    }
+}
+
 extension SettingInfoViewController: UITableViewDataSource{
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -190,12 +227,13 @@ extension SettingInfoViewController: UITableViewDataSource{
             cell = nibArr.first as! SettingCell
         }
         
-        if let cell = cell {
+        if let cell = cell{
             let tempCell = (cell as! SettingCell)
             tempCell.onTintColor = apprearance.getTopColor()
-            bindCellWithElement(tempCell, element: settingsList[indexPath.section].objectAtIndex(indexPath.row) as! Element)
+            tempCell.switchDelegate = self
+            tempCell.element = nil
+            bindCellWithElement(tempCell, element: settingsList[indexPath.section][indexPath.row])
         }
-
         return cell!
     }
     
@@ -208,6 +246,8 @@ extension SettingInfoViewController: UITableViewDataSource{
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sessionHeaders[section]
     }
+    
+    
 //    
 //    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?{
 //        let rect = CGRectMake(18, 10, self.view.frame.size.width, 30)
@@ -216,3 +256,17 @@ extension SettingInfoViewController: UITableViewDataSource{
 //    }
 
 }
+
+extension SettingInfoViewController: SettingCellDelegate{
+    func changeSwitchState(element: Element, state: Bool) {
+        SyncManager.sharedInstance.changeICloudState(state)
+    }
+    
+    func selectedCell(element: Element) {
+        if let callback = callbackTable[element.name]{
+            callback!()
+        }
+    }
+}
+
+
